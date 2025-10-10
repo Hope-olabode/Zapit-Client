@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import ButtonLoader from "../components/ButtonLoader";
 import mail from "../assets/mail.svg";
-import key from "../assets/Key.svg";
+import key from "../assets/key.svg";
 import logo from "../assets/logo.svg";
 import { Toaster, toast } from "sonner";
 
