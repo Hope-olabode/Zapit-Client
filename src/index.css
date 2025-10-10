@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: 'BentonSans-Black';
+  src: url('./assets/fonts/black/Bentonsans_Black.woff2') format('woff2'),
+       url('./assets/fonts/black/Bentonsans_Black.woff') format('woff'),
+       url('./assets/fonts/black/BentonSans_Black.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+@font-face {
+  font-family: 'BentonSans-Bold';
+  src: url('./assets/fonts/bold/Bentonsans_Bold.woff2') format('woff2'),
+       url('./assets/fonts/bold/Bentonsans_Bold.woff') format('woff'),
+       url('./assets/fonts/bold/BentonSans_Bold.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+
+@font-face {
+  font-family: 'BentonSans-Regular';
+  src: url('./assets/fonts/regular/Bentonsans_Regular.woff2') format('woff2'),
+       url('./assets/fonts/regular/Bentonsans_Regular.woff') format('woff'),
+       url('./assets/fonts/regular/BentonSans_Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+@theme {
+  /* Make Tailwind's font-sans point to Be Vietnam Pro globally */
+  --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+
+  /* Custom variables for Benton fonts (if you want to use them explicitly) */
+  --font-benton-regular: "BentonSans-Regular", sans-serif;
+  --font-benton-bold: "BentonSans-Bold", sans-serif;
+  --font-benton-black: "BentonSans-Black", sans-serif;
+}
+
+
+/* Rectangle */
+/* Rectangle wrapper */
+.rect-wrapper {
+  position: relative;
+  width: 54.38px;
+  height: 200px;
+}
+
+/* Shadow layer - positioned offset */
+.rect-shadow {
+  width: 54.38px;
+  height: 200px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  clip-path: path("M0,2 Q0,0 2,0 H52.38 Q54.38,0 54.38,2 V198 Q54.38,200 52.38,200 H12 Q10,200 10,198 Z");
+  background: #1B1D22; /* shadow color */
+  z-index: 0;
+}
+
+/* Main shape layer */
+.rect {
+  width: 54.38px;
+  height: 200px;
+  position: relative;
+  clip-path: path("M0,2 Q0,0 2,0 H52.38 Q54.38,0 54.38,2 V198 Q54.38,200 52.38,200 H12 Q10,200 10,198 Z");
+  z-index: 1;
+}
+
+/* Base background (grey) */
+.rect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: grey;
+  border-radius: 2px;
+}
+
+/* Green fill */
+.fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #4ECDC4;
+  animation: fillPause 12s linear infinite;
+}
+
+
+
+
+/* Circle */
+.circle {
+  width: 42.38px;
+  height: 42.38px;
+  background: grey;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.fillc {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #4ECDC4;
+  animation: fillPausec 12s linear infinite;
+}
+
+/* Smooth fill + pause in 8 chunks */
+@keyframes fillPause {
+  0%   { height: 0%; }
+  10%  { height: 0%; }
+  25%  { height: 0%; }   /* initial freeze */
+
+  35%  { height: 14%; }
+  40%  { height: 14%; }   /* pause */
+
+  50%  { height: 28%; }
+  55%  { height: 28%; }   /* pause */
+
+  65%  { height: 42%; }
+  70%  { height: 42%; }   /* pause */
+
+  75%  { height: 57%; }
+  80%  { height: 57%; }   /* pause */
+
+  85%  { height: 71%; }
+  90%  { height: 71%; }   /* pause */
+
+  95%  { height: 85%; }
+  97%  { height: 85%; }   /* pause */
+
+  100% { height: 100%; }  /* final stop */
+}
+
+
+
+/* Smooth fill + pause in 8 chunks */
+@keyframes fillPausec {
+ 0%    { height: 0%; }
+  10%   { height: 60%; }   /* 0.8s → halfway */
+  20%   { height: 60%; }   /* 0.8s pause at halfway */
+  25%   { height: 100%; }  /* 0.4s → reach full (total 2s fill) */
+  100%  { height: 100%; }  /* hold full for remaining 6s */
+}
+
+
+
+/* From Uiverse.io by Fernando-sv */ 
+.loader {
+  border: 4px solid rgba(0, 0, 0, .1);
+  border-left-color: transparent;
+  border-radius: 50%;
+}
+
+.loader {
+  border: 4px solid rgba(0, 0, 0, .1);
+  border-left-color: transparent;
+  width: 36px;
+  height: 36px;
+}
+
+.loader {
+  border: 4px solid rgba(0, 0, 0, .1);
+  border-left-color: transparent;
+  width: 36px;
+  height: 36px;
+  animation: spin89345 1s linear infinite;
+}
+
+@keyframes spin89345 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

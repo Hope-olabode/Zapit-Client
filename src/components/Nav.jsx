@@ -1,0 +1,68 @@
+import React, { useContext } from "react";
+import logb from "../assets/logsb.svg";
+import log from "../assets/logs.svg";
+import location from "../assets/location.svg";
+import locationb from "../assets/locationb.svg";
+import report from "../assets/report.svg";
+import reportb from "../assets/reportb.svg";
+import capture from "../assets/capture.svg";
+import { Context } from "../context/Context";
+import { NavLink, Link, Outlet, useLocation } from "react-router-dom";
+import addLocation from "../assets/addLocation.svg"; // 👈 alternate image for active state
+
+export default function Nav() {
+  const { setNewLocation, newLocation, startCamera } = useContext(Context);
+  const { pathname } = useLocation(); // 👈 get current route
+
+  const click = () => {
+    if (pathname === "/location") {
+      setNewLocation(true);
+      console.log("clicked");
+      console.log(newLocation);
+    }
+  };
+
+  return (
+    <div className="flex flex-row items-center justify-center gap-7">
+      <div className="flex w-[160px] h-[64px] justify-center gap-7 items-center rounded-[16px] bg-white">
+        <NavLink to="/Logs">
+          {({ isActive }) =>
+            isActive ? (
+              <img src={logb} alt="logo" className="w-[24px]" />
+            ) : (
+              <img src={log} alt="logo" className="w-[24px]" />
+            )
+          }
+        </NavLink>
+
+        <NavLink to="/location">
+          {({ isActive }) =>
+            isActive ? (
+              <img src={locationb} alt="logo" className="w-[24px]" />
+            ) : (
+              <img src={location} alt="logo" className="w-[24px]" />
+            )
+          }
+        </NavLink>
+        <NavLink to="/report">
+          {({ isActive }) =>
+            isActive ? (
+              <img src={reportb} alt="logo" className="w-[24px]" />
+            ) : (
+              <img src={report} alt="logo" className="w-[24px]" />
+            )
+          }
+        </NavLink>
+      </div>
+      {pathname === "/location" ? (
+        <button onClick={click}>
+          <img src={addLocation} alt="capture" />
+        </button>
+      ) : (
+        <button onClick={startCamera}>
+          <img src={capture} alt="capture" />
+        </button>
+      )}
+    </div>
+  );
+}
