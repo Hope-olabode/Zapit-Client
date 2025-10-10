@@ -8,7 +8,7 @@ import cancle from "../assets/cancle.svg";
 import di from "../assets/deleteImage.svg";
 import ai from "../assets/addImage.svg";
 import add2 from "../assets/addImage2.svg";
-import Category2 from "../components/Category2";
+
 import cc from "../assets/catcancle.svg";
 import ca from "../assets/catadd.svg";
 
