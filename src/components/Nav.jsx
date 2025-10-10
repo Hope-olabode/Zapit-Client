@@ -23,7 +23,7 @@ export default function Nav() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-center gap-7">
+    <div className="flex flex-row items-center justify-center gap-7 z-10">
       <div className="flex w-[160px] h-[64px] justify-center gap-7 items-center rounded-[16px] bg-white">
         <NavLink to="/Logs">
           {({ isActive }) =>

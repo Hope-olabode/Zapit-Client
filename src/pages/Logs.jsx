@@ -61,7 +61,8 @@ export default function Logs() {
     hold,
     setHold,
     issues,
-    setIssues
+    setIssues,
+    setSelectedCategories
   } = useContext(Context);
 
   const [category, setCategory] = useState(false);
@@ -243,9 +244,10 @@ export default function Logs() {
     setIssues((prev) => [...prev, response.data.issue]);
 
     // Reset form and local state
-    // reset();
-    // setImgFiles([]);
-    // setSelectedCategories([]);
+    setHold(false)
+    reset();
+    setImgFiles([]);
+    setSelectedCategories([]);
   } catch (error) {
     console.error("Create issue error:", error);
     toast.error(error.response?.data?.message || "Failed to create issue");
@@ -307,7 +309,7 @@ export default function Logs() {
   };
 
   return (
-    <div className="h-full w-full relative bg-[#E8E9EB]">
+    <div className="h-full w-full relative bg-[#E8E9EB] overflow-x-scroll">
       <Toaster position="top-center" richColors />
       <div className="flex flex-row justify-between items-center z-[2] absolute w-full p-4 [h-80px]">
         <p className="font-benton-black text-[32px] leading-[130%] ">Logs</p>

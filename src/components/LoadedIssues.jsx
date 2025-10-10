@@ -23,7 +23,7 @@ export default function LoadedIssues() {
 
   return (
     <div className="div">
-      <div className="absolute top-[100px] w-full left-[50%] translate-x-[-50%] z-10 px-4">
+      <div className="absolute top-[100px] w-full left-[50%] translate-x-[-50%] z-5 px-4">
         {issues.map((issue, index) => (
           <div
             onClick={() => setSelectedIssue(issue)}
