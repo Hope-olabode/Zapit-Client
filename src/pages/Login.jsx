@@ -90,7 +90,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="h-14 bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] flex items-center justify-center"
+              className={`h-14 ${loading ? "bg-[#E1E2E5] shadow-[5px_5px_0px_0px_#CED0D5]": "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px]"}  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150`}
             >
               {loading ? <ButtonLoader /> : "Login"}
             </button>

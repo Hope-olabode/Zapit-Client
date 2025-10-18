@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import { Route, Routes } from "react-router-dom";
 import Logs from "./pages/Logs.jsx";
 import Nav from "./components/Nav.jsx";
@@ -10,9 +10,9 @@ import Fake from "./pages/fake.jsx";
 import Loader from "./components/Loader.jsx";
 import Report from "./pages/Report.jsx";
 import Location from "./pages/Location.jsx";
-import { useContext } from "react";
+
 import { Context } from "./context/Context.jsx";
-import Camera from "./components/CameraCapture.jsx";
+import Camera from "./components/Camera.jsx";
 
 export default function App() {
   return (

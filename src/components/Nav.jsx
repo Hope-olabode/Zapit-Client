@@ -59,7 +59,7 @@ export default function Nav() {
           <img src={addLocation} alt="capture" />
         </button>
       ) : (
-        <button onClick={startCamera}>
+        <button className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150" onClick={startCamera}>
           <img src={capture} alt="capture" />
         </button>
       )}

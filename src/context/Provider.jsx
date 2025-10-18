@@ -2,22 +2,32 @@ import { useState, useRef, useEffect } from "react";
 import { Context } from "./Context";
 import api from "../api/axios";
 import { toast, Toaster } from "sonner";
-import { set } from "react-hook-form";
+
 
 export const Provider = ({ children }) => {
   const [cameraActive, setCameraActive] = useState(false);
   const [previews, setPreviews] = useState([]); // store multiple images
   const [imgFiles, setImgFiles] = useState([]);
+
+  const [update, setUpdate] = useState(false);
+  const [previews2, setPreviews2] = useState([]); // store multiple images
+  const [imgFiles2, setImgFiles2] = useState([]);
+
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
+
+  const [selectedIssue, setSelectedIssue] = useState(null);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [hold, setHold] = useState(false);
-  const [issues, setIssues] = useState([])
+  const [issues, setIssues] = useState([]);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+
+  console.log(imgFiles2);
 
   // 📸 Start Camera
   const startCamera = async () => {
@@ -43,6 +53,7 @@ export const Provider = ({ children }) => {
       video.srcObject = null;
     }
     setCameraActive(false);
+    setUpdate(false);
   };
 
   // 🖼️ Capture Photo
@@ -59,7 +70,9 @@ export const Provider = ({ children }) => {
 
     canvas.toBlob((blob) => {
       if (blob) {
-        const file = new File([blob], `photo-${previews.length + 1}.png`, { type: "image/png" });
+        const file = new File([blob], `photo-${previews.length + 1}.png`, {
+          type: "image/png",
+        });
         const newPreview = URL.createObjectURL(blob);
         setPreviews((prev) => [...prev, newPreview]);
         setImgFiles((prev) => [...prev, file]);
@@ -70,6 +83,42 @@ export const Provider = ({ children }) => {
     console.log(previews);
     stopCamera();
   };
+
+  const capturePhoto2 = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      // 📸 Create a new File object and preview URL
+      const file = new File([blob], `photo-${Date.now()}.png`, {
+        type: "image/png",
+      });
+      const newPreview = URL.createObjectURL(blob);
+
+      // ✅ Append new file to existing captured files
+      setImgFiles2((prev) => [...prev, file]);
+
+      // ✅ Add to selectedIssue images for UI display
+      setSelectedIssue((prev) => ({
+        ...prev,
+        images: [...(prev?.images || []), { url: newPreview, file }],
+      }));
+    }, "image/png");
+
+    // 🛑 Stop camera after capture
+    stopCamera();
+  };
+
+  console.log(imgFiles2);
 
   // 🧹 Cleanup camera if user leaves while it's on
   useEffect(() => {
@@ -101,8 +150,8 @@ export const Provider = ({ children }) => {
       try {
         const { data } = await api.get("/categories");
         setCategories(data);
-        console.log(data)
-        console.log(categories)
+        console.log(data);
+        console.log(categories);
       } catch (error) {
         console.error("Error fetching categories:", error);
         if (error.response?.status === 401) {
@@ -112,7 +161,7 @@ export const Provider = ({ children }) => {
         }
       } finally {
         setLoading(false);
-        console.log(categories)
+        console.log(categories);
       }
     };
 
@@ -120,26 +169,25 @@ export const Provider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-  const fetchIssues = async () => {
-    try {
-      const { data } = await api.get("/issues");
-      setIssues(data.issues || []);
-      console.log("Fetched Issues from API:", data);
-    } catch (error) {
-      console.error("Error fetching Issues:", error);
-      if (error.response?.status === 401) {
-        toast.error("You must be logged in to view issues");
-      } else {
-        toast.error("Failed to fetch issues");
+    const fetchIssues = async () => {
+      try {
+        const { data } = await api.get("/issues");
+        setIssues(data.issues || []);
+        console.log("Fetched Issues from API:", data);
+      } catch (error) {
+        console.error("Error fetching Issues:", error);
+        if (error.response?.status === 401) {
+          toast.error("You must be logged in to view issues");
+        } else {
+          toast.error("Failed to fetch issues");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchIssues();
-}, []);
-
+    fetchIssues();
+  }, []);
 
   return (
     <Context.Provider
@@ -163,12 +211,21 @@ export const Provider = ({ children }) => {
         setCategories,
         showAddModal,
         setShowAddModal,
-        selectedCategories, 
+        selectedCategories,
         setSelectedCategories,
         hold,
         setHold,
         issues,
-        setIssues
+        setIssues,
+        capturePhoto2,
+        previews2,
+        setPreviews2,
+        imgFiles2,
+        setImgFiles2,
+        update,
+        setUpdate,
+        selectedIssue,
+        setSelectedIssue,
       }}
     >
       <Toaster position="top-right" richColors />

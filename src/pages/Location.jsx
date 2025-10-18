@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import api from "../api/axios";
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
 import location2 from "../assets/location2.svg";
 import la from "../assets/locationAdd.svg";
 import { Context } from "../context/Context";
-import { useState } from "react";
+
 import { Toaster, toast } from "sonner";
 
 export default function Location() {
