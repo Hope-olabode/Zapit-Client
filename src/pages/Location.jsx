@@ -7,6 +7,7 @@ import la from "../assets/locationAdd.svg";
 import { Context } from "../context/Context";
 
 import { Toaster, toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function Location() {
   const { register, handleSubmit, reset } = useForm();
@@ -39,6 +40,8 @@ export default function Location() {
       toast.error(err.message);
     });
   };
+
+  const navigate = useNavigate();
   return (
     <div className="h-full w-full relative bg-[#E8E9EB]">
       <Toaster position="top-center" richColors />
@@ -85,6 +88,13 @@ export default function Location() {
           {locations.map((loc, index) => (
             <div
               key={loc.id}
+              onClick={()=>{
+                sessionStorage.setItem(
+                      "Location",
+                      JSON.stringify(loc.name)
+                    );
+                    navigate("/location/view");
+              }}
               className="flex items-center border-b-2 border-black last:border-b-0 px-4 py-3"
             >
               {/* Number */}

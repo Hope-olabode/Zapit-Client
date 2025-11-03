@@ -23,7 +23,7 @@ export default function Home() {
     const response = await api.post("/auth/login", data); // withCredentials is already set in api.js
     toast.success("Login successful!");
     console.log(response.data);
-    window.location.href = "/Logs";
+    window.location.href = "/logs";
   } catch (error) {
     toast.error(error.response?.data?.message || "Invalid email or password");
     console.error("Login error:", error);

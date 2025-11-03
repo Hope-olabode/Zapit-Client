@@ -3,12 +3,10 @@ import { Context } from "../context/Context";
 import cc from "../assets/catcancle.svg";
 import ca from "../assets/catadd.svg";
 
-export default function CategorySelector() {
+export default function CategorySelector({selectedCategories, setSelectedCategories}) {
   const {
     categories,
     setShowAddModal,
-    selectedCategories,
-    setSelectedCategories,
   } = useContext(Context);
 
   // Toggle category by name instead of id

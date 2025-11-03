@@ -3,7 +3,6 @@ import { Context } from "./Context";
 import api from "../api/axios";
 import { toast, Toaster } from "sonner";
 
-
 export const Provider = ({ children }) => {
   const [cameraActive, setCameraActive] = useState(false);
   const [previews, setPreviews] = useState([]); // store multiple images
@@ -17,12 +16,21 @@ export const Provider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
+  const [allSurveys, setAllSurveys] = useState([]);
+
+  const [selectedSurvey, setSelectedSurvey] = useState(() => {
+  const saved = sessionStorage.getItem("selectedSurvey");
+  return saved ? JSON.parse(saved) : null;
+});
+
   const [selectedIssue, setSelectedIssue] = useState(null);
+  const [survey, setSurvey] = useState(false);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [hold, setHold] = useState(false);
   const [issues, setIssues] = useState([]);
+  const [overlay, setOverlay] = useState(false)
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -189,6 +197,21 @@ export const Provider = ({ children }) => {
     fetchIssues();
   }, []);
 
+  useEffect(() => {
+    const getAllSurveys = async () => {
+      try {
+        const response = await api.get("/surveys"); // matches app.use("/api/surveys", surveyRoutes)
+        setAllSurveys(response.data);
+        console.log(allSurveys)
+      } catch (error) {
+        console.error("❌ Error fetching surveys:", error);
+        toast.error(error.response?.data?.message || "Failed to fetch surveys");
+      }
+    };
+
+    getAllSurveys();
+  }, []); // ✅ important: add [] to prevent infinite requests
+console.log(allSurveys)
   return (
     <Context.Provider
       value={{
@@ -226,6 +249,14 @@ export const Provider = ({ children }) => {
         setUpdate,
         selectedIssue,
         setSelectedIssue,
+        survey,
+        setSurvey,
+        allSurveys,
+        setAllSurveys,
+        selectedSurvey,
+        setSelectedSurvey,
+        overlay, 
+        setOverlay
       }}
     >
       <Toaster position="top-right" richColors />

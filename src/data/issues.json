@@ -1,0 +1,278 @@
+[
+  {
+    "_id": "68e8f688b4e493277d9c61da",
+    "description": "Poor house keeping",
+    "Caused_by": "Human",
+    "location": "Lagos",
+    "status": "Pending",
+    "priority": "High",
+    "dateTime": "13:04 • 10th Oct, 25",
+    "categories": ["Workspace"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760097927/issues/Lagos/ntrh8lgd7n8scgehkcws.png",
+        "public_id": "issues/Lagos/ntrh8lgd7n8scgehkcws",
+        "_id": "68e8f688b4e493277d9c61db"
+      }
+    ],
+    "createdAt": "2025-10-10T12:05:28.603Z",
+    "updatedAt": "2025-10-10T12:05:28.603Z",
+    "__v": 0
+  },
+  {
+    "_id": "68e8cef1952b20747c518c2f",
+    "description": "ggd",
+    "Caused_by": "nd",
+    "location": "Towers",
+    "status": "Pending",
+    "priority": "High",
+    "dateTime": "10:15 • 10th Oct, 25",
+    "categories": ["Air Conditioning"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760087794/issues/Towers/emszakagmwmaiqn2bkfs.png",
+        "public_id": "issues/Towers/emszakagmwmaiqn2bkfs",
+        "_id": "68e8cef1952b20747c518c30"
+      }
+    ],
+    "createdAt": "2025-10-10T09:16:33.628Z",
+    "updatedAt": "2025-10-10T09:16:33.628Z",
+    "__v": 0
+  },
+  {
+    "_id": "68e8c825952b20747c518bc9",
+    "description": "jdjd",
+    "Caused_by": "jj",
+    "location": "Abuja",
+    "status": "Pending",
+    "priority": "High",
+    "dateTime": "09:46 • 10th Oct, 25",
+    "categories": ["Air Conditioning"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760820635/issues/Abuja/whpltpy23clygeakjosk.png",
+        "public_id": "issues/Abuja/whpltpy23clygeakjosk",
+        "_id": "68f3fd9b811c2be4e7c1d260"
+      }
+    ],
+    "createdAt": "2025-10-10T08:47:34.006Z",
+    "updatedAt": "2025-10-18T20:50:35.854Z",
+    "__v": 1,
+    "Responsibility": "John"
+  },
+  {
+    "_id": "68e8c24ff19ac1e81fb79fa7",
+    "description": "Plant - jeke",
+    "Caused_by": "Nature",
+    "location": "Yaba",
+    "status": "Pending",
+    "priority": "High",
+    "dateTime": "09:21 • 10th Oct, 25",
+    "categories": ["Air Conditioning"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760084558/issues/Yaba/pgvp80zfgf0a5d27snhs.png",
+        "public_id": "issues/Yaba/pgvp80zfgf0a5d27snhs",
+        "_id": "68e8c24ff19ac1e81fb79fa8"
+      }
+    ],
+    "createdAt": "2025-10-10T08:22:39.524Z",
+    "updatedAt": "2025-10-10T08:22:39.524Z",
+    "__v": 0
+  },
+  {
+    "_id": "68f401ab811c2be4e7c1d271",
+    "description": "Water leakage near generator area",
+    "Caused_by": "Maintenance lapse",
+    "location": "Abuja",
+    "status": "Resolved",
+    "priority": "Medium",
+    "dateTime": "11:30 • 11th Oct, 25",
+    "categories": ["Workspace", "Ikeja", "Air Conditioning"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760820635/issues/Abuja/whpltpy23clygeakjosk.png",
+        "public_id": "issues/Abuja/leakgen",
+        "_id": "68f401ab811c2be4e7c1d272"
+      }
+    ],
+    "createdAt": "2025-10-11T10:30:00.000Z",
+    "updatedAt": "2025-10-11T15:15:00.000Z",
+    "__v": 1,
+    "Responsibility": "Michael"
+  },
+  {
+    "_id": "68f401bb811c2be4e7c1d273",
+    "description": "AC unit not cooling properly",
+    "Caused_by": "Filter clog",
+    "location": "Abuja",
+    "status": "In Progress",
+    "priority": "High",
+    "dateTime": "14:20 • 12th Oct, 25",
+    "categories": ["Air Conditioning"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760820635/issues/Abuja/whpltpy23clygeakjosk.png",
+        "public_id": "issues/Abuja/acunit",
+        "_id": "68f401bb811c2be4e7c1d274"
+      }
+    ],
+    "createdAt": "2025-10-12T13:20:00.000Z",
+    "updatedAt": "2025-10-13T09:00:00.000Z",
+    "__v": 1,
+    "Responsibility": "Grace"
+  },
+  {
+    "_id": "68f401cc811c2be4e7c1d275",
+    "description": "Loose electrical socket near hallway",
+    "Caused_by": "Wear and tear",
+    "location": "Abuja",
+    "status": "Resolved",
+    "priority": "Low",
+    "dateTime": "16:10 • 13th Oct, 25",
+    "categories": ["Workspace"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760820635/issues/Abuja/whpltpy23clygeakjosk.png",
+        "public_id": "issues/Abuja/socketfix",
+        "_id": "68f401cc811c2be4e7c1d276"
+      }
+    ],
+    "createdAt": "2025-10-13T15:10:00.000Z",
+    "updatedAt": "2025-10-14T10:30:00.000Z",
+    "__v": 1,
+    "Responsibility": "David"
+  },
+  {
+    "_id": "68f401dc811c2be4e7c1d277",
+    "description": "Broken ceiling panel in reception area",
+    "Caused_by": "Structural issue",
+    "location": "Abuja",
+    "status": "In Progress",
+    "priority": "Medium",
+    "dateTime": "09:50 • 14th Oct, 25",
+    "categories": ["Ikeja"],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/do9qn3d7j/image/upload/v1760820635/issues/Abuja/whpltpy23clygeakjosk.png",
+        "public_id": "issues/Abuja/ceilingfix",
+        "_id": "68f401dc811c2be4e7c1d278"
+      }
+    ],
+    "createdAt": "2025-10-14T08:50:00.000Z",
+    "updatedAt": "2025-10-14T12:00:00.000Z",
+    "__v": 1,
+    "Responsibility": "Helen"
+  },
+
+  {
+    "id": 1,
+    "location": "Abuja",
+    "description": "Air conditioner leaking water near desk area.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Jan, 25",
+    "status": "Pending",
+    "priority": "High",
+    "categories": ["Air Conditioning", "Workspace"],
+    "images": [{ "url": "/images/issues/ac-leak.jpg" }]
+  },
+  {
+    "id": 2,
+    "location": "Abuja",
+    "description": "Workspace chairs need replacement in Ikeja section.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Jan, 25",
+    "status": "Resolved",
+    "priority": "Medium",
+    "categories": ["Workspace", "Ikeja"],
+    "images": [{ "url": "/images/issues/chairs.jpg" }]
+  },
+  {
+    "id": 3,
+    "location": "Abuja",
+    "description": "Air Conditioning unit not turning on in private office.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "In Progress",
+    "priority": "High",
+    "categories": ["Air Conditioning"],
+    "images": [{ "url": "/images/issues/ac-fault.jpg" }]
+  },
+  {
+    "id": 4,
+    "location": "Abuja",
+    "description": "Workspace divider damaged after rearrangement.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "Pending",
+    "priority": "Low",
+    "categories": ["Workspace"],
+    "images": [{ "url": "/images/issues/divider.jpg" }]
+  },
+  {
+    "id": 5,
+    "location": "Abuja",
+    "description": "Noise from Air Conditioning vents in Ikeja room.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "Resolved",
+    "priority": "Medium",
+    "categories": ["Ikeja", "Air Conditioning"],
+    "images": [{ "url": "/images/issues/noise.jpg" }]
+  },
+  {
+    "id": 6,
+    "location": "Abuja",
+    "description": "Workspace lights flickering during power fluctuation.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "In Progress",
+    "priority": "High",
+    "categories": ["Workspace"],
+    "images": [{ "url": "/images/issues/lights.jpg" }]
+  },
+  {
+    "id": 7,
+    "location": "Abuja",
+    "description": "Air Conditioning filter needs cleaning in Ikeja office.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "Pending",
+    "priority": "Low",
+    "categories": ["Air Conditioning", "Ikeja"],
+    "images": [{ "url": "/images/issues/filter.jpg" }]
+  },
+  {
+    "id": 8,
+    "location": "Abuja",
+    "description": "Broken table in shared workspace area.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "Resolved",
+    "priority": "High",
+    "categories": ["Workspace"],
+    "images": [{ "url": "/images/issues/table.jpg" }]
+  },
+  {
+    "id": 9,
+    "location": "Abuja",
+    "description": "Temperature too cold in Ikeja boardroom due to Air Conditioning settings.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "In Progress",
+    "priority": "Medium",
+    "categories": ["Ikeja", "Air Conditioning"],
+    "images": [{ "url": "/images/issues/cold.jpg" }]
+  },
+  {
+    "id": 10,
+    "location": "Abuja",
+    "description": "Workspace wall peeling near Air Conditioning vent.",
+    "Caused_by": "Structural issue",
+    "dateTime": "09:50 • 14th Aug, 25",
+    "status": "Pending",
+    "priority": "High",
+    "categories": ["Workspace", "Air Conditioning"],
+    "images": [{ "url": "/images/issues/wall.jpg" }]
+  }
+]

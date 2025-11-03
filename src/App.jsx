@@ -13,22 +13,39 @@ import Location from "./pages/Location.jsx";
 
 import { Context } from "./context/Context.jsx";
 import Camera from "./components/Camera.jsx";
+import Survey from "./pages/Survey.jsx";
+import NewSurvey from "./pages/NewSurvey.jsx";
+import UpdateSurvey from "./pages/UpdateSurvey.jsx"
+import ViewLocation from "./pages/ViewLocation.jsx"
+import ViewDay from "./pages/ViewDay.jsx"
+import Chat from "./pages/Chat.jsx"
 
 export default function App() {
   return (
     <>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/Logs" element={<Logs />} />
+          <Route path="/logs" element={<Logs />} />
           <Route path="/location" element={<Location />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/surveys" element={<Survey />} caseSensitive />
+          
         </Route>
 
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/c" element={<Camera />}/>
         <Route path="/f" element={<Fake />}/>
-        <Route path="*" element={<Loader />} />   
+        <Route path="*" element={<Loader />} />
+        <Route path="/survey/edit" element={<NewSurvey />} caseSensitive />
+        <Route path="/survey/new" element={<NewSurvey />} caseSensitive />
+        <Route path="/survey/update" element={<UpdateSurvey />} caseSensitive />
+        
+        
+        <Route path="/location/view" element={<ViewLocation />} caseSensitive />
+          <Route path="/location/view/day" element={<ViewDay />} caseSensitive />
+          <Route path="/chat" element={<Chat />} caseSensitive />
+
       </Routes>
     </>
   );

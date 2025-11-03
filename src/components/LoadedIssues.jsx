@@ -24,7 +24,7 @@ export default function LoadedIssues() {
 
   return (
     <div className="div">
-      <div className="absolute pt-[88px]  w-full left-[50%] translate-x-[-50%] z-5">
+      <div className="absolute mt-[88px]  w-full left-[50%] translate-x-[-50%] z-5">
         <div className="px-4 mb-[16px]">
           <div className="h-30 w-[100%] border-black border-1 flex items-center rounded-[16px] overflow-hidden">
             <div className="w-[30%] h-full bg-white  p-4 flex flex-col justify-between">

@@ -43,12 +43,14 @@ export default function DeleteIssue({ img, setConfirmDelete }) {
         <div className="shadow-[4.2px_3.2px_0px_0px_#1B1D22] rounded-[7.68px] overflow-hidden">
           <img className="w-[128px] h-[153px]" src={firstImageUrl} alt="" />
         </div>
-        <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px]">
+        <div className="div">
+          <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px] text-[#1B1D22] mb-2">
           Delete Issue?
         </h1>
-        <p className="font-benton-regular text-[15px] leading-[150%] tracking-[0]">
+        <p className="font-benton-regular text-[15px] leading-[150%] text-[#292C33]">
           Move this issue to trash
         </p>
+        </div>
         <div className="flex w-full justify-between gap-[21px] ">
           <button
             disabled={loading}
@@ -59,7 +61,7 @@ export default function DeleteIssue({ img, setConfirmDelete }) {
                 : "bg-[#E8E9EB] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22]"
             }  font-benton-black text-[21px] w-full leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150`}
           >
-            Cancle
+            Cancel
           </button>
           <button
             disabled={loading}

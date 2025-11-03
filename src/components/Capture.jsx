@@ -1,80 +1,59 @@
+import { Context } from "../context/Context";
+import { useContext, useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+import Category from "../components/Category";
 import cancle from "../assets/cancle.svg";
-import deleteImg from "../assets/delete.svg";
-import share from "../assets/share.svg";
+
 import dropdown from "../assets/dropdown.svg";
 import location3 from "../assets/location3.svg";
 import api from "../api/axios";
 import ai from "../assets/addImage.svg";
 import di from "../assets/deleteImage.svg";
 import clock from "../assets/clock.svg";
+
 import empty from "../assets/empty.svg";
 import add2 from "../assets/addImage2.svg";
-import { Context } from "../context/Context";
-import { useForm } from "react-hook-form";
+
+
 import { toast, Toaster } from "sonner";
-import cc from "../assets/catcancle.svg";
-import ca from "../assets/catadd.svg";
-import CategoryForm from "./CategoryForm";
-import Camera from "./Camera.jsx";
+import CategoryForm from "../components/CategoryForm";
+import Locations from "../components/Locations";
 
-import { useContext, useState } from "react";
-import IssueLocations from "./IssueLocations";
-import DeleteIssue from "./DeleteIssue.jsx";
 
-export default function SelectedIssue() {
+
+
+
+export default function Capture() {
   const {
-    categories,
     cameraActive,
     startCamera,
-    imgFiles2,
-    setImgFiles2,
-    setIssues,
-    setLoading,
-    update,
-    setUpdate,
-    setSelectedIssue,
-    selectedIssue,
+    stopCamera,
+    previews,
+    setPreviews,
+    imgFiles,
+    setImgFiles,
     loading,
+    showAddModal,
+    setShowAddModal,
+    selectedCategories,
+    setHold,
+    setLoading,
+     setIssues,
+    setSelectedCategories,
   } = useContext(Context);
 
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      description: selectedIssue?.description || "",
-      Caused_by: selectedIssue?.Caused_by || "",
-      Responsibility: selectedIssue?.Responsibility || "",
-    },
-  });
-  const [viewCategory, setViewCategory] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  // const [locationName, setLocationName] = useState("");
+  const { register, handleSubmit, reset } = useForm();
+
+  const [category, setCategory] = useState(false);
+  const [status, setStatus] = useState("Pending");
+  const [status2, setStatus2] = useState("High");
   const [selectLocation, setSelectLocation] = useState(false);
-  const [status, setStatus] = useState(selectedIssue.status || "Pending");
-  const [status2, setStatus2] = useState(selectedIssue.priority || "High");
 
-  const isSelected = (categoryName) =>
-    selectedIssue.categories.includes(categoryName);
-
-  console.log(selectedIssue);
-
-  const toggleCategory = (categoryName) => {
-    setSelectedIssue((prev) => {
-      const alreadySelected = prev.categories.includes(categoryName);
-      const updatedCategories = alreadySelected
-        ? prev.categories.filter((name) => name !== categoryName)
-        : [...prev.categories, categoryName];
-
-      return { ...prev, categories: updatedCategories };
-    });
-  };
-
-  const deleteLastImage = () => {
-    setImgFiles2((prevImages) => prevImages.slice(0, -1));
-    setSelectedIssue((prev) => ({
-      ...prev,
-      images: prev.images.slice(0, -1),
-    }));
-  };
+  const [locationName, setLocationName] = useState("");
+  const [formattedDateTime, setFormattedDateTime] = useState(
+    getFormattedDateTime()
+  );
 
   const handleClick = () => {
     setStatus((prev) => {
@@ -118,76 +97,139 @@ export default function SelectedIssue() {
     }
   };
 
-  const onSubmit = async (data) => {
-    console.log("🧾 Form Data:", data);
-    console.log("📸 Image Files (for upload):", imgFiles2);
-    console.log("📝 Selected Issue State:", selectedIssue.images);
+  useEffect(() => {
+    if (cameraActive) {
+      document.body.style.overflow = "hidden"; // disable scroll
+    } else {
+      document.body.style.overflow = ""; // reset back to default
+    }
 
-    if (!selectedIssue.location) return toast.error("Please select a location");
-    if (!selectedIssue.categories?.length)
+    // Cleanup in case component unmounts while modal is open
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [cameraActive]);
+
+  function getFormattedDateTime() {
+    const now = new Date();
+
+    // Format time (HH:MM)
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const time = `${hours}:${minutes}`;
+
+    // Get date parts
+    const day = now.getDate();
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear().toString().slice(-2); // last two digits of year
+
+    // Add ordinal suffix (st, nd, rd, th)
+    const getOrdinal = (n) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    const dayWithSuffix = `${day}${getOrdinal(day)}`;
+
+    // Combine
+    return `${time} • ${dayWithSuffix} ${month}, ${year}`;
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFormattedDateTime(getFormattedDateTime());
+    }, 60000); // update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const deleteLastImage = () => {
+    setImgFiles((prevImages) => prevImages.slice(0, -1));
+    setPreviews((prevImages) => prevImages.slice(0, -1));
+  };
+
+  const onSubmitMain = async (data) => {
+    console.log("Main Form Data:", data);
+
+    // Validation
+    if (!locationName) {
+      return toast.error("Please select a location");
+    }
+    if (selectedCategories.length === 0) {
       return toast.error("Please select a category");
+    }
 
     setLoading(true);
 
+    // 🧩 Create a FormData object for multipart upload
+    const formData = new FormData();
+
+    // Append normal text fields
+    formData.append("description", data.description);
+    formData.append("Caused_by", data.Caused_by);
+    formData.append("Responsibility", data.Responsibility);
+    formData.append("location", locationName);
+    formData.append("status", status);
+    formData.append("priority", status2);
+    formData.append("dateTime", formattedDateTime);
+
+    // Append categories (if array)
+    selectedCategories.forEach((category) => {
+      formData.append("categories[]", category);
+    });
+
+    // Append all image files
+    imgFiles.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    console.log(formData);
+
     try {
-      const formData = new FormData();
-
-      // 🔹 Append text fields
-      formData.append(
-        "description",
-        data.description || selectedIssue.description
-      );
-      formData.append("Caused_by", data.Caused_by || selectedIssue.Caused_by);
-      formData.append(
-        "Responsibility",
-        data.Responsibility || selectedIssue.Responsibility
-      );
-      formData.append("location", selectedIssue.location);
-      formData.append("status", selectedIssue.status);
-      formData.append("priority", selectedIssue.priority);
-      formData.append("dateTime", selectedIssue.dateTime);
-      formData.append("categories", JSON.stringify(selectedIssue.categories));
-
-      // 🔹 Append only valid Cloudinary images
-      const existingUrls = (selectedIssue.images || [])
-        .filter((img) => img.url && !img.url.startsWith("blob:"))
-        .map((img) => ({
-          url: img.url,
-          public_id: img.public_id,
-        }));
-
-      formData.append("existingImages", JSON.stringify(existingUrls));
-
-      // 🔹 Append the new files (from imgFiles2)
-      imgFiles2.forEach((file) => {
-        if (file instanceof File) {
-          formData.append("images", file);
-        }
+      // 🛰 Send to your Express route
+      const response = await api.post("/issues/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      console.log("📤 FormData contents:");
-      for (let [key, value] of formData.entries()) {
-        console.log(`  ${key}:`, value);
-      }
+      toast.success("Issue was logged successfully!");
+      console.log("Server response:", response.data);
 
-      const response = await api.put(`/issues/${selectedIssue._id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      // Update state with new issue
+      setIssues((prev) => [...prev, response.data.issue]);
 
-      toast.success("Issue updated successfully!");
-      console.log("✅ Server response:", response.data);
-
-      setIssues((prev) =>
-        prev.map((issue) =>
-          issue._id === response.data.issue._id ? response.data.issue : issue
-        )
-      );
-
+      // Reset form and local state
+      setHold(false);
       reset();
-      setImgFiles2([]);
+      setImgFiles([]);
+      setSelectedCategories([]);
     } catch (error) {
-      console.error("❌ Update issue error:", error);
-      toast.error(error.response?.data?.message || "Failed to update issue");
+      console.error("Create issue error:", error);
+      toast.error(error.response?.data?.message || "Failed to create issue");
     } finally {
       setLoading(false);
     }
@@ -198,43 +240,27 @@ export default function SelectedIssue() {
       toast.error(err.message);
     });
   };
-
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-30 h-screen">
-      <div className="p-4 w-full flex justify-between items-center ">
+    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen">
+      <div className="p-4 flex justify-center items-center ">
         <img
           src={cancle}
           onClick={() => {
-            setSelectedIssue(null);
+            setPreviews([]);
+            setImgFiles([]);
+            setHold(false);
+            stopCamera();
           }}
           alt="cancel"
           className="w-14 h-14 cursor-pointer"
         />
-        <div className="flex gap-2">
-          <img
-            src={deleteImg}
-            onClick={() => {
-              setConfirmDelete(true);
-            }}
-            alt="cancel"
-            className="w-14 h-14 cursor-pointer"
-          />
-          <img
-            src={share}
-            onClick={() => {
-              setSelectedIssue(null);
-            }}
-            alt="cancel"
-            className="w-14 h-14 cursor-pointer"
-          />
-        </div>
       </div>
 
       {/* Scrollable content */}
       <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto">
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmitMain, onError)}>
           <div className="p-4 relative w-full h-[400px] rounded-xl">
-            {selectedIssue.images.length === 0 && (
+            {previews.length === 0 && (
               <div className="flex flex-col items-center gap-[19.32px] h-full rounded-xl bg-[#E8E9EB]">
                 <img src={empty} alt="" className="" />
                 <div className="flex flex-col items-center gap-2">
@@ -250,8 +276,8 @@ export default function SelectedIssue() {
             )}
 
             <div className="w-full h-full relative rounded-xl overflow-hidden">
-              {selectedIssue.images.map((src, i) => {
-                const count = selectedIssue.images.length;
+              {previews.map((src, i) => {
+                const count = previews.length;
                 let style = "";
 
                 if (count === 1) {
@@ -272,7 +298,7 @@ export default function SelectedIssue() {
                 return (
                   <img
                     key={i}
-                    src={src.url}
+                    src={src}
                     alt={`Captured ${i + 1}`}
                     className={`object-cover  ${style}`}
                   />
@@ -280,12 +306,12 @@ export default function SelectedIssue() {
               })}
 
               {/* Divider lines */}
-              {selectedIssue.images.length === 2 && (
+              {previews.length === 2 && (
                 // Vertical line in the middle for 2 images
                 <div className="absolute top-0 left-1/2 w-[2px] h-full bg-black"></div>
               )}
 
-              {selectedIssue.images.length === 3 && (
+              {previews.length === 3 && (
                 <>
                   {/* Vertical line in the middle */}
                   <div className="absolute top-0 left-1/2 w-[2px] h-full bg-black"></div>
@@ -297,12 +323,9 @@ export default function SelectedIssue() {
 
             {/* Buttons (top-right) */}
             <div className="flex flex-col items-center absolute top-[16px] right-[16px]">
-              {selectedIssue.images.length != 3 && (
+              {imgFiles.length != 3 && (
                 <img
-                  onClick={() => {
-                    setUpdate(true);
-                    startCamera();
-                  }}
+                  onClick={startCamera}
                   src={ai}
                   alt=""
                   className="cursor-pointer"
@@ -322,38 +345,35 @@ export default function SelectedIssue() {
               >
                 <img src={location3} alt="" />
                 <p className="font-benton-bold text-[10px] leading-[150%]">
-                  {selectedIssue.location}
+                  {locationName === "" ? "Enter Location" : locationName}
                 </p>
               </div>
               <div className="h-[26px] border border-black flex items-center gap-[6px] rounded-[8px] px-2.5 bg-[#E1E2E5]">
                 <img src={clock} alt="" />
                 <p className="font-benton-bold text-[10px] leading-[150%]">
-                  {selectedIssue.dateTime}
+                  {formattedDateTime}
                 </p>
               </div>
             </div>
           </div>
 
-          {cameraActive && <Camera update={update} />}
-
           <div className="relative">
-            {/* onething */}
             <div className="mb-4 flex flex-row px-4 justify-between">
               <div
                 onClick={() => {
-                  setViewCategory(true);
+                  setCategory(true);
                 }}
                 className="flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] max-w-[240px]"
               >
                 <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate">
-                  {selectedIssue.categories.length > 0
-                    ? selectedIssue.categories.length <= 2
-                      ? selectedIssue.categories
+                  {selectedCategories.length > 0
+                    ? selectedCategories.length <= 2
+                      ? selectedCategories
                           .map((cat, i) => (i === 0 ? cat : ` • ${cat}`))
                           .join("")
-                      : `${selectedIssue.categories[0]} • ${
-                          selectedIssue.categories[1]
-                        }... +${selectedIssue.categories - 2}`
+                      : `${selectedCategories[0]} • ${
+                          selectedCategories[1]
+                        }... +${selectedCategories.length - 2}`
                     : "Category"}
                 </p>
                 <img src={dropdown} alt="" className="flex-shrink-0" />
@@ -361,75 +381,31 @@ export default function SelectedIssue() {
               <div className="flex gap-2">
                 <div
                   onClick={handleClick}
-                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] font-sans font-semibold leading-[16px] text-[12px] tracking-[-0.5px] ${getStatusStyles()}`}
+                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px]  ${getStatusStyles()}`}
                 >
                   <p>{status}</p>
                 </div>
                 <div
                   onClick={handleClick2}
-                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] font-sans font-semibold leading-[16px] text-[12px] tracking-[-0.5px]  ${getStatusStyles2()}`}
+                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px]  ${getStatusStyles2()}`}
                 >
                   <p>{status2}</p>
                 </div>
               </div>
             </div>
-            {viewCategory && (
+            {category && (
               <div className="div">
                 <div className="top-0 left-[16px] z-30 absolute">
-                  <div>
-                    <div className="w-[250px] h-[300px] bg-white rounded-3xl border-2 border-gray-800 shadow-lg overflow-hidden">
-                      {/* Header */}
-                      <div className="flex items-center justify-between p-2 border-b-2 border-gray-800">
-                        <h2 className="text-[12px] font-sans leading-[16px] font-semibold">
-                          Categories
-                        </h2>
-                        <button
-                          type="button"
-                          onClick={() => setShowAddModal(true)}
-                          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-                        >
-                          <img src={ca} className="w-6 h-6 text-gray-800" />
-                        </button>
-                      </div>
-
-                      {/* Categories Grid */}
-                      <div className="overflow-y-scroll p-2 max-h-[230px] rounded-b-3xl pb-2">
-                        <div className="flex flex-wrap gap-3">
-                          {categories.map((category) => (
-                            <button
-                              type="button"
-                              key={category._id}
-                              onClick={() => toggleCategory(category.name)}
-                              className={`relative px-2 py-[5px] rounded-full h-[26px] text-base font-semibold
-                                      transition-all duration-200 border-2 flex items-center
-                                      ${
-                                        isSelected(category.name)
-                                          ? "border-gray-800"
-                                          : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-                                      }`}
-                            >
-                              <span className="text-[12px] font-sans leading-[16px] font-semibold">
-                                {category.name}
-                              </span>
-                              {isSelected(category.name) && (
-                                <span>
-                                  <img src={cc} className="w-5 h-5" />
-                                </span>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <Category />
                 </div>
                 <div
-                  onClick={() => setViewCategory(false)}
+                  onClick={() => setCategory(false)}
                   className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
                 ></div>
               </div>
             )}
           </div>
+
           <div className="px-4">
             <textarea
               {...register("description", {
@@ -472,26 +448,17 @@ export default function SelectedIssue() {
                   : "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22]"
               }  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150 w-full`}
             >
-              Update
+              Save
             </button>
           </div>
         </form>
-
         {selectLocation && (
-          <IssueLocations
-            // setLocationName={setLocationName}
+          <Locations
+            setLocationName={setLocationName}
             setSelectLocation={setSelectLocation}
-            selectedIssue={selectedIssue}
-            setSelectedIssue={setSelectedIssue}
           />
         )}
         {showAddModal && <CategoryForm setShowAddModal={setShowAddModal} />}
-        {confirmDelete && (
-          <DeleteIssue
-            img={selectedIssue.images}
-            setConfirmDelete={setConfirmDelete}
-          />
-        )}
       </div>
     </div>
   );

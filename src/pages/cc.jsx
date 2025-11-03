@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
+import { useFieldArray, useWatch } from "react-hook-form";
 
-export default function CcInput() {
-  const [ccList, setCcList] = useState([]);
+export default function CcInput({ control, name }) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name, // "ccList"
+  });
+
+  const ccList = useWatch({ control, name }); // current array values
   const [activeInput, setActiveInput] = useState(Date.now());
   const [inputValues, setInputValues] = useState({});
 
@@ -9,13 +15,12 @@ export default function CcInput() {
   const confirmInput = (id) => {
     const trimmed = (inputValues[id] || "").trim();
     if (trimmed && !ccList.includes(trimmed)) {
-      setCcList((prev) => [...prev, trimmed]);
+      append(trimmed);
       setInputValues((prev) => ({ ...prev, [id]: "" }));
-      setActiveInput(null); // hide input after confirming
+      setActiveInput(null);
     }
   };
 
-  // ✅ Handles Enter or blur event
   const handleKeyDown = (e, id) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -27,12 +32,6 @@ export default function CcInput() {
     confirmInput(id);
   };
 
-  // ✅ Remove item
-  const removeCc = (name) => {
-    setCcList(ccList.filter((n) => n !== name));
-  };
-
-  // ✅ Add new input field when clicking +
   const handleAddInput = () => {
     const newId = Date.now();
     setActiveInput(newId);
@@ -52,23 +51,25 @@ export default function CcInput() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1 border border-[#464646] rounded-full bg-[#F6F6F6] px-3 py-1.5 min-h-[36px] flex-wrap">
-        <span className="font-benton-bold text-[12px] text-[#464646]">Cc:</span>
+      <div className="flex items-center gap-1 border border-[#464646] rounded-full bg-[#F6F6F6] px-1.5 min-h-[26px] flex-wrap">
+        <span className="font-sans text-[12px] text-[#464646] leading-[16px] tracking-[-0.5px]">
+          Cc:
+        </span>
 
         {/* ✅ Render confirmed ccList */}
-        {ccList.map((name, i) => (
+        {ccList?.map((name, i) => (
           <span
             key={i}
             className="flex items-center gap-1 text-[#A1A6B0] text-[12px]"
           >
             <span>{name}</span>
             <button
-              onClick={() => removeCc(name)}
+              type="button"
+              onClick={() => remove(i)}
               className="text-red-500 hover:text-black text-sm leading-none"
             >
               ×
             </button>
-            {/* Dot after confirmed names */}
             {(i < ccList.length - 1 || activeInput) && (
               <span className="text-[#A1A6B0] pt-[2px]">•</span>
             )}
@@ -83,16 +84,18 @@ export default function CcInput() {
               type="text"
               value={inputValues[activeInput] || ""}
               onChange={(e) =>
-                setInputValues({ ...inputValues, [activeInput]: e.target.value })
+                setInputValues({
+                  ...inputValues,
+                  [activeInput]: e.target.value,
+                })
               }
               onKeyDown={(e) => handleKeyDown(e, activeInput)}
               onBlur={() => handleBlur(activeInput)}
-              className="bg-transparent focus:outline-none text-[#A1A6B0] text-[12px]"
+              className="bg-transparent focus:outline-none placeholder:text-[#B7BBC2] text-[#B7BBC2] text-[12px] font-sans leading-[16px] tracking-[-0.5px]"
               placeholder="Enter name"
               style={{ width: "40px" }}
               autoFocus
             />
-            {/* Hidden span for measuring width */}
             <span
               id={`cc-span-${activeInput}`}
               className="absolute invisible whitespace-pre text-[12px]"
@@ -105,6 +108,7 @@ export default function CcInput() {
 
       {/* ✅ Plus button */}
       <button
+        type="button"
         onClick={handleAddInput}
         className="flex items-center justify-center w-6 h-6 rounded-full border border-[#464646] hover:bg-[#E1E2E5] transition"
       >
