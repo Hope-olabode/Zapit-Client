@@ -47,7 +47,7 @@ export default function ViewLocation() {
   const navigate = useNavigate();
 
   const filteredIssues = useMemo(() => {
-    let filtered = issue.filter((item) => item.location === location);
+    let filtered = issues.filter((item) => item.location === location);
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((item) =>
@@ -66,7 +66,7 @@ export default function ViewLocation() {
     }
 
     return filtered;
-  }, [issue, location, selectedCategories, searchTerm]);
+  }, [issues, location, selectedCategories, searchTerm]);
 
   // ✅ Compute stats from filtered issues
   const pendingCount = filteredIssues.filter(

@@ -32,6 +32,7 @@ export default function ViewDay() {
   const searchTerm = watch("searchTerm");
 
   const {
+    issues,
     startCamera,
     cameraActive,
     update,
@@ -106,9 +107,9 @@ export default function ViewDay() {
   };
 
   const filteredIssues = useMemo(() => {
-    if (!issue || issue.length === 0) return [];
+    if (!issues || issues.length === 0) return [];
 
-    let filtered = [...issue];
+    let filtered = [...issues];
 
     // ✅ Filter by location (exact match)
     if (location) {
@@ -187,7 +188,7 @@ export default function ViewDay() {
     }
 
     return filtered;
-  }, [issue, location, month, selectedDay, selectedCategories, searchTerm]);
+  }, [issues, location, month, selectedDay, selectedCategories, searchTerm]);
 
   // ✅ Compute stats from filtered issues
   const pendingCount = filteredIssues.filter(
