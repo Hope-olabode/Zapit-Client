@@ -40,7 +40,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="min-h-[100dvh] bg-gray-100">
       <Toaster position="top-center" richColors />
 
       <div className="text-center relative h-[47%] flex flex-col justify-center bg-[length:23px_23px] bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]">
