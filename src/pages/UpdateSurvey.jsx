@@ -259,9 +259,9 @@ export default function UpdateSurvey() {
           <CategoryCarousel ref={carouselRef} control={control} />
         </div>
 
-        <div className="absolute bottom-[40px] left-[50%] translate-x-[-50%]">
+        <div className="fixed z-20 bottom-[40px] left-[50%] translate-x-[-50%]">
           <button
-            type="submit"
+            type="button"
             onClick={() => handleAddCategory()}
             className=" h-[72px] w-[72px] bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px]  active:translate-x-[5px] font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150"
           >

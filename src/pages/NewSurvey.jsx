@@ -19,12 +19,10 @@ import ExpandingInput from "../components/ExpandingInput";
 import api from "../api/axios";
 import { toast, Toaster } from "sonner";
 
-
 export default function NewSurvey() {
   const navigate = useNavigate();
   const [selectLocation, setSelectLocation] = useState(false);
 
-  
   const [_formattedDateTime, setFormattedDateTime] = useState(
     getFormattedDateTime()
   );
@@ -46,28 +44,25 @@ export default function NewSurvey() {
     };
   });
 
-  
-
-  const { register, control, getValues, handleSubmit, setValue } =
-    useForm({
-      defaultValues: {
-        title: surveyData?.title ?? "",
-        ccList: surveyData?.ccList || [],
-        by: surveyData?.by ?? "",
-        categories:
-          surveyData?.categories.length === 0
-            ? [
-                {
-                  id: 1,
-                  title: "Category 1",
-                  score: null,
-                  questions: [{ id: 1, text: "Question 1", answer: null }],
-                  remark: "",
-                },
-              ]
-            : surveyData?.categories,
-      },
-    });
+  const { register, control, getValues, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      title: surveyData?.title ?? "",
+      ccList: surveyData?.ccList || [],
+      by: surveyData?.by ?? "",
+      categories:
+        surveyData?.categories.length === 0
+          ? [
+              {
+                id: 1,
+                title: "Category 1",
+                score: null,
+                questions: [{ id: 1, text: "Question 1", answer: null }],
+                remark: "",
+              },
+            ]
+          : surveyData?.categories,
+    },
+  });
 
   const carouselRef = useRef(null);
 
@@ -146,41 +141,39 @@ export default function NewSurvey() {
     return () => clearInterval(interval);
   }, []);
 
-  
-
   const onSubmit = async (data) => {
-  const surveyPayload = {
-    title: data.title,
-    locationName: surveyData.locationName,
-    date: surveyData.date,
-    ccList: data.ccList,
-    categories: data.categories,
-    by: data.by,
+    const surveyPayload = {
+      title: data.title,
+      locationName: surveyData.locationName,
+      date: surveyData.date,
+      ccList: data.ccList,
+      categories: data.categories,
+      by: data.by,
+    };
+
+    console.log("📤 Sending survey data:", surveyPayload);
+
+    try {
+      // ✅ Send request to backend
+      const response = await api.post("/surveys", surveyPayload);
+      console.log("✅ Server Response:", response.data);
+
+      // ✅ Show success
+      toast.success("Survey created successfully!");
+
+      // ✅ Optional: clear saved survey and navigate/refresh
+      sessionStorage.removeItem("selectedSurvey");
+
+      // If you have navigate set up:
+      navigate("/surveys"); // e.g., redirect to survey list
+
+      // Optional refresh:
+      window.location.reload();
+    } catch (error) {
+      console.error("❌ Error submitting survey:", error);
+      toast.error(error.response?.data?.message || "Failed to submit survey");
+    }
   };
-
-  console.log("📤 Sending survey data:", surveyPayload);
-
-  try {
-    // ✅ Send request to backend
-    const response = await api.post("/surveys", surveyPayload);
-    console.log("✅ Server Response:", response.data);
-
-    // ✅ Show success
-    toast.success("Survey created successfully!");
-
-    // ✅ Optional: clear saved survey and navigate/refresh
-    sessionStorage.removeItem("selectedSurvey");
-
-    // If you have navigate set up:
-     navigate("/surveys"); // e.g., redirect to survey list
-
-    // Optional refresh:
-    window.location.reload();
-  } catch (error) {
-    console.error("❌ Error submitting survey:", error);
-    toast.error(error.response?.data?.message || "Failed to submit survey");
-  }
-};
 
   const onError = (formErrors) => {
     Object.values(formErrors).forEach((err) => {
@@ -212,14 +205,14 @@ export default function NewSurvey() {
         <div className=" relative w-full z-10 ">
           <div className="px-4 flex flex-row justify-between items-center  w-full py-4 h-[48px] mb-2">
             <button
-                          type="button"
-                          onClick={() => {
-                            navigate(-1);
-                            sessionStorage.removeItem("selectedSurvey");
-                          }}
-                        >
-                          <img src={cancle2} alt="" />
-                        </button>
+              type="button"
+              onClick={() => {
+                navigate(-1);
+                sessionStorage.removeItem("selectedSurvey");
+              }}
+            >
+              <img src={cancle2} alt="" />
+            </button>
             <button onClick={handleSubmit}>
               <img src={save} alt="" />
             </button>
@@ -342,9 +335,9 @@ export default function NewSurvey() {
           <CategoryCarousel ref={carouselRef} control={control} />
         </div>
 
-        <div className="absolute bottom-[40px] left-[50%] translate-x-[-50%]">
+        <div className="fixed bottom-[40px] z-20 left-[50%] translate-x-[-50%]">
           <button
-            type="submit"
+            type="button"
             onClick={() => handleAddCategory()}
             className=" h-[72px] w-[72px] bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px]  active:translate-x-[5px] font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150"
           >

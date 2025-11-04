@@ -291,13 +291,13 @@ export default function ViewDay() {
                     onClick={() => handleClick(item)}
                     disabled={item.isPrev}
                     className={`min-w-[51.6px] h-[56px] text-[24px] font-benton-black leading-[130%] tracking-[-0.5px] flex items-center justify-center font-bold transition-all
-              ${
-                item.isPrev
-                  ? "text-[#CED0D5] cursor-not-allowed"
-                  : selectedDay === item.day
-                  ? "bg-[#1B1D22] text-[#F6F7F9]"
-                  : "text-[#1B1D22] hover:bg-gray-200"
-              }`}
+                    ${
+                      item.isPrev
+                        ? "text-[#CED0D5] cursor-not-allowed"
+                        : selectedDay === item.day
+                        ? "bg-[#1B1D22] text-[#F6F7F9]"
+                        : "text-[#1B1D22] hover:bg-gray-200"
+                    }`}
                   >
                     {item.day}
                   </button>
@@ -409,86 +409,84 @@ export default function ViewDay() {
 
         {/* <IssuesByMonth filteredIssues={filteredIssues} /> */}
         {/* Issues list or empty state */}
-        <div className="min-h-[60vh] flex flex-col justify-center items-center w-full">
-          {filteredIssues.length === 0 ? (
+        {filteredIssues.length === 0 ? (
+          <div className="min-h-[60vh] flex flex-col justify-center items-center w-full">
             searchActive ? (
-              <div className="flex flex-col items-center justify-center text-center">
-                <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px] text-[#1B1D22]">
-                  "{searchTerm}"
-                </h1>
-                <p className="text-[#292C33] font-benton-regular text-[15px] leading-[150%]">
-                  No log matches your search input
-                </p>
-              </div>
-            ) : (
-              <p className="text-center text-[#292C33] font-benton-regular text-[15px] leading-[150%]">
-                No log found
+            <div className="flex flex-col items-center justify-center text-center">
+              <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px] text-[#1B1D22]">
+                "{searchTerm}"
+              </h1>
+              <p className="text-[#292C33] font-benton-regular text-[15px] leading-[150%]">
+                No log matches your search input
               </p>
+            </div>
+            ) : (
+            <p className="text-center text-[#292C33] font-benton-regular text-[15px] leading-[150%]">
+              No log found
+            </p>
             )
-          ) : (
-            <div className="flex flex-col border rounded-2xl bg-[#F6F7F9] w-full">
-              {filteredIssues.map((issue, index) => (
-                <div
-                  onClick={() => setSelectedIssue(issue)}
-                  key={index}
-                  className={`flex gap-3 px-4 py-5 ${
-                    index === 0 ? "" : "border-t"
-                  }`}
-                >
-                  <img
-                    className="h-12 w-12 rounded-[8px]"
-                    src={issue.images[0].url}
-                    alt=""
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="truncate w-full font-benton-bold text-[14px] leading-[150%]">
-                      {issue.description}
-                    </p>
-                    <div className="flex justify-between mt-[4px] items-center">
-                      <div className="flex gap-1 items-center border rounded-[72px] h-[22px] pl-[8px] pr-[7px] max-w-[115px]">
-                        <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate">
-                          {issue.categories.length > 0
-                            ? issue.categories.length <= 2
-                              ? issue.categories
-                                  .map((cat, i) =>
-                                    i === 0 ? cat : ` • ${cat}`
-                                  )
-                                  .join("")
-                              : `${issue.categories[0]} • ${
-                                  issue.categories[1]
-                                }... +${issue.categories.length - 2}`
-                            : "Category"}
-                        </p>
-                        <img src={dropdown} alt="" className="flex-shrink-0" />
-                      </div>
+          </div>
+        ) : (
+          <div className="flex flex-col border rounded-2xl bg-[#F6F7F9] w-full">
+            {filteredIssues.map((issue, index) => (
+              <div
+                onClick={() => setSelectedIssue(issue)}
+                key={index}
+                className={`flex gap-3 px-4 py-5 ${
+                  index === 0 ? "" : "border-t"
+                }`}
+              >
+                <img
+                  className="h-12 w-12 rounded-[8px]"
+                  src={issue.images[0].url}
+                  alt=""
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="truncate w-full font-benton-bold text-[14px] leading-[150%]">
+                    {issue.description}
+                  </p>
+                  <div className="flex justify-between mt-[4px] items-center">
+                    <div className="flex gap-1 items-center border rounded-[72px] h-[22px] pl-[8px] pr-[7px] max-w-[115px]">
+                      <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate">
+                        {issue.categories.length > 0
+                          ? issue.categories.length <= 2
+                            ? issue.categories
+                                .map((cat, i) => (i === 0 ? cat : ` • ${cat}`))
+                                .join("")
+                            : `${issue.categories[0]} • ${
+                                issue.categories[1]
+                              }... +${issue.categories.length - 2}`
+                          : "Category"}
+                      </p>
+                      <img src={dropdown} alt="" className="flex-shrink-0" />
+                    </div>
 
-                      <div className="flex gap-1">
-                        <div
-                          className={`w-[15px] h-[22px] border rounded-[72px] ${
-                            issue.status === "Pending"
-                              ? "bg-[#FFC529] border-[#461B02]"
-                              : issue.status === "In Progress"
-                              ? "bg-[#1513EC] border-[#00003D]"
-                              : "bg-[#73CA5E] border-[#317223]"
-                          }`}
-                        ></div>
-                        <div
-                          className={`w-[15px] h-[22px] border rounded-[72px] ${
-                            issue.priority === "Low"
-                              ? "bg-[#F6F6F6] border-[#464646]"
-                              : issue.priority === "Medium"
-                              ? "bg-[#FFFBEB] border-[#B75406]"
-                              : "bg-[#FFDDE2] border-[#CC001E]"
-                          }`}
-                        ></div>
-                      </div>
+                    <div className="flex gap-1">
+                      <div
+                        className={`w-[15px] h-[22px] border rounded-[72px] ${
+                          issue.status === "Pending"
+                            ? "bg-[#FFC529] border-[#461B02]"
+                            : issue.status === "In Progress"
+                            ? "bg-[#1513EC] border-[#00003D]"
+                            : "bg-[#73CA5E] border-[#317223]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`w-[15px] h-[22px] border rounded-[72px] ${
+                          issue.priority === "Low"
+                            ? "bg-[#F6F6F6] border-[#464646]"
+                            : issue.priority === "Medium"
+                            ? "bg-[#FFFBEB] border-[#B75406]"
+                            : "bg-[#FFDDE2] border-[#CC001E]"
+                        }`}
+                      ></div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       {cameraActive && <Camera update={update} />}
       {hold && <Capture />}

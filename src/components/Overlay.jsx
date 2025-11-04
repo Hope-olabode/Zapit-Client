@@ -1,14 +1,22 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import copy from "../assets/copy.svg";
 import { useNavigate } from "react-router-dom";
 
 
 export default function Overlay({ filteredSurveys }) {
+  // const [filteredSurveys, setFilteredSurveys ] = useState([]);
   const { setOverlay } = useContext(Context);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+   useEffect(() => {
+    if (filteredSurveys.length === 0) {
+      navigate("/survey/new");
+    }
+  }, [filteredSurveys, navigate]);
+
   return (
-    <div
+    <div className="div">
+      <div
       onClick={() => setOverlay(false)}
       className="fixed inset-0 bg-[#00000058] z-20 flex flex-col justify-end"
     >
@@ -70,6 +78,7 @@ export default function Overlay({ filteredSurveys }) {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }

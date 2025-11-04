@@ -31,6 +31,8 @@ export const Provider = ({ children }) => {
   const [hold, setHold] = useState(false);
   const [issues, setIssues] = useState([]);
   const [overlay, setOverlay] = useState(false)
+  const [logs, setLogs] = useState(true);
+  const [filteredSurveys, setFilteredSurveys] = useState([]);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -256,7 +258,10 @@ console.log(allSurveys)
         selectedSurvey,
         setSelectedSurvey,
         overlay, 
-        setOverlay
+        setOverlay,
+        logs, 
+        setLogs,
+        filteredSurveys, setFilteredSurveys
       }}
     >
       <Toaster position="top-right" richColors />

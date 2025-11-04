@@ -35,14 +35,16 @@ export default function Nav() {
     <div className="flex flex-row items-center justify-center gap-7 z-10">
       <div className="flex w-[160px] h-[64px] justify-center gap-7 items-center rounded-[16px] bg-white">
         <NavLink to="/logs">
-          {({ isActive }) =>
-            isActive ? (
-              <img src={logb} alt="logo" className="w-[24px]" />
-            ) : (
-              <img src={log} alt="logo" className="w-[24px]" />
-            )
-          }
-        </NavLink>
+      {({ isActive }) => {
+        const active = isActive || pathname === "/surveys"; // ✅ condition for both
+
+        return active ? (
+          <img src={logb} alt="logo" className="w-[24px]" />
+        ) : (
+          <img src={log} alt="logo" className="w-[24px]" />
+        );
+      }}
+    </NavLink>
 
         <NavLink to="/location">
           {({ isActive }) =>
