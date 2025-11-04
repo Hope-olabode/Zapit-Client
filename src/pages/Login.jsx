@@ -9,28 +9,25 @@ import logo from "../assets/logo.svg";
 import { Toaster, toast } from "sonner";
 
 export default function Home() {
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
 
   // 🔑 Handle Login
   const onSubmit = async (data) => {
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const response = await api.post("/auth/login", data); // withCredentials is already set in api.js
-    toast.success("Login successful!");
-    console.log(response.data);
-    window.location.href = "/logs";
-  } catch (error) {
-    toast.error(error.response?.data?.message || "Invalid email or password");
-    console.error("Login error:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const response = await api.post("/auth/login", data); // withCredentials is already set in api.js
+      toast.success("Login successful!");
+      console.log(response.data);
+      window.location.href = "/logs";
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Invalid email or password");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 🚨 Show validation errors via toast instead of inline <p> tags
   const onError = (formErrors) => {
@@ -40,16 +37,16 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-gray-100">
+    <div className="h-[100dvh] bg-gray-100">
       <Toaster position="top-center" richColors />
 
       <div className="text-center relative h-[47%] flex flex-col justify-center bg-[length:23px_23px] bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]">
         <img
-          className="mx-auto absolute top-[-250px] left-[45%] pt-20 mb-6"
+          className="mx-auto absolute top-[-250px] left-[50%] translate-x-[-50%] pt-20 mb-6"
           src={logo}
           alt="logo"
         />
-        <h1 className="text-[48px] font-benton-black mb-4 leading-[125%] text-[#1B1D22]">
+        <h1 className="text-[48px] font-benton-black mb-4 leading-[125%] text-[#1B1D22] tracking-[-1.5px]">
           Welcome back!
         </h1>
         <p className="font-benton-regular text-[15px] leading-[150%] text-[#292C33]">
@@ -90,7 +87,11 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className={`h-14 ${loading ? "bg-[#E1E2E5] shadow-[5px_5px_0px_0px_#CED0D5]": "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px]"}  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150`}
+              className={`h-14 ${
+                loading
+                  ? "bg-[#E1E2E5] shadow-[5px_5px_0px_0px_#CED0D5]"
+                  : "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px]"
+              }  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150`}
             >
               {loading ? <ButtonLoader /> : "Login"}
             </button>
