@@ -27,7 +27,7 @@ export default function CategorySelector() {
 
   return (
     <div>
-      <div className="w-[250px] h-[300px] bg-[#F6F6F6] rounded-3xl border-1 border-[#464646] overflow-hidden">
+      <div className="w-[250px] h-[300px] bg-[#F6F6F6] rounded-t-3xl border-1 border-[#464646] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-2 border-b-1 border-[#464646]">
           <h2 className="text-[12px] font-sans leading-[16px] tracking-[-0.5px] font-semibold">

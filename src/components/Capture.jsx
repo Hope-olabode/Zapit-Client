@@ -241,7 +241,7 @@ export default function Capture() {
     });
   };
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen">
+    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 min-h-[100dvh]">
       <div className="p-4 flex justify-center items-center ">
         <img
           src={cancle}
@@ -257,7 +257,7 @@ export default function Capture() {
       </div>
 
       {/* Scrollable content */}
-      <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto">
+      <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto pb-[calc(env(safe-area-inset-bottom)+16px)]">
         <form onSubmit={handleSubmit(onSubmitMain, onError)}>
           <div className="p-4 relative w-full h-[400px] rounded-xl">
             {previews.length === 0 && (
