@@ -253,7 +253,7 @@ export default function Logs() {
   // };
 
   return (
-    <div className="h-full w-full relative bg-[#E8E9EB] overflow-x-scroll">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll">
       <Toaster position="top-center" richColors />
       {/* <div className="flex flex-row justify-between items-center z-[2] absolute w-full px-4  [h-48px] mt-4">
         <div className="flex gap-2">

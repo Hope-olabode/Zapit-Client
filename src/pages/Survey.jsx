@@ -58,7 +58,7 @@ export default function Surveys() {
     months.find((m) => m.short === selectedMonth)?.full || selectedMonth;
 
   return (
-    <div className="min-h-[100dvh] w-full relative bg-[#E8E9EB] overflow-x-scroll">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll">
       <LogsSurveyNav />
 
       {/* Background pattern */}
