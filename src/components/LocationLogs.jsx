@@ -159,18 +159,18 @@ export default function LocationLogs() {
        
 
         {/* Stats bar */}
-        <div className=" mb-4">
-          <div className="flex items-stretch border border-black rounded-[16px] overflow-hidden w-full">
+        <div className="h-[120px] mb-4">
+          <div className="flex items-stretch border-2 border-black rounded-[16px] overflow-hidden w-full">
             {stats.map((stat, i) => (
               <div
                 key={stat.label}
                 className={`${stat.color} ${stat.textColor} p-4 flex flex-col justify-between min-w-[60px]`}
                 style={{ flexGrow: getFlexGrow(stat.value, i), flexBasis: 0 }}
               >
-                <p className="font-benton-bold text-[12px] leading-[150%] truncate">
+                <p className="font-benton-bold text-[12px] leading-[150%] truncate mb-[40px]">
                   {stat.label}
                 </p>
-                <p className="font-benton-black text-[32px] tracking-[-0.5px] leading-[130%]">
+                <p className="font-benton-black text-[32px] tracking-[-0.5px] leading-[75%]">
                   {stat.value}
                 </p>
               </div>

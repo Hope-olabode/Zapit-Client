@@ -177,118 +177,12 @@ export default function Logs() {
     return () => clearInterval(interval);
   }, []);
 
-  // const deleteLastImage = () => {
-  //   setImgFiles((prevImages) => prevImages.slice(0, -1));
-  //   setPreviews((prevImages) => prevImages.slice(0, -1));
-  // };
-
-  // const onSubmitMain = async (data) => {
-  //   console.log("Main Form Data:", data);
-
-  //   // Validation
-  //   if (!locationName) {
-  //     return toast.error("Please select a location");
-  //   }
-  //   if (selectedCategories.length === 0) {
-  //     return toast.error("Please select a category");
-  //   }
-
-  //   setLoading(true);
-
-  //   // 🧩 Create a FormData object for multipart upload
-  //   const formData = new FormData();
-
-  //   // Append normal text fields
-  //   formData.append("description", data.description);
-  //   formData.append("Caused_by", data.Caused_by);
-  //   formData.append("Responsibility", data.Responsibility);
-  //   formData.append("location", locationName);
-  //   formData.append("status", status);
-  //   formData.append("priority", status2);
-  //   formData.append("dateTime", formattedDateTime);
-
-  //   // Append categories (if array)
-  //   selectedCategories.forEach((category) => {
-  //     formData.append("categories[]", category);
-  //   });
-
-  //   // Append all image files
-  //   imgFiles.forEach((file) => {
-  //     formData.append("images", file);
-  //   });
-
-  //   console.log(formData);
-
-  //   try {
-  //     // 🛰 Send to your Express route
-  //     const response = await api.post("/issues/", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-
-  //     toast.success("Issue was logged successfully!");
-  //     console.log("Server response:", response.data);
-
-  //     // Update state with new issue
-  //     setIssues((prev) => [...prev, response.data.issue]);
-
-  //     // Reset form and local state
-  //     setHold(false);
-  //     reset();
-  //     setImgFiles([]);
-  //     setSelectedCategories([]);
-  //   } catch (error) {
-  //     console.error("Create issue error:", error);
-  //     toast.error(error.response?.data?.message || "Failed to create issue");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const onError = (formErrors) => {
-  //   Object.values(formErrors).forEach((err) => {
-  //     toast.error(err.message);
-  //   });
-  // };
+  
 
   return (
     <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll">
       <Toaster position="top-center" richColors />
-      {/* <div className="flex flex-row justify-between items-center z-[2] absolute w-full px-4  [h-48px] mt-4">
-        <div className="flex gap-2">
-          <p
-            onClick={() => setSurvey(false)}
-            className={`${
-              survey ? "text-[#CED0D5]" : "text-[#1B1D22]"
-            } font-benton-black text-[32px] leading-[130%] tracking-[-0.5px]`}
-          >
-            Logs
-          </p>
-          <p
-            onClick={() => setSurvey(true)}
-            className={`${
-              survey ? "text-[#1B1D22]" : "text-[#CED0D5]"
-            } font-benton-black text-[32px] leading-[130%] tracking-[-0.5px]`}
-          >
-            Surveys
-          </p>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#CED0D5] font-benton-black text-[32px] leading-[130%] tracking-[-0.5px]"
-                : "text-[#1B1D22] font-benton-black text-[32px] leading-[130%] tracking-[-0.5px]"
-            }
-            to="/Survey"
-          >
-            Surveys
-          </NavLink>
-        </div>
-        <div className="flex flex-row">
-          <img src={search} alt="" />
-          <img src={profile} alt="" />
-        </div>
-      </div> */}
+      
       <LogsSurveyNav />
       {/* Background pattern */}
       <div

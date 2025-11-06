@@ -48,7 +48,8 @@ export default function ViewCategory({
                                           : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
                                       }`}
                   >
-                    <span className="text-[12px] font-sans leading-[16px] font-semibold">
+                    <span className="text-[12px] font-sans leading-[16px] font-semibold"
+                    style={{ color: category.colour }}>
                       {category.name}
                     </span>
                     {isSelected2(category.name) && (

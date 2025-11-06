@@ -22,58 +22,84 @@ export default function LoadedIssues() {
   const isSelected2 = (issue, categoryName) =>
     Array.isArray(issue.categories) && issue.categories.includes(categoryName);
 
+  const pendingCount = issues.filter(
+    (i) => i.status === "Pending"
+  ).length;
+  const inProgressCount = issues.filter(
+    (i) => i.status === "In Progress"
+  ).length;
+  const resolvedCount = issues.filter(
+    (i) => i.status === "Resolved"
+  ).length;
+  const totalCount = issues.length;
+
+  const stats = [
+    {
+      label: "Total",
+      value: totalCount,
+      color: "bg-white",
+      textColor: "text-[#1B1D22]",
+    },
+    {
+      label: "Pending",
+      value: pendingCount,
+      color: "bg-[#FFC529]",
+      textColor: "text-[#1B1D22]",
+    },
+    {
+      label: "In Progress",
+      value: inProgressCount,
+      color: "bg-[#1513EC]",
+      textColor: "text-[#D2D2F4]",
+    },
+    {
+      label: "Resolved",
+      value: resolvedCount,
+      color: "bg-[#48BB78]",
+      textColor: "text-[#1B1D22]",
+    },
+  ];
+
+  const getFlexGrow = (value, index) => {
+    const length = String(value).length;
+    return index === 0 ? length + 4 : length + 1;
+  };
+
   return (
-    <div className="div">
+    <div className="">
       <div className="absolute mt-[88px]  w-full left-[50%] translate-x-[-50%] z-5">
-        <div className="px-4 mb-[16px]">
-          <div className="h-30 w-[100%] border-black border-1 flex items-center rounded-[16px] overflow-hidden">
-            <div className="w-[30%] h-full bg-white  p-4 flex flex-col justify-between">
-              <p className="font-benton-bold text-[12px] leading-[150%] text-[#1B1D22]">
-                Total
-              </p>
-              <p className="font-benton-black text-[32px] tracking-[-0.5px] h-[32px] leading-[130%] text-[#1B1D22]">
-                123
-              </p>
-            </div>
-            <div className="w-[20%] h-full bg-[#FFC529] py-4 pl-[13px] pr-[16px] flex flex-col justify-between">
-              <p className="font-benton-bold text-[12px] leading-[150%] text-[#1B1D22] truncate">
-                Pending
-              </p>
-              <p className="font-benton-black text-[32px] tracking-[-0.5px] h-[32px] leading-[130%] text-[#1B1D22]">
-                108
-              </p>
-            </div>
-            <div className="w-[20%] h-full bg-[#1513EC] py-4 pl-[13px] pr-[16px] flex flex-col justify-between">
-              <p className="font-benton-bold text-[12px] leading-[150%] text-[#D2D2F4] truncate">
-                In Progress
-              </p>
-              <p className="font-benton-black text-[32px] tracking-[-0.5px] h-[32px] leading-[130%] text-[#D2D2F4]">
-                108
-              </p>
-            </div>
-            <div className="w-[31%] h-full bg-[#48BB78] py-4 pl-[13px] pr-[16px] flex flex-col justify-between">
-              <p className="font-benton-bold text-[12px] leading-[150%] text-[#1B1D22]">
-                Resolved
-              </p>
-              <p className="font-benton-black text-[32px] tracking-[-0.5px] h-[32px] leading-[130%] text-[#1B1D22]">
-                108
-              </p>
-            </div>
+        {/* Stats bar */}
+        <div className="h-[120px] mb-4 px-4">
+          <div className="flex h-full items-stretch border-2 border-black rounded-[16px] overflow-hidden w-full">
+            {stats.map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`${stat.color} ${stat.textColor} p-4 flex flex-col justify-between min-w-[60px]`}
+                style={{ flexGrow: getFlexGrow(stat.value, i), flexBasis: 0 }}
+              >
+                <p className="font-benton-bold text-[12px] leading-[150%] truncate mb-[40px]">
+                  {stat.label}
+                </p>
+                <p className="font-benton-black text-[32px] tracking-[-0.5px] leading-[75%]">
+                  {stat.value}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className=" px-4">
+        <div className=" px-4 mb-[150px]">
           {issues.map((issue, index) => (
             <div
               onClick={() => setSelectedIssue(issue)}
               key={index}
-              className={`mb-4 border-1 border-black rounded-lg bg-[#F6F7F9] flex  ${
+              className={`mb-4 border-1 border-black rounded-[16px] overflow-hidden bg-[#F6F7F9] flex  ${
                 index === 0 ? "flex-col" : " flex-row h-[144px]"
               }`}
             >
               <div
                 className={`flex flex-col ${index === 0 ? "w-full" : "w-full"}`}
               >
-                <div className="h-full mx-4 mt-[15.5px]">
+                <div className="h-full mx-4 mt-[15px]">
                   <div
                     className={`div  ${
                       index === 0 ? "mb-[20px]" : "mb-[12px]"
@@ -94,7 +120,7 @@ export default function LoadedIssues() {
                           index === 0 ? "h-[26px]" : "h-[22px]"
                         } pl-[8px] pr-[7px] max-w-[115px]`}
                       >
-                        <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate">
+                        <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate tracking-[-0.5px]">
                           {issue.categories.length > 0
                             ? issue.categories.length <= 2
                               ? issue.categories
@@ -113,7 +139,7 @@ export default function LoadedIssues() {
                         <div
                           className={`${
                             index === 0 ? "px-2" : "w-[15px]"
-                          } border rounded-[72px]  ${
+                          } border rounded-[72px] flex justify-center items-center  ${
                             issue.status === "Pending"
                               ? "bg-[#FFC529] text-[#461B02] border-[#461B02]"
                               : issue.status === "In Progress"
@@ -121,12 +147,12 @@ export default function LoadedIssues() {
                               : "bg-[#73CA5E] text-[#0D301C] border-[#317223]"
                           }  }`}
                         >
-                          {index === 0 ? <p>{issue.status}</p> : ""}
+                          {index === 0 ? <p className="font-sans font-semibold text-[12px] leading-[16px] tracking-[-0.5px]">{issue.status}</p> : ""}
                         </div>
                         <div
                           className={`${
                             index === 0 ? "px-2" : "w-[15px]"
-                          } border rounded-[72px]  ${
+                          } border rounded-[72px] flex justify-center items-center ${
                             issue.priority === "Low"
                               ? "bg-[#F6F6F6] text-[#464646] border-[#464646]"
                               : issue.priority === "Medium"
@@ -134,7 +160,7 @@ export default function LoadedIssues() {
                               : "bg-[#FFDDE2] text-[#CC001E] border-[#CC001E]"
                           }  }`}
                         >
-                          {index === 0 ? <p>{issue.priority}</p> : ""}
+                          {index === 0 ? <p className="font-sans font-semibold text-[12px] leading-[16px] tracking-[-0.5px]">{issue.priority}</p> : ""}
                         </div>
                       </div>
 
@@ -180,7 +206,8 @@ export default function LoadedIssues() {
                                                         : "text-gray-700 border-gray-300 hover:border-gray-400"
                                                     }`}
                                     >
-                                      <span className="text-[12px] font-sans leading-[16px] font-semibold">
+                                      <span className="text-[12px] font-sans leading-[16px] font-semibold"
+                                      style={{ color: category.colour }}>
                                         {category.name}
                                       </span>
                                       {isSelected2(issue, category.name) && (
@@ -227,7 +254,7 @@ export default function LoadedIssues() {
                 {index === 0 ? (
                   ""
                 ) : (
-                  <div className="flex mx-4 mb-[15.5px] flex-col justify-end">
+                  <div className="flex mx-4 mb-[15px] flex-col justify-end">
                     <div
                       className={`flex flex-row mb-[15px] items-center  gap-2 ${
                         index === 0 ? "h-[13px]" : "h-[9.29px]"
@@ -253,7 +280,7 @@ export default function LoadedIssues() {
               </div>
 
               {issue.images && issue.images.length > 0 ? (
-                <div className="d v">
+                <div className="">
                   <img
                     src={issue.images[0].url}
                     alt={`Issue ${index + 1}`}
@@ -263,7 +290,7 @@ export default function LoadedIssues() {
                   />
                 </div>
               ) : (
-                <div className=" w-[45%] overflow-hidden reltive ">
+                <div className="w-[45%] overflow-hidden reltive ">
                   <img
                     src={empty}
                     alt={`Issue ${index + 1}`}
@@ -272,8 +299,8 @@ export default function LoadedIssues() {
                 </div>
               )}
               {index === 0 ? (
-                <div className="flex mx-4 mt-[20px] items-center mb-[15.5px] flex-row justify-between">
-                  <div className="flex flex-row mb-[15px] items-center  gap-2 h-[13px]">
+                <div className="flex mx-4 mt-[20px] items-center mb-[16px] flex-row justify-between">
+                  <div className="flex flex-row items-center  gap-2 h-[13px]">
                     <img src={location3} className="h-3.5 w-3.5" alt="" />
                     <p className="text-[12px] font-benton-bold leading-[150%] text-[#292C33]">
                       {issue.location}
@@ -300,3 +327,8 @@ export default function LoadedIssues() {
     </div>
   );
 }
+
+
+
+
+

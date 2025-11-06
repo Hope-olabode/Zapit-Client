@@ -58,7 +58,8 @@ export default function CategorySelector() {
                       : "text-[#464646] border-[#E1E2E5]"
                   }`}
               >
-                <span className="text-[12px] font-sans leading-[16px] font-semibold">
+                <span className="text-[12px] font-sans leading-[16px] font-semibold"
+                style={{ color: category.colour }}>
                   {category.name}
                 </span>
                 {isSelected(category.name) && (
