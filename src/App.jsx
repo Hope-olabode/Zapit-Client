@@ -18,7 +18,7 @@ import NewSurvey from "./pages/NewSurvey.jsx";
 import UpdateSurvey from "./pages/UpdateSurvey.jsx"
 import ViewLocation from "./pages/ViewLocation.jsx"
 import ViewDay from "./pages/ViewDay.jsx"
-import Chat from "./pages/Chat.jsx"
+import Chat from "./components/Chart.jsx"
 import Line from "./pages/Line.jsx"
 
 export default function App() {

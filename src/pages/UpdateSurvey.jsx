@@ -2,7 +2,11 @@ import CategoryCarousel from "./CategorySection";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
 import cancle2 from "../assets/cancle2.svg";
+import cancle from "../assets/cancle.svg";
 import save from "../assets/save.svg";
+import save2 from "../assets/save2.svg";
+import mini from "../assets/minimize.svg";
+import max from "../assets/maximize.svg";
 import dropdown from "../assets/dropdown2.svg";
 import location3 from "../assets/location3.svg";
 import Locations from "../components/Locations";
@@ -17,16 +21,18 @@ import { Context } from "../context/Context";
 import CcInput from "./cc";
 import ExpandingInput from "../components/ExpandingInput";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 import { toast, Toaster } from "sonner";
 
-export default function UpdateSurvey() {
+export default function UpdateSurvey({setDesktop, minimize, setMinimize}) {
   const [selectLocation, setSelectLocation] = useState(false);
 
   // const [title, setTitle] = useState("New Survey");
   const [editTitle, setEditTitle] = useState(false);
 
   const [open, setOpen] = useState(false);
+  
 
   const [surveyData, setSurveyData] = useState(() => {
     const saved = sessionStorage.getItem("selectedSurvey");
@@ -114,32 +120,57 @@ export default function UpdateSurvey() {
       setInputWidth(newWidth < 60 ? 60 : newWidth); // minimum width
     }
   }, [surveyData.by]);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
-    <div className="bg-[#E8E9EB] min-h-screen relative pt-4">
+    <div className="bg-[#E8E9EB] min-h-screen lg:min-h-auto relative pt-4 lg:pt-0 lg:bg-transparent">
       <Toaster position="top-center" richColors />
       <div
-        className="z-[1] w-full absolute top-0 h-[50%]
+        className="z-[1] w-full absolute top-0 h-[50%] lg:hidden
         bg-[length:23px_23px] 
         bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]
         [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
         [mask-repeat:no-repeat] [mask-size:100%_100%]"
       ></div>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className=" relative w-full z-10 ">
-          <div className="px-4 flex flex-row justify-between items-center  w-full py-4 h-[48px] mb-2">
+        <div className=" relative w-full z-10 lg:pb-30">
+          <div className="px-4 flex flex-row justify-between items-center  w-full py-4 h-[48px] mb-2 lg:py-0 lg:h-auto">
             <button
               type="button"
               onClick={() => {
-                navigate(-1);
+                if (isDesktop) {
+                  setDesktop(false)
+                  setMinimize(true);
+                } else {
+                  navigate(-1);
+                }
                 sessionStorage.removeItem("selectedSurvey");
+                
+                        
               }}
             >
-              <img src={cancle2} alt="" />
+              {isDesktop ? (
+                <img src={cancle} alt="" />
+              ) : (
+                <img src={cancle2} alt="" />
+              )}
             </button>
-            <button onClick={handleSubmit}>
-              <img src={save} alt="" />
-            </button>
+            <div className="lg:flex lg:gap-2">
+              <button className="hidden lg:block" onClick={() => setMinimize(prev => !prev)} type="button">
+                {minimize ? (
+                  <img src={max} alt="" />
+                ) : (
+                  <img src={mini} alt="" />
+                )}
+              </button>
+              <button onClick={handleSubmit}>
+                {isDesktop ? (
+                  <img src={save2} alt="" />
+                ) : (
+                  <img src={save} alt="" />
+                )}
+              </button>
+            </div>
           </div>
           <div className="px-4">
             <div
@@ -259,7 +290,7 @@ export default function UpdateSurvey() {
           <CategoryCarousel ref={carouselRef} control={control} />
         </div>
 
-        <div className="fixed z-20 bottom-[40px] left-[50%] translate-x-[-50%]">
+        <div className="fixed z-20 bottom-[40px] left-[50%] translate-x-[-50%] lg:absolute  lg:transform ">
           <button
             type="button"
             onClick={() => handleAddCategory()}

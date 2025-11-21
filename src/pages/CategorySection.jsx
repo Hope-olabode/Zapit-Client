@@ -66,7 +66,7 @@ function CategorySection({
         return (
           <div
             className={`${
-              categories.length === 1 ? "w-full" : "min-w-[85vw]"
+              categories.length === 1 ? "w-full lg:min-w-[26vw]" : "min-w-[85vw] lg:min-w-[23vw]"
             } snap-center overflow-visible`}
           >
             <div className="div relative overflow-visible">

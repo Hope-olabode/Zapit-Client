@@ -1,60 +1,87 @@
-import { Context } from "../context/Context";
-import { useContext, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-
-import Category from "../components/Category";
 import cancle from "../assets/cancle.svg";
-
+import deleteImg from "../assets/delete.svg";
+import share from "../assets/share.svg";
 import dropdown from "../assets/dropdown.svg";
 import location3 from "../assets/location3.svg";
 import api from "../api/axios";
 import ai from "../assets/addImage.svg";
 import di from "../assets/deleteImage.svg";
 import clock from "../assets/clock.svg";
-
 import empty from "../assets/empty.svg";
 import add2 from "../assets/addImage2.svg";
-
+import { Context } from "../context/Context";
+import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
-import CategoryForm from "../components/CategoryForm";
-import Locations from "../components/Locations";
+import cc from "../assets/catcancle.svg";
+import ca from "../assets/catadd.svg";
+import CategoryForm from "./CategoryForm";
+import Camera from "./Camera.jsx";
 
-export default function Capture() {
+import { useContext, useState } from "react";
+import IssueLocations from "./IssueLocations";
+import DeleteIssue from "./DeleteIssue.jsx";
+import ShareIssue from "./ShareIssue.jsx";
+import Category2 from "./Category2.jsx";
+
+export default function SelectedIssueD() {
   const {
+    categories,
     cameraActive,
     startCamera,
-    stopCamera,
-    previews,
-    setPreviews,
-    imgFiles,
-    setImgFiles,
-    loading,
-    showAddModal,
-    setShowAddModal,
-    selectedCategories,
-    setHold,
-    setLoading,
+    imgFiles2,
+    setImgFiles2,
     setIssues,
-    setSelectedCategories,
-    setHold2,
+    setLoading,
+    update,
+    setUpdate,
+    setSelectedIssue,
+    selectedIssue,
+    loading,
     isMobile,
-    category,
-    setCategory,
+    viewCategory, setViewCategory
   } = useContext(Context);
 
-  const { register, handleSubmit, reset } = useForm();
-
-  const [status, setStatus] = useState("Pending");
-  const [status2, setStatus2] = useState("High");
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      description: selectedIssue?.description || "",
+      Caused_by: selectedIssue?.Caused_by || "",
+      Responsibility: selectedIssue?.Responsibility || "",
+    },
+  });
+  
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  // const [locationName, setLocationName] = useState("");
   const [selectLocation, setSelectLocation] = useState(false);
-
+  const [status, setStatus] = useState(selectedIssue.status || "Pending");
+  const [status2, setStatus2] = useState(selectedIssue.priority || "High");
   const [causedBy, setCausedBy] = useState(false);
   const [responsibility, setResponsibility] = useState(false);
+  const [shareIssue, setShareIssue] = useState(false);
 
-  const [locationName, setLocationName] = useState("");
-  const [formattedDateTime, setFormattedDateTime] = useState(
-    getFormattedDateTime()
-  );
+  const isSelected = (categoryName) =>
+    selectedIssue.categories.includes(categoryName);
+
+  console.log(selectedIssue);
+
+  const toggleCategory = (categoryName) => {
+    setSelectedIssue((prev) => {
+      const alreadySelected = prev.categories.includes(categoryName);
+      const updatedCategories = alreadySelected
+        ? prev.categories.filter((name) => name !== categoryName)
+        : [...prev.categories, categoryName];
+
+      return { ...prev, categories: updatedCategories };
+    });
+  };
+
+  const deleteLastImage = () => {
+    setImgFiles2((prevImages) => prevImages.slice(0, -1));
+    setSelectedIssue((prev) => ({
+      ...prev,
+      images: prev.images.slice(0, -1),
+    }));
+  };
 
   const handleClick = () => {
     setStatus((prev) => {
@@ -98,139 +125,76 @@ export default function Capture() {
     }
   };
 
-  useEffect(() => {
-    if (cameraActive) {
-      document.body.style.overflow = "hidden"; // disable scroll
-    } else {
-      document.body.style.overflow = ""; // reset back to default
-    }
+  const onSubmit = async (data) => {
+    console.log("🧾 Form Data:", data);
+    console.log("📸 Image Files (for upload):", imgFiles2);
+    console.log("📝 Selected Issue State:", selectedIssue.images);
 
-    // Cleanup in case component unmounts while modal is open
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [cameraActive]);
-
-  function getFormattedDateTime() {
-    const now = new Date();
-
-    // Format time (HH:MM)
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const time = `${hours}:${minutes}`;
-
-    // Get date parts
-    const day = now.getDate();
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[now.getMonth()];
-    const year = now.getFullYear().toString().slice(-2); // last two digits of year
-
-    // Add ordinal suffix (st, nd, rd, th)
-    const getOrdinal = (n) => {
-      if (n > 3 && n < 21) return "th";
-      switch (n % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    };
-
-    const dayWithSuffix = `${day}${getOrdinal(day)}`;
-
-    // Combine
-    return `${time} • ${dayWithSuffix} ${month}, ${year}`;
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFormattedDateTime(getFormattedDateTime());
-    }, 60000); // update every minute
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const deleteLastImage = () => {
-    setImgFiles((prevImages) => prevImages.slice(0, -1));
-    setPreviews((prevImages) => prevImages.slice(0, -1));
-  };
-
-  const onSubmitMain = async (data) => {
-    console.log("Main Form Data:", data);
-
-    // Validation
-    if (!locationName) {
-      return toast.error("Please select a location");
-    }
-    if (selectedCategories.length === 0) {
+    if (!selectedIssue.location) return toast.error("Please select a location");
+    if (!selectedIssue.categories?.length)
       return toast.error("Please select a category");
-    }
 
     setLoading(true);
 
-    // 🧩 Create a FormData object for multipart upload
-    const formData = new FormData();
-
-    // Append normal text fields
-    formData.append("description", data.description);
-    formData.append("Caused_by", data.Caused_by);
-    formData.append("Responsibility", data.Responsibility);
-    formData.append("location", locationName);
-    formData.append("status", status);
-    formData.append("priority", status2);
-    formData.append("dateTime", formattedDateTime);
-
-    // Append categories (if array)
-    selectedCategories.forEach((category) => {
-      formData.append("categories[]", category);
-    });
-
-    // Append all image files
-    imgFiles.forEach((file) => {
-      formData.append("images", file);
-    });
-
-    console.log(formData);
-
     try {
-      // 🛰 Send to your Express route
-      const response = await api.post("/issues/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const formData = new FormData();
+
+      // 🔹 Append text fields
+      formData.append(
+        "description",
+        data.description || selectedIssue.description
+      );
+      formData.append("Caused_by", data.Caused_by || selectedIssue.Caused_by);
+      formData.append(
+        "Responsibility",
+        data.Responsibility || selectedIssue.Responsibility
+      );
+      formData.append("location", selectedIssue.location);
+      formData.append("status", selectedIssue.status);
+      formData.append("priority", selectedIssue.priority);
+      formData.append("dateTime", selectedIssue.dateTime);
+      formData.append("categories", JSON.stringify(selectedIssue.categories));
+
+      // 🔹 Append only valid Cloudinary images
+      const existingUrls = (selectedIssue.images || [])
+        .filter((img) => img.url && !img.url.startsWith("blob:"))
+        .map((img) => ({
+          url: img.url,
+          public_id: img.public_id,
+        }));
+
+      formData.append("existingImages", JSON.stringify(existingUrls));
+
+      // 🔹 Append the new files (from imgFiles2)
+      imgFiles2.forEach((file) => {
+        if (file instanceof File) {
+          formData.append("images", file);
+        }
       });
 
-      toast.success("Issue was logged successfully!");
-      console.log("Server response:", response.data);
+      console.log("📤 FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value);
+      }
 
-      // Update state with new issue
-      setIssues((prev) => [...prev, response.data.issue]);
+      const response = await api.put(`/issues/${selectedIssue._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-      // Reset form and local state
-      setHold(false);
+      toast.success("Issue updated successfully!");
+      console.log("✅ Server response:", response.data);
+
+      setIssues((prev) =>
+        prev.map((issue) =>
+          issue._id === response.data.issue._id ? response.data.issue : issue
+        )
+      );
+
       reset();
-      setImgFiles([]);
-      setSelectedCategories([]);
+      setImgFiles2([]);
     } catch (error) {
-      console.error("Create issue error:", error);
-      toast.error(error.response?.data?.message || "Failed to create issue");
+      console.error("❌ Update issue error:", error);
+      toast.error(error.response?.data?.message || "Failed to update issue");
     } finally {
       setLoading(false);
     }
@@ -241,28 +205,43 @@ export default function Capture() {
       toast.error(err.message);
     });
   };
+
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 min-h-[100dvh] lg:static lg:inset-auto lg:min-h-auto lg:h-[calc(100vh-56px)] lg:bg-transparent">
-      <div className="p-4 flex justify-center items-center ">
+    <div className=" flex flex-col  h-[calc(100vh-56px)]">
+      <div className="p-4 w-full flex justify-between items-center ">
         <img
           src={cancle}
           onClick={() => {
-            setPreviews([]);
-            setImgFiles([]);
-            isMobile ? setHold(false) : setHold2(false);
-
-            stopCamera();
+            setSelectedIssue(null);
           }}
           alt="cancel"
           className="w-14 h-14 cursor-pointer"
         />
+        <div className="flex gap-2">
+          <img
+            src={deleteImg}
+            onClick={() => {
+              setConfirmDelete(true);
+            }}
+            alt="cancel"
+            className="w-14 h-14 cursor-pointer"
+          />
+          <img
+            src={share}
+            onClick={() => {
+              setShareIssue(true);
+            }}
+            alt="Share"
+            className="w-14 h-14 cursor-pointer"
+          />
+        </div>
       </div>
 
       {/* Scrollable content */}
-      <div className="relative flex-1 bg-white rounded-t-[24px] w-full overflow-y-auto pb-[calc(env(safe-area-inset-bottom)+16px)] lg:pb-0">
-        <form onSubmit={handleSubmit(onSubmitMain, onError)}>
+      <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto">
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div className="p-4 relative w-full h-[400px] rounded-xl">
-            {previews.length === 0 && (
+            {selectedIssue.images.length === 0 && (
               <div className="flex flex-col items-center gap-[19.32px] h-full rounded-xl bg-[#E8E9EB]">
                 <img src={empty} alt="" className="" />
                 <div className="flex flex-col items-center gap-2">
@@ -278,8 +257,8 @@ export default function Capture() {
             )}
 
             <div className="w-full h-full relative rounded-xl overflow-hidden">
-              {previews.map((src, i) => {
-                const count = previews.length;
+              {selectedIssue.images.map((src, i) => {
+                const count = selectedIssue.images.length;
                 let style = "";
 
                 if (count === 1) {
@@ -300,7 +279,7 @@ export default function Capture() {
                 return (
                   <img
                     key={i}
-                    src={src}
+                    src={src.url}
                     alt={`Captured ${i + 1}`}
                     className={`object-cover  ${style}`}
                   />
@@ -308,12 +287,12 @@ export default function Capture() {
               })}
 
               {/* Divider lines */}
-              {previews.length === 2 && (
+              {selectedIssue.images.length === 2 && (
                 // Vertical line in the middle for 2 images
                 <div className="absolute top-0 left-1/2 w-[2px] h-full bg-black"></div>
               )}
 
-              {previews.length === 3 && (
+              {selectedIssue.images.length === 3 && (
                 <>
                   {/* Vertical line in the middle */}
                   <div className="absolute top-0 left-1/2 w-[2px] h-full bg-black"></div>
@@ -325,9 +304,12 @@ export default function Capture() {
 
             {/* Buttons (top-right) */}
             <div className="flex flex-col items-center absolute top-[16px] right-[16px]">
-              {imgFiles.length != 3 && (
+              {selectedIssue.images.length != 3 && (
                 <img
-                  onClick={startCamera}
+                  onClick={() => {
+                    setUpdate(true);
+                    startCamera();
+                  }}
                   src={ai}
                   alt=""
                   className="cursor-pointer"
@@ -347,35 +329,38 @@ export default function Capture() {
               >
                 <img src={location3} alt="" />
                 <p className="font-benton-bold text-[10px] leading-[150%]">
-                  {locationName === "" ? "Enter Location" : locationName}
+                  {selectedIssue.location}
                 </p>
               </div>
               <div className="h-[26px] border border-black flex items-center gap-[6px] rounded-[8px] px-2.5 bg-[#E1E2E5]">
                 <img src={clock} alt="" />
                 <p className="font-benton-bold text-[10px] leading-[150%]">
-                  {formattedDateTime}
+                  {selectedIssue.dateTime}
                 </p>
               </div>
             </div>
           </div>
 
+          {cameraActive && <Camera update={update} />}
+
           <div className="relative">
+            {/* onething */}
             <div className="mb-4 flex flex-row px-4 justify-between">
               <div
                 onClick={() => {
-                  setCategory(true);
+                  setViewCategory(true);
                 }}
                 className="flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] max-w-[240px]"
               >
-                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate tracking-[-0.5px]">
-                  {selectedCategories.length > 0
-                    ? selectedCategories.length <= 2
-                      ? selectedCategories
+                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px] truncate">
+                  {selectedIssue.categories.length > 0
+                    ? selectedIssue.categories.length <= 2
+                      ? selectedIssue.categories
                           .map((cat, i) => (i === 0 ? cat : ` • ${cat}`))
                           .join("")
-                      : `${selectedCategories[0]} • ${
-                          selectedCategories[1]
-                        }... +${selectedCategories.length - 2}`
+                      : `${selectedIssue.categories[0]} • ${
+                          selectedIssue.categories[1]
+                        }... +${selectedIssue.categories.length - 2}`
                     : "Category"}
                 </p>
                 <img src={dropdown} alt="" className="flex-shrink-0" />
@@ -383,33 +368,33 @@ export default function Capture() {
               <div className="flex gap-2">
                 <div
                   onClick={handleClick}
-                  className={`font-sans font-semibold text-[12px] leading-[16px] tracking-[-0.5px] px-2 border rounded-[72px] flex justify-center items-center  ${getStatusStyles()}`}
+                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] font-sans font-semibold leading-[16px] text-[12px] tracking-[-0.5px] ${getStatusStyles()}`}
                 >
                   <p>{status}</p>
                 </div>
                 <div
                   onClick={handleClick2}
-                  className={`font-sans font-semibold text-[12px] leading-[16px] tracking-[-0.5px] px-2 border rounded-[72px] flex justify-center items-center ${getStatusStyles2()}`}
+                  className={`flex gap-1 items-center border rounded-[72px] h-[26px] pl-[8px] pr-[7px] font-sans font-semibold leading-[16px] text-[12px] tracking-[-0.5px]  ${getStatusStyles2()}`}
                 >
                   <p>{status2}</p>
                 </div>
               </div>
             </div>
+
             {isMobile
-              ? category && (
+              ? viewCategory && (
                   <div className="div lg:relative">
                     <div className="top-0 left-[16px] z-30 absolute ">
-                      <Category />
+                      <Category2 />
                     </div>
                     <div
-                      onClick={() => setCategory(false)}
+                      onClick={() => setViewCategory(false)}
                       className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
                     ></div>
                   </div>
                 )
               : ""}
           </div>
-
           <div className="px-4">
             <textarea
               {...register("description", {
@@ -468,13 +453,28 @@ export default function Capture() {
             </button>
           </div>
         </form>
+
         {selectLocation && (
-          <Locations
-            setLocationName={setLocationName}
+          <IssueLocations
+            // setLocationName={setLocationName}
             setSelectLocation={setSelectLocation}
+            selectedIssue={selectedIssue}
+            setSelectedIssue={setSelectedIssue}
           />
         )}
         {showAddModal && <CategoryForm setShowAddModal={setShowAddModal} />}
+        {confirmDelete && (
+          <DeleteIssue
+            img={selectedIssue.images}
+            setConfirmDelete={setConfirmDelete}
+          />
+        )}
+        {shareIssue && (
+          <ShareIssue
+            selectedIssue={selectedIssue}
+            setShareIssue={setShareIssue}
+          />
+        )}
       </div>
     </div>
   );

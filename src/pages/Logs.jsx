@@ -2,7 +2,7 @@ import search from "../assets/search.svg";
 
 import profile from "../assets/profile.svg";
 import Category from "../components/Category";
-import LoadedIssues from "../components/LoadedIssues";
+import LoadedIssues from "../components/LoadedIssuesD";
 import logo2 from "../assets/logo2.svg";
 import cancle from "../assets/cancle.svg";
 
@@ -54,6 +54,8 @@ export default function Logs() {
     update,
     survey,
     setSurvey,
+    isMobile,
+    hold2
   } = useContext(Context);
 
   const [category, setCategory] = useState(false);
@@ -94,7 +96,7 @@ export default function Logs() {
   //     return "High";
   //   });
   // };
-
+  console.log(isMobile);
   // const getStatusStyles2 = () => {
   //   switch (status2) {
   //     case "High":
@@ -177,13 +179,13 @@ export default function Logs() {
     return () => clearInterval(interval);
   }, []);
 
-  
-
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] lg:px-">
       <Toaster position="top-center" richColors />
-      
-      <LogsSurveyNav />
+
+      <div className="lg:hidden">
+        <LogsSurveyNav />
+      </div>
       {/* Background pattern */}
       <div
         className="z-[1] w-full absolute top-0 h-[50%]
@@ -198,25 +200,37 @@ export default function Logs() {
       ) : (
         <>
           {issues.length === 0 ? (
-            <div className="text-center z-[2] absolute flex flex-col justify-center items-center gap-2 top-[20%] p-4 left-[50%] translate-x-[-50%]">
-              <img src={logo2} alt="" />
-              <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px]">
-                No Logged Issue
-              </h1>
-              <p className="font-benton-regular text-[15px] leading-[150%]">
-                You currently have no logged issue, capture an issue to record
-                and store
-              </p>
+            <div className="lg:pl-[144px] lg:pr-10 lg:pt-[56px] lg:flex lg:gap-8">
+              <div className={`${hold2 ? "lg:w-[calc(100%-425px)]" : "w-full"}`}>
+                <div className="hidden lg:block relative z-20">
+                  <LogsSurveyNav />
+                </div>
+                <div className="flex justify-center items-center h-[calc(100vh-109.59px)] ">
+                  <div className="text-center z-[2]  flex flex-col justify-center items-center gap-2 ">
+                    <img src={logo2} alt="" />
+                    <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px]">
+                      No Logged Issue
+                    </h1>
+                    <p className="font-benton-regular text-[15px] leading-[150%]">
+                      You currently have no logged issue, capture an issue to
+                      record and store
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className= {`${hold2 ? "w-[393px] z-10" : ""}`}>
+                {hold2 && <Capture />}
+              </div>
             </div>
           ) : (
-            <LoadedIssues />
+            <div className="div">
+              <LoadedIssues />
+            </div>
           )}
 
           {cameraActive && <Camera update={update} />}
 
-          {hold && (
-            <Capture />
-          )}
+          {isMobile && hold && <Capture />}
         </>
       )}
     </div>

@@ -36,12 +36,13 @@ export default function ViewLocation() {
     logs,
     overlay,
     setOverlay,
-    filteredSurveys
+    filteredSurveys,
+    location
   } = useContext(Context);
-  const [location, setLocation] = useState(() => {
-    const saved = sessionStorage.getItem("Location");
-    return saved ? JSON.parse(saved) : null; // load from storage if exists
-  });
+  // const [location, setLocation] = useState(() => {
+  //   const saved = sessionStorage.getItem("Location");
+  //   return saved ? JSON.parse(saved) : null; // load from storage if exists
+  // });
   const [issue, setissue] = useState(issuesData);
   console.log(issues);
 
@@ -120,8 +121,8 @@ export default function ViewLocation() {
   };
 
   return (
-    <div className="bg-[#E8E9EB] min-h-screen relative pt-4">
-      <div className="fixed bottom-[36px] left-[50%] translate-x-[-50%] z-10">
+    <div className="bg-[#E8E9EB] min-h-screen lg:min-h-auto relative pt-4 lg:w-full lg:pt-0 lg:pb-30">
+      <div className="fixed bottom-[36px] left-[50%] translate-x-[-50%] z-10 lg:absolute">
         {selectedIssue ? (
           ""
         ) : logs ? (
@@ -152,7 +153,7 @@ export default function ViewLocation() {
         bg-[length:23px_23px] 
         bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]
         [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
-        [mask-repeat:no-repeat] [mask-size:100%_100%]"
+        [mask-repeat:no-repeat] [mask-size:100%_100%] lg:hidden"
       ></div>
       {logs ? <LocationLogs /> : <LocationSurvey />}
       {overlay && <Overlay filteredSurveys={filteredSurveys} />}

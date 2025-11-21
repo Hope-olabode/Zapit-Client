@@ -27,21 +27,21 @@ function arcPath(cx, cy, outerR, innerR, startAngle, endAngle) {
 
 export default function VariableInnerDonut() {
   const data = [
-    { name: "A", value: 65, color: "#0088FE", inner: 50 },
-    { name: "B", value: 15, color: "#00C49F", inner: 80 },
-    { name: "C", value: 20, color: "#FFBB28", inner: 60 },
+    { name: "A", value: 8, color: "#FFC529", inner: 50, textColor: "#1B1D22" },
+    { name: "B", value: 4, color: "#1513EC", inner: 70, textColor: "#F6F7F9" },
+    { name: "C", value: 88, color: "#48BB78", inner: 60, textColor: "#1B1D22" },
     
   ];
 
   const total = data.reduce((sum, d) => sum + d.value, 0);
-  let startAngle = 0;
+  let startAngle = 45;
   const outerR = 140;
   const cx = 150;
   const cy = 150;
 
   return (
-    <div className="flex justify-center items-center h-[400px]">
-      <svg width="300" height="300" viewBox="0 0 300 300">
+    <div className="flex items-center justify-center h-full w-full">
+      <svg width="208" height="208" viewBox="0 0 300 300">
         {data.map((d, i) => {
           const angle = (d.value / total) * 360;
           const endAngle = startAngle + angle;
@@ -63,15 +63,15 @@ export default function VariableInnerDonut() {
               <path
                 d={path}
                 fill={d.color}
-                stroke="#fff"
+                stroke="#000"
                 strokeWidth="2"
                 style={{ transition: "0.3s" }}
               />
               <text
                 x={x}
                 y={y}
-                fill="white"
-                fontSize="14"
+                fill={d.textColor}
+                fontSize="24"
                 fontWeight="bold"
                 textAnchor="middle"
                 dominantBaseline="middle"

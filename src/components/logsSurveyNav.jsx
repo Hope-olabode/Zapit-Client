@@ -4,7 +4,7 @@ import profile from "../assets/profile.svg";
 
 export default function LogsSurveyNav() {
   return (
-    <div className="flex flex-row justify-between items-center z-[2] absolute w-full px-4  [h-48px] mt-4">
+    <div className="flex flex-row justify-between items-center z-[2] absolute w-full px-4 [h-48px] pt-3 lg:static lg:px-0">
       <div className="flex gap-2">
         <NavLink
           className={({ isActive }) =>
@@ -28,8 +28,12 @@ export default function LogsSurveyNav() {
         </NavLink>
       </div>
       <div className="flex flex-row">
-        <img src={search} alt="" />
-        <img src={profile} alt="" />
+        <img className="lg:hidden" src={search} alt="" />
+        <img className="lg:hidden" src={profile} alt="" />
+        <div className="h-10 bg-[#F6F6F6] w-[360px] items-center gap-2 pr-3 rounded-[72px] hidden lg:flex">
+          <img src={search} alt="" />
+          <input className="focus:outline-none font-benton-bold text-[14px] leading-[16px] tracking-[-0.5px] placeholder:text-[#B7BBC2]" type="text" placeholder="Search" />
+        </div>
       </div>
     </div>
   );

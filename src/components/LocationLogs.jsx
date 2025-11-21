@@ -1,7 +1,7 @@
 import back from "../assets/back.svg";
 import menue from "../assets/menue.svg";
 import dropdown from "../assets/dropdown.svg";
-import display from "../assets/display.svg";
+import displayimg from "../assets/display.svg";
 import { Context } from "../context/Context";
 import { useState, useContext, useEffect, useMemo } from "react";
 import Category from "../components/Category3";
@@ -15,9 +15,7 @@ import search from "../assets/search.svg";
 import cancle3 from "../assets/cancle3.svg";
 import { useForm } from "react-hook-form";
 
-
 export default function LocationLogs() {
-  
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [category, setCategory] = useState(false);
   const [viewOnlyCategory, setViewOnlyCategory] = useState(null);
@@ -31,7 +29,13 @@ export default function LocationLogs() {
     hold,
     setSelectedIssue,
     selectedIssue,
-    logs, setLogs,
+    logs,
+    setLogs,
+    display,
+    setDisplay,
+    isMobile, setIsMobile,
+    viewCategory,
+    setViewCategory
   } = useContext(Context);
 
   const [location, setLocation] = useState(() => {
@@ -115,13 +119,24 @@ export default function LocationLogs() {
     return index === 0 ? length + 4 : length + 1;
   };
 
+ 
+
   return (
     <div className="di">
       <div className=" relative w-full px-4 z-5 ">
         {/* Top navigation */}
 
         <div className="flex flex-row justify-between items-center  w-full py-4 h-[48px] mb-4">
-          <button className="w-[48px] h-[48px] flex justify-center items-center" onClick={() => navigate(-1)}>
+          <button
+            className="w-[48px] h-[48px] flex justify-center items-center"
+            onClick={() => {
+              if (isMobile) {
+                navigate(-1)
+              } else {
+                setDisplay(false)
+              }
+            }}
+          >
             <img className="w-[32px] h-[32px]" src={back} alt="" />
           </button>
           <div className="h-[36px] w-[120px] bg-[#F6F6F6] rounded-[32px] flex justify-center items-center">
@@ -141,7 +156,6 @@ export default function LocationLogs() {
             >
               Survey
             </button>
-            
           </div>
           <button className="flex-shrink-0">
             <img src={menue} alt="menu" />
@@ -149,14 +163,12 @@ export default function LocationLogs() {
         </div>
 
         {/* Location title */}
-        
-          <div className="flex-1 min-w-0 mb-4">
-            <p className="truncate text-[32px] font-benton-black text-[#1B1D22] leading-[130%] tracking-[-0.5px]">
-              {location || "Unknown Location"}
-            </p>
-          </div>
-          
-       
+
+        <div className="flex-1 min-w-0 mb-4">
+          <p className="truncate text-[32px] font-benton-black text-[#1B1D22] leading-[130%] tracking-[-0.5px]">
+            {location || "Unknown Location"}
+          </p>
+        </div>
 
         {/* Stats bar */}
         <div className="h-[120px] mb-4">
@@ -200,7 +212,7 @@ export default function LocationLogs() {
               />
             </div>
             <button>
-              <img src={display} alt="" />
+              <img src={displayimg} alt="" />
             </button>
           </div>
         ) : (
@@ -233,7 +245,7 @@ export default function LocationLogs() {
                 </div>
               </div>
               <button>
-                <img src={display} alt="" />
+                <img src={displayimg} alt="" />
               </button>
             </div>
 

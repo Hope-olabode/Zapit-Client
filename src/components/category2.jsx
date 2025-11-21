@@ -6,40 +6,42 @@ import ca from "../assets/catadd.svg";
 export default function CategorySelector() {
   const {
     categories,
-    setCategories,
     setShowAddModal,
     selectedCategories,
     setSelectedCategories,
+    selectedIssue,
+    setSelectedIssue
   } = useContext(Context);
 
   // Toggle category by name instead of id
   const toggleCategory = (categoryName) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(categoryName)) {
-        return prev.filter((name) => name !== categoryName);
-      } else {
-        return [...prev, categoryName];
-      }
+    setSelectedIssue((prev) => {
+      const alreadySelected = prev.categories.includes(categoryName);
+      const updatedCategories = alreadySelected
+        ? prev.categories.filter((name) => name !== categoryName)
+        : [...prev.categories, categoryName];
+
+      return { ...prev, categories: updatedCategories };
     });
   };
 
   const isSelected = (categoryName) =>
-    selectedCategories.includes(categoryName);
+    selectedIssue.categories.includes(categoryName);
 
   return (
     <div>
-      <div className="w-[250px] h-[300px] bg-white rounded-3xl border-2 border-gray-800 shadow-lg overflow-hidden">
+      <div className="w-[250px] h-[300px] bg-[#F6F6F6] rounded-t-3xl border-1 border-[#464646] overflow-hidden lg:rounded-b-3xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-2 border-b-2 border-gray-800">
-          <h2 className="text-[12px] font-sans leading-[16px] font-semibold">
+        <div className="flex items-center justify-between px-2 border-b-1 border-[#464646]">
+          <h2 className="text-[12px] font-sans leading-[16px] tracking-[-0.5px] font-semibold">
             Categories
           </h2>
           <button
             type="button"
             onClick={() => setShowAddModal(true)}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full  "
           >
-            <img src={ca} className="w-6 h-6 text-gray-800" />
+            <img src={ca} className="w-6 h-6 " />
           </button>
         </div>
 
@@ -52,11 +54,11 @@ export default function CategorySelector() {
                 key={category._id}
                 onClick={() => toggleCategory(category.name)}
                 className={`relative px-2 py-[5px] rounded-full h-[26px] text-base font-semibold
-                  transition-all duration-200 border-2 flex items-center
+                  transition-all duration-200 border-1 flex items-center
                   ${
                     isSelected(category.name)
                       ? "border-gray-800"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                      : "text-[#464646] border-[#E1E2E5]"
                   }`}
               >
                 <span className="text-[12px] font-sans leading-[16px] font-semibold"

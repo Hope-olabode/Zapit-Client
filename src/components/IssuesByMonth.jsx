@@ -143,7 +143,9 @@ export default function IssuesByMonth({ filteredIssues }) {
           </div>
         </div>
       ))}
-      {selectedIssue && <SelectedIssue />}
+      <div className="lg:hidden">
+        {selectedIssue && <SelectedIssue />}
+      </div>
     </div>
   );
 }

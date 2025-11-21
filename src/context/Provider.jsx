@@ -18,21 +18,37 @@ export const Provider = ({ children }) => {
 
   const [allSurveys, setAllSurveys] = useState([]);
 
+  const [display, setDisplay] = useState(false);
+
+  const [location, setLocation] = useState(() => {
+    const saved = sessionStorage.getItem("Location");
+    return saved ? JSON.parse(saved) : null; // load from storage if exists
+  });
+
+  const [category, setCategory] = useState(false);
+
+  const [viewCategory, setViewCategory] = useState(false);
+
+  const [desktop, setDesktop] = useState(false);
+  const [desktop2, setDesktop2] = useState(false);
+  const [desktop3, setDesktop3] = useState(false);
+  const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [selectedSurvey, setSelectedSurvey] = useState(() => {
-  const saved = sessionStorage.getItem("selectedSurvey");
-  return saved ? JSON.parse(saved) : null;
-});
+    const saved = sessionStorage.getItem("selectedSurvey");
+    return saved ? JSON.parse(saved) : null;
+  });
 
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [survey, setSurvey] = useState(false);
+
+  const [hold2, setHold2] = useState(false);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [hold, setHold] = useState(false);
   const [issues, setIssues] = useState([]);
-  const [overlay, setOverlay] = useState(false)
+  const [overlay, setOverlay] = useState(false);
   const [logs, setLogs] = useState(true);
-  const [filteredSurveys, setFilteredSurveys] = useState([]);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -86,7 +102,14 @@ export const Provider = ({ children }) => {
         const newPreview = URL.createObjectURL(blob);
         setPreviews((prev) => [...prev, newPreview]);
         setImgFiles((prev) => [...prev, file]);
-        setHold(true);
+         
+
+        if (isMobile) {
+          setHold(true)
+        } else {
+          setHold2(true)
+          setSelectedIssue(false)
+        }
       }
     }, "image/png");
     console.log(imgFiles);
@@ -204,7 +227,7 @@ export const Provider = ({ children }) => {
       try {
         const response = await api.get("/surveys"); // matches app.use("/api/surveys", surveyRoutes)
         setAllSurveys(response.data);
-        console.log(allSurveys)
+        console.log(allSurveys);
       } catch (error) {
         console.error("❌ Error fetching surveys:", error);
         toast.error(error.response?.data?.message || "Failed to fetch surveys");
@@ -213,7 +236,22 @@ export const Provider = ({ children }) => {
 
     getAllSurveys();
   }, []); // ✅ important: add [] to prevent infinite requests
-console.log(allSurveys)
+  console.log(allSurveys);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 1024);
+      };
+  
+      window.addEventListener("resize", handleResize);
+  
+      // Run once to ensure correct width on mount
+      handleResize();
+  
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   return (
     <Context.Provider
       value={{
@@ -257,11 +295,26 @@ console.log(allSurveys)
         setAllSurveys,
         selectedSurvey,
         setSelectedSurvey,
-        overlay, 
+        overlay,
         setOverlay,
-        logs, 
+        logs,
         setLogs,
-        filteredSurveys, setFilteredSurveys
+        filteredSurveys,
+        setFilteredSurveys,
+        desktop,
+        setDesktop,
+        desktop2,
+        setDesktop2,
+        desktop3,
+        setDesktop3,
+        display,
+        setDisplay,
+        location, setLocation,
+        isMobile, setIsMobile,
+        hold2, setHold2,
+        category, setCategory,
+        viewCategory, setViewCategory
+        
       }}
     >
       <Toaster position="top-right" richColors />

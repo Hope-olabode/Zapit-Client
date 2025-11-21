@@ -32,7 +32,7 @@ export default function Camera({ update }) {
       </div>
 
       {/* Video fills the rest of the screen */}
-      <div className="relative flex-1 bg-black rounded-t-[12px] overflow-hidden">
+      <div className="relative flex-1 bg-black rounded-t-[16px] overflow-hidden">
         <video
           ref={videoRef}
           autoPlay

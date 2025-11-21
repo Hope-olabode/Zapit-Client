@@ -12,8 +12,6 @@ export default function DeleteIssue({ img, setConfirmDelete }) {
   const firstImageUrl = img?.[0]?.url;
 
   const deleteIssue = async () => {
-    if (!window.confirm("Are you sure you want to delete this issue?")) return;
-
     setLoading(true);
     try {
       const res = await api.delete(`/issues/${selectedIssue._id}`);

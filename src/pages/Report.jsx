@@ -2,6 +2,7 @@ import { toast, Toaster } from "sonner";
 import search from "../assets/search.svg";
 import { Context } from "../context/Context";
 import { useContext, useState } from "react";
+import Chart from "../components/Chart.jsx";
 
 export default function Report() {
   const { issues } = useContext(Context);
@@ -45,8 +46,10 @@ export default function Report() {
     return index === 0 ? length + 4 : length + 1;
   };
 
+  const circles = Array.from({ length: 60 });
+
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll ">
       <Toaster position="top-center" richColors />
 
       {/* Background pattern */}
@@ -58,7 +61,7 @@ export default function Report() {
         [mask-repeat:no-repeat] [mask-size:100%_100%]"
       ></div>
 
-      <div className="w-full relative z-10 px-4">
+      <div className="w-full relative z-5 px-4 mb-[150px]">
         <div className="flex justify-between items-center mt-4 w-full">
           <p className=" font-benton-black text-[32px] leading-[130%] tracking-[-0.5px] text-[#1B1D22]">
             Analytics
@@ -91,14 +94,19 @@ export default function Report() {
           <p className="font-benton-black text-[16px] leading-[150%] text-[#1B1D22]">
             Issue Trends
           </p>
-          <div className="h-[400px] w-full border-2 rounded-2xl mt-1.5 mb-10 bg-[#F6F7F9] relative">
+          <div className="h-[400px] w-full border-2 rounded-2xl mt-1.5 mb-10 bg-[#F6F7F9] relative overflow-hidden">
+            <div className="relative w-full h-[50%] bg-black p-4 flex justify-between">
+              <div className="w-[1px] h-full bg-white absolute top-0"></div>
+              <div className="w-[1px] h-[40%] bg-white"></div>
+              <div className="w-[1px] h-[20%] bg-white"></div>
+              <div className="w-[1px] h-[60%] bg-white"></div>
+            </div>
             <div className="h-[40px] w-[calc(100%-12px)] bg-white border-2 rounded-xl absolute bottom-[6px] left-1/2 -translate-x-1/2 flex overflow-hidden">
               <div className="flex w-[8.3333333%] justify-evenly">
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                
               </div>
               <div className="flex w-[8.3333333%] justify-evenly">
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
@@ -112,6 +120,50 @@ export default function Report() {
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
                 <div className="h-[40px] w-[1px] bg-amber-600"></div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div className="border-2 rounded-2xl h-[240px] bg-[#F6F7F9] flex overflow-hidden">
+          <div className="w-[33%] h-[100%] p-4 flex flex-col justify-between">
+            <p className="font-benton-black text-[15px] leading-[150%] text-[#1B1D22]">
+              Issue Percentage
+            </p>
+            <div className="div h-[84px] flex flex-col justify-between">
+              <div className="div flex justify-between font-benton-bold text-[12px]">
+                <p className="text-[#A1A6B0]">All</p>
+                <p className="text-[#1B1D22]">146</p>
+              </div>
+              <div className="div flex justify-between font-benton-bold text-[12px]">
+                <p className="text-[#FFC529]">Pending</p>
+                <p className="text-[#1B1D22]">26</p>
+              </div>
+              <div className="div flex justify-between font-benton-bold text-[12px]">
+                <p className="text-[#1513EC]">In Progress</p>
+                <p className="text-[#1B1D22]">18</p>
+              </div>
+              <div className="div flex justify-between font-benton-bold text-[12px]">
+                <p className="text-[#48BB78]">Resolved</p>
+                <p className="text-[#1B1D22]">108</p>
+              </div>
+            </div>
+          </div>
+          <div className="w-[67%] h-full overflow-hidden">
+            {/* <Chart /> */}
+            <div className="relative w-full h-full  overflow-visible flex justify-center items-center">
+              {circles.map((_, i) => {
+                const size = 100 + i * 10; // start at 100px, grow by +2px each circle
+                return (
+                  <div
+                    key={i}
+                    className="absolute border border-[#E1E2E5] rounded-full"
+                    style={{
+                      width: `${size}px`,
+                      height: `${size}px`,
+                    }}
+                  />
+                );
+              })}
+              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"><Chart /></div>
             </div>
           </div>
         </div>

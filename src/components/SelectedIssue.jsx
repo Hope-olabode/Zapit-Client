@@ -20,6 +20,7 @@ import Camera from "./Camera.jsx";
 import { useContext, useState } from "react";
 import IssueLocations from "./IssueLocations";
 import DeleteIssue from "./DeleteIssue.jsx";
+import ShareIssue from "./ShareIssue.jsx";
 
 export default function SelectedIssue() {
   const {
@@ -51,6 +52,9 @@ export default function SelectedIssue() {
   const [selectLocation, setSelectLocation] = useState(false);
   const [status, setStatus] = useState(selectedIssue.status || "Pending");
   const [status2, setStatus2] = useState(selectedIssue.priority || "High");
+  const [causedBy, setCausedBy] = useState(false);
+  const [responsibility, setResponsibility] = useState(false);
+  const [shareIssue, setShareIssue] = useState(false);
 
   const isSelected = (categoryName) =>
     selectedIssue.categories.includes(categoryName);
@@ -200,7 +204,7 @@ export default function SelectedIssue() {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-30 h-screen">
+    <div className="fixed inset-0 lg:inset-auto bg-[#1B1D2280] flex flex-col z-30 h-screen">
       <div className="p-4 w-full flex justify-between items-center ">
         <img
           src={cancle}
@@ -222,9 +226,9 @@ export default function SelectedIssue() {
           <img
             src={share}
             onClick={() => {
-              setSelectedIssue(null);
+              setShareIssue(true);
             }}
-            alt="cancel"
+            alt="Share"
             className="w-14 h-14 cursor-pointer"
           />
         </div>
@@ -386,7 +390,7 @@ export default function SelectedIssue() {
                         <button
                           type="button"
                           onClick={() => setShowAddModal(true)}
-                          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                          className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
                         >
                           <img src={ca} className="w-6 h-6 text-gray-800" />
                         </button>
@@ -432,7 +436,7 @@ export default function SelectedIssue() {
           </div>
           <div className="px-4">
             <textarea
-              {...register("description", {
+              {...register("description", {                                                                     
                 required: "Description is required",
               })}
               type="text"
@@ -441,26 +445,30 @@ export default function SelectedIssue() {
             />
           </div>
           <div className="border-dashed border-black border-1 my-4 "></div>
-          <div className="px-4">
+          <div className="px-4 relative">
             <textarea
               {...register("Caused_by", {
                 required: "Cause is required",
+                onChange: () => setCausedBy(true),
               })}
               type="text"
               placeholder="Caused by"
               className="w-full rounded h-[144px] font-benton-black text-[18px] leading-[145%] placeholder-[#CED0D5] border-0 focus:outline-none"
             />
+            {causedBy && (<div className="h-5 absolute border text-[#464646] font-sans font-semibold text-[10px] leading-[16px] tracking-[-0.5px] border-[#464646] bg-[#F6F6F6] rounded-[72px] px-[7px] flex justify-center items-center top-[-27px]">Caused by</div>)}
           </div>
           <div className="border-dashed border-black border-1 my-4 "></div>
-          <div className="px-4 pb-4">
+          <div className="px-4 pb-4 relative">
             <textarea
               {...register("Responsibility", {
                 required: "Responsibility is required",
+                onChange: () => setResponsibility(true),
               })}
               type="text"
               placeholder="Responsibility"
               className="w-full rounded h-[144px] font-benton-black text-[18px] leading-[145%] placeholder-[#CED0D5] border-0 focus:outline-none"
             />
+            {responsibility && (<div className="h-5 absolute border text-[#464646] font-sans font-semibold text-[10px] leading-[16px] tracking-[-0.5px] border-[#464646] bg-[#F6F6F6] rounded-[72px] px-[7px] flex justify-center items-center top-[-27px]">Responsibility</div>)}
           </div>
           <div className="px-4 pb-4">
             <button
@@ -472,7 +480,7 @@ export default function SelectedIssue() {
                   : "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22]"
               }  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150 w-full`}
             >
-              Update
+              Save
             </button>
           </div>
         </form>
@@ -490,6 +498,12 @@ export default function SelectedIssue() {
           <DeleteIssue
             img={selectedIssue.images}
             setConfirmDelete={setConfirmDelete}
+          />
+        )}
+        {shareIssue && (
+          <ShareIssue 
+          selectedIssue={selectedIssue}
+          setShareIssue={setShareIssue}
           />
         )}
       </div>

@@ -1,17 +1,37 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../api/axios";
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
 import location2 from "../assets/location2.svg";
 import la from "../assets/locationAdd.svg";
 import { Context } from "../context/Context";
+import search from "../assets/search.svg";
 
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import ViewLocation from "./ViewLocation.jsx";
+import SelectedIssueD from "../components/SelectedIssueD.jsx";
+import Category2 from "../components/Category2.jsx";
 
 export default function Location() {
   const { register, handleSubmit, reset } = useForm();
-  const { loading, setLoading, locations, setLocations } = useContext(Context);
+  const {
+    loading,
+    setLoading,
+    locations,
+    setLocations,
+    display,
+    setDisplay,
+    selectedIssue,
+    setLocation,
+    location,
+    isMobile,
+    setIsMobile,
+    viewCategory,
+    setViewCategory,
+  } = useContext(Context);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -43,9 +63,9 @@ export default function Location() {
 
   const navigate = useNavigate();
   return (
-    <div className="min-h-[100dvh] w-full relative bg-[#E8E9EB]">
+    <div className="min-h-[100dvh]  w-full relative bg-[#E8E9EB] ">
       <Toaster position="top-center" richColors />
-      <div className="flex flex-row justify-between items-center z-[2] absolute w-full p-4 h-[80px]">
+      <div className="flex flex-row justify-between items-center z-[2] absolute w-full p-4 h-[80px] lg:hidden">
         <p className="font-benton-black text-[32px] leading-[130%] ">
           Locations
         </p>
@@ -70,44 +90,116 @@ export default function Location() {
           </p>
         </div>
       ) : (
-        <div className="border-2 w-[90%] border-black rounded-xl overflow-hidden absolute top-[100px] bg-white left-[50%] translate-x-[-50%] z-3">
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="border-b-2 w-full flex items-center justify-center gap-[2px] px-4"
+        <div
+          className={`pt-[100px] lg:pt-[56px] lg:ml-[144px] lg:mr-10 ${
+            display ? " flex gap-8" : ""
+          }`}
+        >
+          <div
+            className={`flex flex-col  items-center lg:gap-[32px] ${
+              display ? "w-[calc(100vw-610px)]" : ""
+            }`}
           >
-            <input
-              {...register("name", { required: "Location is Required" })}
-              type="text"
-              placeholder="Add Location"
-              className="font-benton-bold text-[16px] leading-[150%] h-[48px] w-full  focus:outline-none placeholder:text-[#CED0D5]"
-            />
-            <button disabled={loading} type="submit">
-              <img src={la} alt="" />
-            </button>
-          </form>
-          {locations.map((loc, index) => (
-            <div
-              key={loc.id}
-              onClick={()=>{
-                sessionStorage.setItem(
+            <div className=" flex-row justify-between items-center z-[2] p-4 h-[80px] w-full hidden lg:flex lg:p-0 lg:h-[48px] lg:mt-[9px]">
+              <p className="font-benton-black text-[32px] leading-[130%] ">
+                Locations{isMobile ? 1 : 2}
+              </p>
+              <div className="h-10 bg-[#F6F6F6] w-[360px] items-center gap-2 pr-3 rounded-[72px] hidden lg:flex">
+                <img src={search} alt="" />
+                <input
+                  className="focus:outline-none font-benton-bold text-[14px] leading-[16px] tracking-[-0.5px] placeholder:text-[#B7BBC2]"
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
+            <div className="border-2  border-black rounded-xl overflow-hidden  bg-white  w-[90%] lg:w-full z-3 ">
+              {/* absolute top-[100px] left-[50%] w-[90%] translate-x-[-50%] */}
+              <form
+                onSubmit={handleSubmit(onSubmit, onError)}
+                className="border-b-2 w-full flex items-center justify-center gap-[2px] px-4"
+              >
+                <input
+                  {...register("name", { required: "Location is Required" })}
+                  type="text"
+                  placeholder="Add Location"
+                  className="font-benton-bold text-[16px] leading-[150%] h-[48px] w-full  focus:outline-none placeholder:text-[#CED0D5]"
+                />
+                <button disabled={loading} type="submit">
+                  <img src={la} alt="" />
+                </button>
+              </form>
+              {locations.map((loc, index) => (
+                <div
+                  key={loc.id}
+                  onClick={() => {
+                    sessionStorage.setItem(
                       "Location",
                       JSON.stringify(loc.name)
                     );
-                    navigate("/location/view");
-              }}
-              className="flex items-center border-b-2 border-black last:border-b-0 px-4 py-3"
-            >
-              {/* Number */}
-              <span className="w-6 font-benton-bold text-[16px] leading-[150%]">
-                {index + 1}
-              </span>
+                    if (isMobile) {
+                      navigate("/location/view");
+                    } else {
+                      setDisplay(false);
+                      setTimeout(() => {
+                        console.log("done!");
+                        setDisplay(true);
+                      }, 1);
 
-              {/* Location */}
-              <p className="ml-4 font-benton-bold text-[16px] leading-[150%]">
-                {loc.name}
-              </p>
+                      // setLocation(JSON.parse(sessionStorage.getItem("Location") || "null"))
+                    }
+                    // isMobile ? navigate("/location/view") : setDisplay(true);
+                    // console.log(display);
+                    // console.log(location)
+                  }}
+                  className="flex items-center border-b-2 border-black last:border-b-0 px-4 py-3"
+                >
+                  {/* Number */}
+                  <span className="w-6 font-benton-bold text-[16px] leading-[150%]">
+                    {index + 1}
+                  </span>
+
+                  {/* Location */}
+                  <p className="ml-4 font-benton-bold text-[16px] leading-[150%]">
+                    {loc.name}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          {display && (
+            <div className={`w-[393px] lg:h-[calc(100vh-65px)] relative ${selectedIssue && "z-10"}`}>
+              {selectedIssue ? <SelectedIssueD /> : <ViewLocation />}
+            </div>
+          )}
+
+          {/* {isMobile
+                  ? ""
+                  : viewCategory && (
+                      <div className="div lg:relative">
+                        <div className="top-[-50%] left-[50%] translate-x-[-50%] translate-y-[50%]  z-30 absolute ">
+                          <Category2 />
+                        </div>
+                        <div
+                          onClick={() => setViewCategory(false)}
+                          className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
+                        ></div>
+                      </div>
+                    )} */}
+
+          {viewCategory && (
+            <div
+              onClick={() => setViewCategory(false)}
+              className="inset-0 absolute z-10 bg-[#1B1D2280]"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%]  z-20 absolute "
+              >
+                <Category2 />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
