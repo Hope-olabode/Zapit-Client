@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import ViewLocation from "./ViewLocation.jsx";
 import SelectedIssueD from "../components/SelectedIssueD.jsx";
-import Category2 from "../components/Category2.jsx";
+import CategoryTwo from "../components/CategoryTwo.jsx";
 
 export default function Location() {
   const { register, handleSubmit, reset } = useForm();
@@ -196,7 +196,7 @@ export default function Location() {
                 onClick={(e) => e.stopPropagation()}
                 className="top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%]  z-20 absolute "
               >
-                <Category2 />
+                <CategoryTwo />
               </div>
             </div>
           )}

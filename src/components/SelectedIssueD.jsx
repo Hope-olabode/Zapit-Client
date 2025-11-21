@@ -21,7 +21,7 @@ import { useContext, useState } from "react";
 import IssueLocations from "./IssueLocations";
 import DeleteIssue from "./DeleteIssue.jsx";
 import ShareIssue from "./ShareIssue.jsx";
-import Category2 from "./Category2.jsx";
+import Category2 from "./CategoryTwo.jsx";
 
 export default function SelectedIssueD() {
   const {

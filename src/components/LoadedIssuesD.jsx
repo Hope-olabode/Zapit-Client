@@ -12,7 +12,7 @@ import SelectedIssueD from "./SelectedIssueD";
 import LogsSurveyNav from "../components/logsSurveyNav";
 import Capture from "./Capture";
 import Category from "./Category";
-import Category2 from "./Category2";
+import Category2 from "./CategoryTwo";
 
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
