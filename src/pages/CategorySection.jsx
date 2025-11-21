@@ -295,7 +295,7 @@ const CategoryCarousel = forwardRef(({ control }, ref) => {
               fields.length === 1
                 ? "bg-black"
                 : index === activeIndex
-                ? "bg-[#48BB78]"
+                ? "bg-[#4ECDC4]"
                 : "bg-black"
             }`}
           />
