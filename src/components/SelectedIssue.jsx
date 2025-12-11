@@ -1,4 +1,4 @@
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 import deleteImg from "../assets/delete.svg";
 import share from "../assets/share.svg";
 import dropdown from "../assets/dropdown.svg";
@@ -12,7 +12,7 @@ import add2 from "../assets/addImage2.svg";
 import { Context } from "../context/Context";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
-import cc from "../assets/catcancle.svg";
+import cc from "../assets/catcancel.svg";
 import ca from "../assets/catadd.svg";
 import CategoryForm from "./CategoryForm";
 import Camera from "./Camera.jsx";
@@ -207,7 +207,7 @@ export default function SelectedIssue() {
     <div className="fixed inset-0 lg:inset-auto bg-[#1B1D2280] flex flex-col z-30 h-screen">
       <div className="p-4 w-full flex justify-between items-center ">
         <img
-          src={cancle}
+          src={cancel}
           onClick={() => {
             setSelectedIssue(null);
           }}

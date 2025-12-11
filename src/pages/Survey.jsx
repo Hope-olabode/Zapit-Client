@@ -8,8 +8,11 @@ import Overlay from "../components/Overlay";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import UpdateSurvey from "../pages/UpdateSurvey.jsx";
 import NewSurvey from "../pages/NewSurvey.jsx";
+import { useForm } from "react-hook-form";
+import Share from "../components/Share.jsx";
 
 export default function Surveys() {
+  const { register } = useForm();
   const {
     allSurveys,
     selectedSurvey,
@@ -22,7 +25,7 @@ export default function Surveys() {
     desktop2,
     setDesktop2,
     desktop3,
-    setDesktop3,
+    setDesktop3, share, setShare
   } = useContext(Context);
   const navigate = useNavigate();
 
@@ -78,7 +81,7 @@ export default function Surveys() {
   return (
     <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll lg:overflow-x-auto">
       <div className="lg:hidden">
-        <LogsSurveyNav />
+        <LogsSurveyNav register={register}  />
       </div>
 
       {/* Background pattern */}
@@ -99,7 +102,7 @@ export default function Surveys() {
       >
         <div className={` ${minimize ? "w-full" : "hidden"} `}>
           <div className="hidden lg:block relative z-20">
-            <LogsSurveyNav />
+            <LogsSurveyNav register={register}  />
           </div>
           <div className="mb-5 lg:mt-8 lg:mb-8">
             {/* 🔹 YEAR SELECTOR */}
@@ -245,6 +248,7 @@ export default function Surveys() {
           setDesktop3={setDesktop3}
         />
       )}
+      {share && (<Share />)}
     </div>
   );
 }

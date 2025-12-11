@@ -1,14 +1,14 @@
 import CategoryCarousel from "./CategorySection";
 import { useForm } from "react-hook-form";
-import { useState, useEffect, useRef } from "react";
-import cancle2 from "../assets/cancle2.svg";
+import { useState, useEffect, useRef, useContext } from "react";
+import cancel2 from "../assets/cancel2.svg";
 import save from "../assets/save.svg";
 import dropdown from "../assets/dropdown2.svg";
 import location3 from "../assets/location3.svg";
 import Locations from "../components/Locations";
 import Plus from "../assets/add.svg";
 import edit from "../assets/edit.svg";
-import share from "../assets/share2.png";
+import share from "../assets/share2.svg";
 import dele from "../assets/delete2.svg";
 import add from "../assets/addCategories.svg";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +21,9 @@ import { toast, Toaster } from "sonner";
 import save2 from "../assets/save2.svg";
 import mini from "../assets/minimize.svg";
 import max from "../assets/maximize.svg";
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { NavLink, Link, Outlet, useLocation } from "react-router-dom";
 
 export default function NewSurvey({
   setDesktop2,
@@ -33,12 +34,14 @@ export default function NewSurvey({
 }) {
   const navigate = useNavigate();
   const [selectLocation, setSelectLocation] = useState(false);
+    const { pathname } = useLocation();
 
   const [_formattedDateTime, setFormattedDateTime] = useState(
     getFormattedDateTime()
   );
   // const [title, setTitle] = useState("New Survey");
   const [editTitle, setEditTitle] = useState(false);
+  const { setDisplay, setDisplay2, setDisplay3, setDisplay4, setOverlay } = useContext(Context);
 
   const [open, setOpen] = useState(false);
 
@@ -231,9 +234,17 @@ export default function NewSurvey({
                   if (desktop2) {
                     setDesktop2(false);
                     setMinimize(true);
+                    
                   } else {
-                    setDesktop3(false);
-                    setMinimize(true);
+                    if (pathname === "/location") {
+                    console.log(1)
+                    setMinimize(false);
+                    setDisplay4(false);
+                    setDisplay(true);
+                    setOverlay(false)
+                    } else{
+                      setDesktop3(false);
+                    }
                   }
 
                   
@@ -245,9 +256,9 @@ export default function NewSurvey({
               }}
             >
               {isDesktop ? (
-                <img src={cancle} alt="" />
+                <img src={cancel} alt="" />
               ) : (
-                <img src={cancle2} alt="" />
+                <img src={cancel2} alt="" />
               )}
             </button>
             <div className="lg:flex lg:gap-2">

@@ -11,11 +11,16 @@ import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import ViewLocation from "./ViewLocation.jsx";
+import ViewDay from "./ViewDay.jsx";
 import SelectedIssueD from "../components/SelectedIssueD.jsx";
 import CategoryTwo from "../components/CategoryTwo.jsx";
+import UpdateSurvey from "./UpdateSurvey.jsx";
+import NewSurvey from "./NewSurvey.jsx";
 
 export default function Location() {
   const { register, handleSubmit, reset } = useForm();
+  const [minimize2, setMinimize2] = useState(false)
+  const [minimize, setMinimize] = useState(false)
   const {
     loading,
     setLoading,
@@ -24,14 +29,20 @@ export default function Location() {
     display,
     setDisplay,
     selectedIssue,
+    setSelectedIssue,
     setLocation,
     location,
     isMobile,
     setIsMobile,
     viewCategory,
     setViewCategory,
+    display2, setDisplay2, display3, setDisplay3, display4, setDisplay4
   } = useContext(Context);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  
+  useEffect(() => {
+    setSelectedIssue(null); // or default value
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -91,18 +102,18 @@ export default function Location() {
         </div>
       ) : (
         <div
-          className={`pt-[100px] lg:pt-[56px] lg:ml-[144px] lg:mr-10 ${
-            display ? " flex gap-8" : ""
+          className={`pt-[100px] lg:pt-[56px] lg:ml-[144px] lg:mr-10  ${
+            display || display2 || display3 || display4 ? " flex gap-8" : ""
           }`}
         >
           <div
-            className={`flex flex-col  items-center lg:gap-[32px] ${
-              display ? "w-[calc(100vw-610px)]" : ""
+            className={`flex flex-col  items-center lg:gap-[32px] lg:h-[calc(100vh-56px)] lg:overflow-y-scroll scrollbar-hide ${minimize2 || minimize ? "hidden"  : ""} ${
+              display || display2 || display3 || display4 ? "w-[calc(100vw-610px)]" : ""
             }`}
           >
             <div className=" flex-row justify-between items-center z-[2] p-4 h-[80px] w-full hidden lg:flex lg:p-0 lg:h-[48px] lg:mt-[9px]">
               <p className="font-benton-black text-[32px] leading-[130%] ">
-                Locations{isMobile ? 1 : 2}
+                Locations
               </p>
               <div className="h-10 bg-[#F6F6F6] w-[360px] items-center gap-2 pr-3 rounded-[72px] hidden lg:flex">
                 <img src={search} alt="" />
@@ -113,7 +124,7 @@ export default function Location() {
                 />
               </div>
             </div>
-            <div className="border-2  border-black rounded-xl overflow-hidden  bg-white  w-[90%] lg:w-full z-3 ">
+            <div className="border-2  border-black rounded-xl overflow-hidden lg:overflow-visible bg-white  w-[90%] lg:w-full z-3 ">
               {/* absolute top-[100px] left-[50%] w-[90%] translate-x-[-50%] */}
               <form
                 onSubmit={handleSubmit(onSubmit, onError)}
@@ -141,6 +152,8 @@ export default function Location() {
                       navigate("/location/view");
                     } else {
                       setDisplay(false);
+                      setDisplay2(false)
+                      setDisplay3(false)
                       setTimeout(() => {
                         console.log("done!");
                         setDisplay(true);
@@ -167,9 +180,13 @@ export default function Location() {
               ))}
             </div>
           </div>
-          {display && (
-            <div className={`w-[393px] lg:h-[calc(100vh-65px)] relative ${selectedIssue && "z-10"}`}>
-              {selectedIssue ? <SelectedIssueD /> : <ViewLocation />}
+          {(display || display2 || display3 || display4) && (
+            <div
+              className={` ${minimize2 || minimize ? "w-full" :  "w-[393px]"} lg:h-[calc(100vh-65px)] relative overflow-y-scroll scrollbar-hide ${
+                selectedIssue && "z-10"
+              }`}
+            >
+              {selectedIssue ? <SelectedIssueD /> : display ? <ViewLocation /> : display2 ? <ViewDay /> : display3 ? <UpdateSurvey minimize2={minimize2} setMinimize2={setMinimize2} /> : display4 ? <NewSurvey minimize={minimize} setMinimize={setMinimize} /> : "" }
             </div>
           )}
 

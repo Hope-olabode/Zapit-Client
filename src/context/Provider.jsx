@@ -12,13 +12,136 @@ export const Provider = ({ children }) => {
   const [previews2, setPreviews2] = useState([]); // store multiple images
   const [imgFiles2, setImgFiles2] = useState([]);
 
-  const [locations, setLocations] = useState([]);
+  const [share, setShare] = useState(false);
+
+  const [locations, setLocations] = useState([
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Yaba",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+    {
+      _id: {
+        $oid: "6908959397c0297993ede122",
+      },
+      name: "Lagos",
+      createdAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      updatedAt: {
+        $date: "2025-11-03T11:44:19.259Z",
+      },
+      __v: 0,
+    },
+  ]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
   const [allSurveys, setAllSurveys] = useState([]);
 
   const [display, setDisplay] = useState(false);
+  const [display2, setDisplay2] = useState(false);
+  const [display3, setDisplay3] = useState(false);
+  const [display4, setDisplay4] = useState(false);
 
   const [location, setLocation] = useState(() => {
     const saved = sessionStorage.getItem("Location");
@@ -46,7 +169,1329 @@ export const Provider = ({ children }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [hold, setHold] = useState(false);
-  const [issues, setIssues] = useState([]);
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const [issues, setIssues] = useState([
+    {
+      _id: { $oid: "6915b83e449df0fa935583e1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583e2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583e3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583e4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583e5" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583e6" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583e7" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583e8" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583e9" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583ea" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583eb" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583ec" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583ed" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Nov, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583ee" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583ef" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Lagos",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f0" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },{
+      _id: { $oid: "6915b83e449df0fa935583f1" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f2" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+    {
+      _id: { $oid: "6915b83e449df0fa935583f3" },
+      description: "Work",
+      Caused_by: "Syress",
+      Responsibility: "Someone",
+      location: "Yaba",
+      status: "Pending",
+      priority: "High",
+      dateTime: "11:51 • 13th Aug, 25",
+      categories: ["Stone", "Lagos"],
+      images: [
+        {
+          url: "https://res.cloudinary.com/do9qn3d7j/image/upload/v1763031101/issues/Yaba/ouvsu3tfqgwwdiasqa2k.png",
+          public_id: "issues/Yaba/ouvsu3tfqgwwdiasqa2k",
+          _id: { $oid: "6915b83e449df0fa935583f4" },
+        },
+      ],
+      createdAt: { $date: "2025-11-13T10:51:42.356Z" },
+      updatedAt: { $date: "2025-11-13T10:51:42.356Z" },
+      __v: 0,
+    },
+  ]);
   const [overlay, setOverlay] = useState(false);
   const [logs, setLogs] = useState(true);
 
@@ -102,13 +1547,12 @@ export const Provider = ({ children }) => {
         const newPreview = URL.createObjectURL(blob);
         setPreviews((prev) => [...prev, newPreview]);
         setImgFiles((prev) => [...prev, file]);
-         
 
         if (isMobile) {
-          setHold(true)
+          setHold(true);
         } else {
-          setHold2(true)
-          setSelectedIssue(false)
+          setHold2(true);
+          setSelectedIssue(false);
         }
       }
     }, "image/png");
@@ -162,7 +1606,7 @@ export const Provider = ({ children }) => {
     const fetchLocations = async () => {
       try {
         const { data } = await api.get("/locations");
-        setLocations(data);
+        // setLocations(data);
       } catch (error) {
         console.error("Error fetching locations:", error);
         if (error.response?.status === 401) {
@@ -205,7 +1649,7 @@ export const Provider = ({ children }) => {
     const fetchIssues = async () => {
       try {
         const { data } = await api.get("/issues");
-        setIssues(data.issues || []);
+        // setIssues(data.issues || []);
         console.log("Fetched Issues from API:", data);
       } catch (error) {
         console.error("Error fetching Issues:", error);
@@ -239,19 +1683,19 @@ export const Provider = ({ children }) => {
   console.log(allSurveys);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth < 1024);
-      };
-  
-      window.addEventListener("resize", handleResize);
-  
-      // Run once to ensure correct width on mount
-      handleResize();
-  
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Run once to ensure correct width on mount
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <Context.Provider
       value={{
@@ -309,12 +1753,24 @@ export const Provider = ({ children }) => {
         setDesktop3,
         display,
         setDisplay,
-        location, setLocation,
-        isMobile, setIsMobile,
-        hold2, setHold2,
-        category, setCategory,
-        viewCategory, setViewCategory
-        
+        location,
+        setLocation,
+        isMobile,
+        setIsMobile,
+        hold2,
+        setHold2,
+        category,
+        setCategory,
+        viewCategory,
+        setViewCategory,
+        display2,
+        setDisplay2,
+        display3,
+        setDisplay3,
+        searchValue,
+        setSearchValue,
+        display4,
+        setDisplay4,share, setShare
       }}
     >
       <Toaster position="top-right" richColors />

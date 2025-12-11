@@ -12,7 +12,7 @@ import capture from "../assets/capture.svg";
 import Camera from "../components/Camera";
 import Capture from "../components/Capture";
 import search from "../assets/search.svg";
-import cancle3 from "../assets/cancle3.svg";
+import cancel3 from "../assets/cancel3.svg";
 import { useForm } from "react-hook-form";
 import LocationLogs from "../components/LocationLogs";
 import LocationSurvey from "../components/LocationSurvey";
@@ -24,6 +24,7 @@ export default function ViewLocation() {
   const [category, setCategory] = useState(false);
   const [viewOnlyCategory, setViewOnlyCategory] = useState(null);
   const [searchActive, setSearchActive] = useState(false);
+  const [menue, setMenue] = useState(false)
 
   const {
     issues,
@@ -37,7 +38,10 @@ export default function ViewLocation() {
     overlay,
     setOverlay,
     filteredSurveys,
-    location
+    location,
+    setDesktop,
+    setDesktop2,
+    setDesktop3,
   } = useContext(Context);
   // const [location, setLocation] = useState(() => {
   //   const saved = sessionStorage.getItem("Location");
@@ -121,7 +125,7 @@ export default function ViewLocation() {
   };
 
   return (
-    <div className="bg-[#E8E9EB] min-h-screen lg:min-h-auto relative pt-4 lg:w-full lg:pt-0 lg:pb-30">
+    <div className="bg-[#E8E9EB] min-h-screen lg:min-h-auto relative pt-4 lg:w-full lg:pt-0 lg:pb-32">
       <div className="fixed bottom-[36px] left-[50%] translate-x-[-50%] z-10 lg:absolute">
         {selectedIssue ? (
           ""
@@ -140,8 +144,8 @@ export default function ViewLocation() {
           </button>
         ) : (
           <button
-            onClick={() => setOverlay(true)}
-            className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
+            onClick={() => filteredSurveys.length === 0 ? navigate("/survey/new") : setOverlay(true)}
+            className="h-[72px] w-[72px] lg:hidden bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
           >
             <img src={surveyImg} alt="survey" />
           </button>
@@ -155,8 +159,15 @@ export default function ViewLocation() {
         [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
         [mask-repeat:no-repeat] [mask-size:100%_100%] lg:hidden"
       ></div>
-      {logs ? <LocationLogs /> : <LocationSurvey />}
-      {overlay && <Overlay filteredSurveys={filteredSurveys} />}
+      {logs ? <LocationLogs menue={menue} setMenue={setMenue} /> : <LocationSurvey menue={menue} setMenue={setMenue} />}
+      {overlay && (
+        <Overlay
+          filteredSurveys={filteredSurveys}
+          setDesktop2={setDesktop2}
+          setDesktop={setDesktop}
+          setDesktop3={setDesktop3}
+        />
+      )}
     </div>
   );
 }

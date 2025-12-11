@@ -1,4 +1,4 @@
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 import deleteImg from "../assets/delete.svg";
 import share from "../assets/share.svg";
 import dropdown from "../assets/dropdown.svg";
@@ -12,12 +12,12 @@ import add2 from "../assets/addImage2.svg";
 import { Context } from "../context/Context";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
-import cc from "../assets/catcancle.svg";
+import cc from "../assets/catcancel.svg";
 import ca from "../assets/catadd.svg";
 import CategoryForm from "./CategoryForm";
 import Camera from "./Camera.jsx";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import IssueLocations from "./IssueLocations";
 import DeleteIssue from "./DeleteIssue.jsx";
 import ShareIssue from "./ShareIssue.jsx";
@@ -38,17 +38,34 @@ export default function SelectedIssueD() {
     selectedIssue,
     loading,
     isMobile,
-    viewCategory, setViewCategory
+    viewCategory,
+    setViewCategory,
   } = useContext(Context);
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       description: selectedIssue?.description || "",
       Caused_by: selectedIssue?.Caused_by || "",
       Responsibility: selectedIssue?.Responsibility || "",
     },
   });
-  
+
+  const causedByValue = watch("Caused_by");
+  const responsibilityValue = watch("Responsibility");
+
+  useEffect(() => {
+    const defaultCausedBy = selectedIssue?.Caused_by || "";
+    setCausedBy(causedByValue !== defaultCausedBy && causedByValue !== "");
+  }, [causedByValue, selectedIssue?.Caused_by]);
+
+  useEffect(() => {
+    const defaultResponsibility = selectedIssue?.Responsibility || "";
+    setResponsibility(
+      responsibilityValue !== defaultResponsibility &&
+        responsibilityValue !== ""
+    );
+  }, [responsibilityValue, selectedIssue?.Responsibility]);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   // const [locationName, setLocationName] = useState("");
@@ -210,7 +227,7 @@ export default function SelectedIssueD() {
     <div className=" flex flex-col  h-[calc(100vh-56px)]">
       <div className="p-4 w-full flex justify-between items-center ">
         <img
-          src={cancle}
+          src={cancel}
           onClick={() => {
             setSelectedIssue(null);
           }}
@@ -238,7 +255,7 @@ export default function SelectedIssueD() {
       </div>
 
       {/* Scrollable content */}
-      <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto">
+      <div className="relative flex-1 bg-white rounded-t-[12px] w-full overflow-y-auto scrollbar-hide">
         <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div className="p-4 relative w-full h-[400px] rounded-xl">
             {selectedIssue.images.length === 0 && (
@@ -410,7 +427,7 @@ export default function SelectedIssueD() {
             <textarea
               {...register("Caused_by", {
                 required: "Cause is required",
-                onChange: () => setCausedBy(true),
+                
               })}
               type="text"
               placeholder="Caused by"
@@ -427,7 +444,7 @@ export default function SelectedIssueD() {
             <textarea
               {...register("Responsibility", {
                 required: "Responsibility is required",
-                onChange: () => setResponsibility(true),
+                
               })}
               type="text"
               placeholder="Responsibility"

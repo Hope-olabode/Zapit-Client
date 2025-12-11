@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import Category from "../components/Category";
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 
 import dropdown from "../assets/dropdown.svg";
 import location3 from "../assets/location3.svg";
@@ -245,7 +245,7 @@ export default function Capture() {
     <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 min-h-[100dvh] lg:static lg:inset-auto lg:min-h-auto lg:h-[calc(100vh-56px)] lg:bg-transparent">
       <div className="p-4 flex justify-center items-center ">
         <img
-          src={cancle}
+          src={cancel}
           onClick={() => {
             setPreviews([]);
             setImgFiles([]);

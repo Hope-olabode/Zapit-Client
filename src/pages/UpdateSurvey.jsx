@@ -1,8 +1,8 @@
 import CategoryCarousel from "./CategorySection";
 import { useForm } from "react-hook-form";
-import { useState, useEffect, useRef } from "react";
-import cancle2 from "../assets/cancle2.svg";
-import cancle from "../assets/cancle.svg";
+import { useState, useEffect, useRef, useContext } from "react";
+import cancel2 from "../assets/cancel2.svg";
+import cancel from "../assets/cancel.svg";
 import save from "../assets/save.svg";
 import save2 from "../assets/save2.svg";
 import mini from "../assets/minimize.svg";
@@ -12,7 +12,7 @@ import location3 from "../assets/location3.svg";
 import Locations from "../components/Locations";
 import Plus from "../assets/add.svg";
 import edit from "../assets/edit.svg";
-import share from "../assets/share2.png";
+import share from "../assets/share2.svg";
 import dele from "../assets/delete2.svg";
 import add from "../assets/addCategories.svg";
 import api from "../api/axios";
@@ -23,16 +23,25 @@ import ExpandingInput from "../components/ExpandingInput";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
+import { NavLink, Link, Outlet, useLocation } from "react-router-dom";
+
 import { toast, Toaster } from "sonner";
 
-export default function UpdateSurvey({setDesktop, minimize, setMinimize}) {
+export default function UpdateSurvey({
+  setDesktop,
+  minimize,
+  setMinimize,
+  minimize2,
+  setMinimize2,
+}) {
+  const { setDisplay, setDisplay2, setDisplay3, setOverlay } = useContext(Context);
   const [selectLocation, setSelectLocation] = useState(false);
 
+  const { pathname } = useLocation();
   // const [title, setTitle] = useState("New Survey");
   const [editTitle, setEditTitle] = useState(false);
 
   const [open, setOpen] = useState(false);
-  
 
   const [surveyData, setSurveyData] = useState(() => {
     const saved = sessionStorage.getItem("selectedSurvey");
@@ -139,30 +148,55 @@ export default function UpdateSurvey({setDesktop, minimize, setMinimize}) {
               type="button"
               onClick={() => {
                 if (isDesktop) {
-                  setDesktop(false)
-                  setMinimize(true);
+                  if (pathname === "/location") {
+                    setDisplay(true);
+                    setDisplay2(false);
+                    setDisplay3(false);
+                    setMinimize2(false);
+                    setOverlay(false);
+                  } else {
+                    setDesktop(false);
+                    setMinimize(true);
+                  }
                 } else {
                   navigate(-1);
                 }
                 sessionStorage.removeItem("selectedSurvey");
-                
-                        
               }}
             >
               {isDesktop ? (
-                <img src={cancle} alt="" />
+                <img src={cancel} alt="" />
               ) : (
-                <img src={cancle2} alt="" />
+                <img src={cancel2} alt="" />
               )}
             </button>
             <div className="lg:flex lg:gap-2">
-              <button className="hidden lg:block" onClick={() => setMinimize(prev => !prev)} type="button">
-                {minimize ? (
-                  <img src={max} alt="" />
-                ) : (
-                  <img src={mini} alt="" />
-                )}
-              </button>
+              {pathname === "/location" ? (
+                <button
+                  className="hidden lg:block"
+                  onClick={() => setMinimize2((prev) => !prev)}
+                  type="button"
+                >
+                  {minimize2 ? (
+                    <img src={max} alt="" />
+                  ) : (
+                    <img src={mini} alt="" />
+                  )}
+                </button>
+              ) : (
+                <button
+                  className="hidden lg:block"
+                  onClick={() => setMinimize((prev) => !prev)}
+                  type="button"
+                >
+                  {minimize ? (
+                    <img src={max} alt="" />
+                  ) : (
+                    <img src={mini} alt="" />
+                  )}
+                </button>
+              )}
+
               <button onClick={handleSubmit}>
                 {isDesktop ? (
                   <img src={save2} alt="" />

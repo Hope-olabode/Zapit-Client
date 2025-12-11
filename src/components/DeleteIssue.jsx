@@ -35,9 +35,9 @@ export default function DeleteIssue({ img, setConfirmDelete }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20">
+    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20 lg:bg-transparent lg:flex justify-center lg:items-center">
       <Toaster position="top-center" richColors />
-      <div className="absolute w-full bottom-[0px] bg-[#F6F7F9] px-4 pt-10 pb-6 rounded-t-3xl flex flex-col gap-6 justify-center items-center">
+      <div className="absolute w-full bottom-[0px] bg-[#F6F7F9] px-4 pt-10 pb-6 rounded-t-3xl flex flex-col gap-6 justify-center items-center lg:w-[393px] lg:right-[32px] lg:bottom-auto lg:top-[100px] lg:pb-10 lg:border lg:border-black lg:rounded-3xl">
         <div className="shadow-[4.2px_3.2px_0px_0px_#1B1D22] rounded-[7.68px] overflow-hidden">
           <img className="w-[128px] h-[153px]" src={firstImageUrl} alt="" />
         </div>

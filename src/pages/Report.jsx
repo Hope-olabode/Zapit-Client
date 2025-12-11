@@ -1,18 +1,47 @@
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 import search from "../assets/search.svg";
 import { Context } from "../context/Context";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Chart from "../components/Chart.jsx";
 
-export default function Report() {
-  const { issues } = useContext(Context);
+import CircularChart from "../components/CircularChart.jsx";
+import CategoryBreakdown from "../components/CategoryBreakdown.jsx";
+import HeatMap from "../components/HeatMap.jsx";
+import ComparativeAnalytics from "../components/ComparativeAnalytics.jsx";
+import CurvedProgressBar from "../components/CurvedProgressBar.jsx";
+import HighIssueLocation from "../components/HighIssueLocation.jsx";
+import CustomLineChart from "../components/TrendChart.jsx";
 
+export default function Report() {
+  const { issues, isMobile } = useContext(Context);
+  const [barLocation, setBarLocation] = useState("");
+  const [barLocationView, setBarLocationView] = useState(false);
+  const [cALogs, setCALogs] = useState(true);
+  const [location1, setLocation1] = useState("");
+  const [location2, setLocation2] = useState("");
+  const [drop1, setDrop1] = useState(false);
+  const [drop2, setDrop2] = useState(false);
+
+  // Counts
   const pendingCount = issues.filter((i) => i.status === "Pending").length;
   const inProgressCount = issues.filter(
     (i) => i.status === "In Progress"
   ).length;
   const resolvedCount = issues.filter((i) => i.status === "Resolved").length;
   const totalCount = issues.length;
+
+  const filteredIssues =
+    barLocation === ""
+      ? issues
+      : issues.filter((i) => i.location === barLocation);
+
+  // Count categories FROM filteredIssues
+  const categoryCount = {};
+  filteredIssues.forEach((issue) => {
+    issue.categories.forEach((cat) => {
+      categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+    });
+  });
 
   const stats = [
     {
@@ -46,33 +75,41 @@ export default function Report() {
     return index === 0 ? length + 4 : length + 1;
   };
 
-  const circles = Array.from({ length: 60 });
+  useEffect(() => {
+    if (barLocationView || drop1 || drop2) {
+      document.body.style.overflow = "hidden"; // disable scroll
+    } else {
+      document.body.style.overflow = "auto"; // enable scroll
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // cleanup
+    };
+  }, [barLocationView, drop1, drop2]);
 
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll ">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] scrollbar-hide lg:pr-6 overflow-x-scroll">
       <Toaster position="top-center" richColors />
 
       {/* Background pattern */}
       <div
         className="z-[1] w-full absolute top-0 h-[50%]
         bg-[length:23px_23px] 
-        bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]
-        [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
-        [mask-repeat:no-repeat] [mask-size:100%_100%]"
+        bg-[repeating-linear-gradient(0deg,#e1e2e5b0_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#e1e2e5b0_0_1px,transparent_1px_23px)]"
       ></div>
 
-      <div className="w-full relative z-5 px-4 mb-[150px]">
-        <div className="flex justify-between items-center mt-4 w-full">
-          <p className=" font-benton-black text-[32px] leading-[130%] tracking-[-0.5px] text-[#1B1D22]">
+      <div className="w-full relative z-5 px-4 pb-[150px] lg:pl-[144px] lg:pt-[56px] scrollbar-hide">
+        <div className="flex justify-between items-center mt-4 w-full lg:mt-0">
+          <p className="font-benton-black text-[32px] leading-[130%] tracking-[-0.5px] text-[#1B1D22]">
             Analytics
           </p>
-          <div className="p-4">
+          <div className="p-4 lg:hidden">
             <img src={search} alt="" />
           </div>
         </div>
 
         {/* Stats bar */}
-        <div className=" my-4 mb-10">
+        <div className="my-4 mb-10 lg:w-[393px]">
           <div className="flex items-stretch border-2 border-black rounded-[16px] overflow-hidden w-full">
             {stats.map((stat, i) => (
               <div
@@ -90,7 +127,9 @@ export default function Report() {
             ))}
           </div>
         </div>
-        <div className="div">
+
+        {/* Fake Trend Chart */}
+        {/* <div>
           <p className="font-benton-black text-[16px] leading-[150%] text-[#1B1D22]">
             Issue Trends
           </p>
@@ -102,71 +141,100 @@ export default function Report() {
               <div className="w-[1px] h-[60%] bg-white"></div>
             </div>
             <div className="h-[40px] w-[calc(100%-12px)] bg-white border-2 rounded-xl absolute bottom-[6px] left-1/2 -translate-x-1/2 flex overflow-hidden">
-              <div className="flex w-[8.3333333%] justify-evenly">
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-              </div>
-              <div className="flex w-[8.3333333%] justify-evenly">
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-              </div>
-              <div className="flex w-[8.3333333%] justify-evenly">
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                <div className="h-[40px] w-[1px] bg-amber-600"></div>
-              </div>
+              {[1, 2, 3].map((_, i) => (
+                <div key={i} className="flex w-[8.3333333%] justify-evenly">
+                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
+                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
+                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
+                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
+                </div>
+              ))}
             </div>
+          </div>
+        </div> */}
+        <CustomLineChart />
+
+        {isMobile && (
+          <div className="h-[200px] flex mb-10 gap-4">
+            <div className="w-[50%]">
+              <CurvedProgressBar percent={75} />
+            </div>
+            <div className="w-[50%] h-full">
+              <HighIssueLocation />
+            </div>
+          </div>
+        )}
+
+        {isMobile && (
+          <div className="">
+            {/* Circular Chart */}
+            <CircularChart />
+          </div>
+        )}
+
+        <div className={`${isMobile ? "" : "flex w-full gap-10 mt-10"}`}>
+          <div className={`${isMobile ? "" : "w-[55%]"}`}>
+            {/* Category Breakdown */}
+            <CategoryBreakdown
+              barLocation={barLocation}
+              setBarLocation={setBarLocation}
+              barLocationView={barLocationView}
+              setBarLocationView={setBarLocationView}
+            />
+          </div>
+
+          <div className={`${isMobile ? "" : "w-[45%]"}`}>
+            {/* Heat Map */}
+            <HeatMap />
           </div>
         </div>
-        <div className="border-2 rounded-2xl h-[240px] bg-[#F6F7F9] flex overflow-hidden">
-          <div className="w-[33%] h-[100%] p-4 flex flex-col justify-between">
-            <p className="font-benton-black text-[15px] leading-[150%] text-[#1B1D22]">
-              Issue Percentage
-            </p>
-            <div className="div h-[84px] flex flex-col justify-between">
-              <div className="div flex justify-between font-benton-bold text-[12px]">
-                <p className="text-[#A1A6B0]">All</p>
-                <p className="text-[#1B1D22]">146</p>
+
+        {/*  */}
+        
+        {isMobile ? (
+          <ComparativeAnalytics
+          cALogs={cALogs}
+          setCALogs={setCALogs}
+          drop1={drop1}
+          setDrop1={setDrop1}
+          drop2={drop2}
+          setDrop2={setDrop2}
+          location1={location1}
+          setLocation1={setLocation1}
+          location2={location2}
+          setLocation2={setLocation2}
+        />
+        ) : (
+          <div className="flex gap-10 mt-10 h-[530px]">
+            <div className="w-[55%]">
+              <ComparativeAnalytics
+              cALogs={cALogs}
+              setCALogs={setCALogs}
+              drop1={drop1}
+              setDrop1={setDrop1}
+              drop2={drop2}
+              setDrop2={setDrop2}
+              location1={location1}
+              setLocation1={setLocation1}
+              location2={location2}
+              setLocation2={setLocation2}
+            />
+            </div>
+            <div className="flex flex-col w-[45%] gap-4">
+              <div className="h-[240px]">
+                <CircularChart />
               </div>
-              <div className="div flex justify-between font-benton-bold text-[12px]">
-                <p className="text-[#FFC529]">Pending</p>
-                <p className="text-[#1B1D22]">26</p>
-              </div>
-              <div className="div flex justify-between font-benton-bold text-[12px]">
-                <p className="text-[#1513EC]">In Progress</p>
-                <p className="text-[#1B1D22]">18</p>
-              </div>
-              <div className="div flex justify-between font-benton-bold text-[12px]">
-                <p className="text-[#48BB78]">Resolved</p>
-                <p className="text-[#1B1D22]">108</p>
+              <div className="h-[240px] flex mb-10 gap-4">
+                <div className="w-[50%]">
+                  <CurvedProgressBar percent={75} />
+                </div>
+                <div className="w-[50%] h-full">
+                  <HighIssueLocation />
+                </div>
               </div>
             </div>
           </div>
-          <div className="w-[67%] h-full overflow-hidden">
-            {/* <Chart /> */}
-            <div className="relative w-full h-full  overflow-visible flex justify-center items-center">
-              {circles.map((_, i) => {
-                const size = 100 + i * 10; // start at 100px, grow by +2px each circle
-                return (
-                  <div
-                    key={i}
-                    className="absolute border border-[#E1E2E5] rounded-full"
-                    style={{
-                      width: `${size}px`,
-                      height: `${size}px`,
-                    }}
-                  />
-                );
-              })}
-              <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"><Chart /></div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

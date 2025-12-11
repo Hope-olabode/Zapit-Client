@@ -49,13 +49,13 @@ export default function IssueLocations({
   };
 
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20">
-      <div className="absolute bottom-[0px] w-[100%] left-[50%] translate-x-[-50%] bg-[#F6F7F9]  pt-6 rounded-4xl">
+    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20 lg:bg-[#00000000]">
+      <div className="absolute bottom-[0px] w-[100%] left-[50%] translate-x-[-50%] bg-[#F6F7F9] pt-6 rounded-4xl lg:w-[393px] lg:bottom-[50%] lg:translate-y-[50%]">
         <p className=" text-center font-benton-black text-[16px] leading-[125%] mb-6">
           Locations
         </p>
         <div className="w-full h-0.5 bg-black mb-6"></div>
-        <div className="px-4">
+        <div className="px-4 lg:h-[300px] lg:overflow-y-scroll scrollbar-hide">
           <div className="border-2 w-[100%] border-black rounded-xl overflow-hidden  bg-[#F6F7F9]  z-3">
             <form
               onSubmit={handleSubmit(onSubmitLocation, onError)}
@@ -102,8 +102,7 @@ export default function IssueLocations({
                     setSelect(!isSameLocation);
                   }}
                   className={`flex items-center border-b-2 border-black last:border-b-0 px-4 py-3 cursor-pointer
-        ${isSelected ? "bg-[#E0FFFA]" : "bg-transparent"}
-      `}
+                  ${isSelected ? "bg-[#E0FFFA]" : "bg-transparent"}`}
                 >
                   {/* Number */}
                   <span className="w-6 font-benton-bold text-[16px] leading-[150%]">
@@ -127,7 +126,9 @@ export default function IssueLocations({
               );
             })}
           </div>
-          <div className="flex gap-4 justify-center items-center mt-6 mb-[29px]">
+          
+        </div>
+        <div className="flex gap-4 justify-center items-center mt-6 mb-[29px] px-4">
             <button
               onClick={() => {
                 setSelectLocation(false);
@@ -158,7 +159,6 @@ export default function IssueLocations({
               Done
             </button>
           </div>
-        </div>
       </div>
     </div>
   );

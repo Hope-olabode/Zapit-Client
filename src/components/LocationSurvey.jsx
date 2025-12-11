@@ -1,16 +1,28 @@
 import back from "../assets/back.svg";
-import menue from "../assets/menue.svg";
+import men from "../assets/menue.svg";
 
 import { Context } from "../context/Context";
 import { useState, useContext, useEffect, useMemo } from "react";
 
 import { useNavigate } from "react-router-dom";
+import EditLocation from "./EditLocation";
+import Menue from "./Menue";
 
 export default function LocationSurvey() {
-  const { logs, setLogs, allSurveys, filteredSurveys, setFilteredSurveys } =
-    useContext(Context);
+  const {
+    logs,
+    setLogs,
+    allSurveys,
+    filteredSurveys,
+    setFilteredSurveys,
+    isMobile,
+    setDisplay,
+    setDisplay2,
+    display3,
+    setDisplay3,
+  } = useContext(Context);
 
-  const [location, _setLocation] = useState(() => {
+  const [location, setLocation] = useState(() => {
     const saved = sessionStorage.getItem("Location");
     return saved ? JSON.parse(saved) : null; // load from storage if exists
   });
@@ -37,6 +49,9 @@ export default function LocationSurvey() {
   const [selectedMonth, setSelectedMonth] = useState(
     months[currentDate.getMonth()].short
   );
+
+  const [editLocation, setEditLocation] = useState(false);
+  const [menue, setMenue] = useState(false);
 
   // 🔹 Filter surveys based on month/year
   useEffect(() => {
@@ -76,10 +91,16 @@ export default function LocationSurvey() {
       <div className=" relative w-full px-4 z-5 ">
         {/* Top navigation */}
 
-        <div className="flex flex-row justify-between items-center  w-full py-4 h-[48px] mb-4">
+        <div className="flex flex-row justify-between items-center z-20  w-full py-4 h-[48px] mb-4">
           <button
             className="w-[48px] h-[48px] flex justify-center items-center"
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              if (isMobile) {
+                navigate(-1);
+              } else {
+                setDisplay(false);
+              }
+            }}
           >
             <img className="w-[32px] h-[32px]" src={back} alt="" />
           </button>
@@ -101,9 +122,10 @@ export default function LocationSurvey() {
               Survey
             </button>
           </div>
-          <button className="flex-shrink-0">
-            <img src={menue} alt="menu" />
+          <button onClick={() => setMenue(true)} className="flex-shrink-0">
+            <img src={men} alt="menu" />
           </button>
+         
         </div>
 
         {/* Location title */}
@@ -184,7 +206,14 @@ export default function LocationSurvey() {
                       "selectedSurvey",
                       JSON.stringify(survey)
                     );
-                    navigate("/survey/update");
+                    if (isMobile) {
+                      navigate("/survey/update");
+                    } else {
+                      setDisplay(false);
+                      setDisplay2(false);
+                      console.log(1);
+                      setDisplay3(true);
+                    }
                   }}
                   className="flex items-center border-b-2 border-black last:border-b-0 px-4 py-3 cursor-pointer hover:bg-gray-100 transition"
                 >
@@ -203,6 +232,15 @@ export default function LocationSurvey() {
           </div>
         )}
       </div>
+       {menue && (
+            <Menue setMenue={setMenue} setEditLocation={setEditLocation} />
+          )}
+      {editLocation && (
+        <EditLocation
+          setEditLocation={setEditLocation}
+          setLocation={setLocation}
+        />
+      )}
     </div>
   );
 }

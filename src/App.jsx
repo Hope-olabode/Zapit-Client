@@ -20,6 +20,8 @@ import ViewLocation from "./pages/ViewLocation.jsx"
 import ViewDay from "./pages/ViewDay.jsx"
 import Chat from "./components/Chart.jsx"
 import Line from "./pages/Line.jsx"
+import Profile from "./pages/Profile.jsx";
+import Menue from "./components/Menue.jsx";
 
 export default function App() {
   return (
@@ -41,12 +43,15 @@ export default function App() {
         <Route path="/survey/edit" element={<NewSurvey />} caseSensitive />
         <Route path="/survey/new" element={<NewSurvey />} caseSensitive />
         <Route path="/survey/update" element={<UpdateSurvey />} caseSensitive />
+        <Route path="/profile" element={<Profile />} caseSensitive />
+
         
         
         <Route path="/location/view" element={<ViewLocation />} caseSensitive />
           <Route path="/location/view/day" element={<ViewDay />} caseSensitive />
           <Route path="/chat" element={<Chat />} caseSensitive />
           <Route path="/line" element={<Line />} caseSensitive />
+          <Route path="/e" element={<Menue />} caseSensitive />
 
       </Routes>
     </>

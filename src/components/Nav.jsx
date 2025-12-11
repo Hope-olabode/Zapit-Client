@@ -8,6 +8,7 @@ import reportb from "../assets/reportb.svg";
 import capture from "../assets/capture.svg";
 import surveyImg from "../assets/survey.svg";
 import smallLogo from "../assets/smallLogo.svg";
+import share2 from "../assets/share2.svg";
 import profile from "../assets/profile.svg";
 import { Context } from "../context/Context";
 import {
@@ -18,6 +19,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import addLocation from "../assets/addLocation.svg"; // 👈 alternate image for active state
+import { set } from "react-hook-form";
 
 export default function Nav() {
   const {
@@ -27,6 +29,10 @@ export default function Nav() {
     setOverlay,
     filteredSurveys,
     setDesktop2,
+    isMobile,
+    setDisplay4,
+    setDisplay,
+    setDisplay2,setShare
   } = useContext(Context);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -78,20 +84,22 @@ export default function Nav() {
 
         {pathname === "/surveys" ? (
           <div className="div">
-            {<button
-              onClick={
-                filteredSurveys.length === 0
-                  ? ()=> navigate("/survey/new")
-                  : () => setOverlay(true)
-              }
-              className="lg:hidden h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
-            >
-              <img src={surveyImg} alt="survey" />
-            </button>}
+            {
+              <button
+                onClick={
+                  filteredSurveys.length === 0
+                    ? () => navigate("/survey/new")
+                    : () => setOverlay(true)
+                }
+                className="lg:hidden h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
+              >
+                <img src={surveyImg} alt="survey" />
+              </button>
+            }
             <button
               onClick={
                 filteredSurveys.length === 0
-                  ? ()=>setDesktop2(true)
+                  ? () => setDesktop2(true)
                   : () => setOverlay(true)
               }
               className="hidden lg:flex h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform items-center justify-center transition-all duration-150"
@@ -101,10 +109,37 @@ export default function Nav() {
           </div>
         ) : pathname === "/location" ? (
           <button
-            onClick={() => setOverlay(true)}
+            onClick={() => {
+              if (pathname === "/location") {
+                if (isMobile) {
+                  navigate("/survey/new");
+                } else {
+                  if (setDisplay) {
+                    if (filteredSurveys.length === 0) {
+                      setDisplay(false);
+                      setDisplay2(false);
+                      setDisplay4(true);
+                    } else {
+                      setOverlay(true);
+                    }
+                  } else {
+                    setDisplay4(true);
+                  }
+                }
+              } else {
+                setOverlay(true);
+              }
+            }}
             className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
           >
             <img src={surveyImg} alt="capture" />
+          </button>
+        ) : pathname === "/report" ? (
+          <button
+            className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
+            onClick={()=>setShare(true)}
+          >
+            <img src={share2} alt="capture" />
           </button>
         ) : (
           <button

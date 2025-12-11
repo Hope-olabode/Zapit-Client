@@ -1,4 +1,4 @@
-import cc from "../assets/catcancle.svg";
+import cc from "../assets/catcancel.svg";
 import ca from "../assets/catadd.svg";
 import { useContext } from "react";
 import { Context } from "../context/Context";

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 import capture from "../assets/capture.svg";
 import { Context } from "../context/Context";
 import SelectedIssue from "./SelectedIssue";
@@ -24,7 +24,7 @@ export default function Camera({ update }) {
       {/* Cancel button at the top */}
       <div className="p-4 flex w-full justify-center">
         <img
-          src={cancle}
+          src={cancel}
           onClick={stopCamera}
           alt="cancel"
           className="w-14 h-14"

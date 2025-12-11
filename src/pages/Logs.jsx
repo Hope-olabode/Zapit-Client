@@ -4,7 +4,7 @@ import profile from "../assets/profile.svg";
 import Category from "../components/Category";
 import LoadedIssues from "../components/LoadedIssuesD";
 import logo2 from "../assets/logo2.svg";
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 
 import dropdown from "../assets/dropdown.svg";
 import location3 from "../assets/location3.svg";
@@ -28,9 +28,10 @@ import Surveys from "./Survey";
 import LogsSurveyNav from "../components/logsSurveyNav";
 import Capture from "../components/Capture";
 
-export default function Logs() {
-  const { register, handleSubmit, reset } = useForm();
+import { useNavigate } from "react-router-dom";
 
+export default function Logs() {
+  const { register, handleSubmit, reset, watch } = useForm();
   const {
     cameraActive,
     previews,
@@ -55,8 +56,14 @@ export default function Logs() {
     survey,
     setSurvey,
     isMobile,
-    hold2
+    hold2,
   } = useContext(Context);
+
+  const searchTerm = watch("search", "");
+
+  const filteredIssues = issues.filter((issue) =>
+    issue.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const [category, setCategory] = useState(false);
   const [status, setStatus] = useState("Pending");
@@ -180,11 +187,11 @@ export default function Logs() {
   }, []);
 
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] lg:px-">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] scrollbar-hide ">
       <Toaster position="top-center" richColors />
 
       <div className="lg:hidden">
-        <LogsSurveyNav />
+        <LogsSurveyNav register={register} />
       </div>
       {/* Background pattern */}
       <div
@@ -201,13 +208,18 @@ export default function Logs() {
         <>
           {issues.length === 0 ? (
             <div className="lg:pl-[144px] lg:pr-10 lg:pt-[56px] lg:flex lg:gap-8">
-              <div className={`${hold2 ? "lg:w-[calc(100%-425px)]" : "w-full"}`}>
+              <div
+                className={`${hold2 ? "lg:w-[calc(100%-425px)]" : "w-full"}`}
+              >
                 <div className="hidden lg:block relative z-20">
-                  <LogsSurveyNav />
+                  <LogsSurveyNav register={register} />
                 </div>
                 <div className="flex justify-center items-center h-[calc(100vh-109.59px)] ">
                   <div className="text-center z-[2]  flex flex-col justify-center items-center gap-2 ">
-                    <img src={logo2} alt="" />
+                    <img
+                      src={logo2}
+                      alt=""
+                    />
                     <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px]">
                       No Logged Issue
                     </h1>
@@ -218,7 +230,7 @@ export default function Logs() {
                   </div>
                 </div>
               </div>
-              <div className= {`${hold2 ? "w-[393px] z-10" : ""}`}>
+              <div className={`${hold2 ? "w-[393px] z-10" : ""}`}>
                 {hold2 && <Capture />}
               </div>
             </div>

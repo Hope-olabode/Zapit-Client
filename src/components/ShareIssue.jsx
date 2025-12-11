@@ -1,18 +1,18 @@
-import cancle from "../assets/cancle.svg";
+import cancel from "../assets/cancel.svg";
 import location4 from "../assets/location4.svg";
 import by from "../assets/by.svg";
 import { Context } from "../context/Context";
 import { useContext } from "react";
 
-export default function Share({ selectedIssue }) {
+export default function Share({ selectedIssue, setShareIssue }) {
   const { loading } = useContext(Context);
   return (
-    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20">
-      <div className="absolute w-full bottom-[0px] flex flex-col justify-center items-center gap-4">
+    <div className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-20 lg:bg-transparent lg:flex justify-center lg:items-center">
+      <div className="absolute w-full bottom-[0px] flex flex-col justify-center items-center gap-4 lg:w-[393px] lg:static lg:pb-10 ">
         <div className="div">
-          <img src={cancle} alt="" />
+          <img src={cancel} onClick={()=>setShareIssue(false)} alt="" />
         </div>
-        <div className=" w-full bg-[#F6F7F9] px-4 pt-4 pb-6 rounded-t-3xl">
+        <div className=" w-full bg-[#F6F7F9] px-4 pt-4 pb-6 rounded-t-3xl lg:border lg:rounded-3xl lg:border-black">
           <img
             className="h-[400px] w-full rounded-[12px] mb-6"
             src={selectedIssue.images[0].url}

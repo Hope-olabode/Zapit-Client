@@ -7,7 +7,7 @@ import SelectedIssue from "./SelectedIssue";
 
 export default function IssuesByMonth({ filteredIssues }) {
   const navigate = useNavigate();
-  const { setSelectedIssue, selectedIssue } = useContext(Context);
+  const { setSelectedIssue, selectedIssue, setDisplay, setDisplay2, setDisplay3 } = useContext(Context);
   // ✅ Step 1: Group issues by month
   const groupedIssues = useMemo(() => {
     const groups = {};
@@ -60,8 +60,12 @@ export default function IssuesByMonth({ filteredIssues }) {
   // ✅ Handle month click
   const handleMonthClick = (month) => {
     sessionStorage.setItem("Month", JSON.stringify(month));
-    navigate("/location/view/day");
+    // navigate("/location/view/day");
     console.log(month);
+    setDisplay(false) 
+    setDisplay2(true)
+    setDisplay3(false)
+    setSelectedIssue(false)
   };
 
   return (

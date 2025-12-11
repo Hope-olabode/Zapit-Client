@@ -5,7 +5,7 @@ import clock from "../assets/clock.svg";
 import dropdown from "../assets/dropdown.svg";
 import empty from "../assets/empty.svg";
 
-import cc from "../assets/catcancle.svg";
+import cc from "../assets/catcancel.svg";
 import ca from "../assets/catadd.svg";
 import SelectedIssue from "./SelectedIssue";
 

@@ -1,17 +1,26 @@
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../context/Context";
 import copy from "../assets/copy.svg";
-import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Overlay({ filteredSurveys, setDesktop2, setDesktop, setDesktop3 }) {
+export default function Overlay({
+  filteredSurveys,
+  setDesktop2,
+  setDesktop,
+  setDesktop3,
+}) {
   // const [filteredSurveys, setFilteredSurveys ] = useState([]);
-  const { setOverlay } = useContext(Context);
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const navigate = useNavigate();
-  
+  const {
+    setOverlay,
+    setDisplay4,
+    setDisplay,
+    setDisplay2,
+    setDisplay3,
+    isMobile,
+  } = useContext(Context);
 
-  
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <div className="div lg">
@@ -47,14 +56,22 @@ export default function Overlay({ filteredSurveys, setDesktop2, setDesktop, setD
                       JSON.stringify(survey)
                     );
                     setOverlay(false);
-                    if (isDesktop) {
-                      setDesktop3(true);
-                      setDesktop2(false);
-                      setDesktop(false);
-                    } else {
+                    if (isMobile) {
                       navigate("/survey/new");
+                    } else {
+                      if (pathname === "/location") {
+                        setDisplay4(true);
+                        setDesktop(false);
+                        setDesktop3(false);
+                        setDisplay(false);
+                        setDisplay2(false);
+                        setDisplay3(false);
+                      } else {
+                        setDesktop3(true);
+                        setDesktop2(false);
+                        setDesktop(false);
+                      }
                     }
-                    
                   }}
                   className="flex justify-between items-center border-b-2 border-black last:border-b-0 px-4 pb-3 pt-4 cursor-pointer hover:bg-gray-100 transition"
                 >
@@ -77,12 +94,21 @@ export default function Overlay({ filteredSurveys, setDesktop2, setDesktop, setD
                 sessionStorage.removeItem("selectedSurvey");
                 setOverlay(false);
 
-                if (isDesktop) {
-                  setDesktop2(true);
-                  setDesktop(false);
-                  setDesktop3(false);
-                } else {
+                if (isMobile) {
                   navigate("/survey/new");
+                } else {
+                  if (pathname === "/location") {
+                    setDisplay4(true);
+                    setDesktop(false);
+                    setDesktop3(false);
+                    setDisplay(false);
+                    setDisplay2(false);
+                    setDisplay3(false);
+                  } else {
+                    setDesktop2(true);
+                    setDesktop(false);
+                    setDesktop3(false);
+                  }
                 }
               }}
               className="h-14 bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22] font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150 w-full"

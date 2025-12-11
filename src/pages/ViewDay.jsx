@@ -13,7 +13,7 @@ import Capture from "../components/Capture";
 import { useNavigate } from "react-router-dom";
 import SelectedIssue from "../components/SelectedIssue";
 import search from "../assets/search.svg";
-import cancle3 from "../assets/cancle3.svg";
+import cancel3 from "../assets/cancel3.svg";
 import { useForm } from "react-hook-form";
 
 export default function ViewDay() {
@@ -39,6 +39,10 @@ export default function ViewDay() {
     hold,
     setSelectedIssue,
     selectedIssue,
+    isMobile,
+    setDisplay,
+    setDisplay2,
+    setDisplay3
   } = useContext(Context);
   const [location, setLocation] = useState(() => {
     const saved = sessionStorage.getItem("Location");
@@ -239,7 +243,7 @@ export default function ViewDay() {
       <div className="fixed bottom-[36px] left-[50%] translate-x-[-50%] z-10">
         <button
           className="
-          h-[72px] w-[72px] bg-[#4ECDC4]
+          h-[72px] w-[72px]  bg-[#4ECDC4]
           font-benton-black text-[21px] leading-[150%]
           rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22]
           active:shadow-[0px_0px_0px_0px_#1B1D22]
@@ -252,7 +256,7 @@ export default function ViewDay() {
       </div>
 
       <div
-        className="z-[1] w-full absolute top-0 h-[50%]
+        className="z-[1] w-full absolute top-0 h-[50%] lg:hidden
         bg-[length:23px_23px] 
         bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]
         [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
@@ -262,7 +266,15 @@ export default function ViewDay() {
         {/* Top navigation */}
 
         <div className="w-full py-4 h-[48px] mb-4">
-          <button onClick={() => navigate(-1)}>
+          <button onClick={() => {
+            if (isMobile) {
+              navigate(-1)
+            } else {
+              setDisplay(true)
+              setDisplay2(false)
+              setDisplay3(false)
+            }
+          }}>
             <img src={back} alt="" />
           </button>
         </div>
@@ -339,7 +351,7 @@ export default function ViewDay() {
                 setSearchActive(false);
                 setValue("searchTerm", ""); // ✅ clears the input
               }}
-              src={cancle3}
+              src={cancel3}
               alt=""
             />
             <div className="flex items-center gap-2 h-[26px] rounded-[72px] px-2 border border-[#1B1D22] bg-[#F6F6F6] w-full mr-2 ml">
@@ -392,7 +404,7 @@ export default function ViewDay() {
 
             {category && (
               <div className="div">
-                <div className="top-0 left-[16px] z-30 absolute">
+                <div className="top-0 left-[16px] z-40 absolute">
                   <Category
                     selectedCategories={selectedCategories}
                     setSelectedCategories={setSelectedCategories}
@@ -400,7 +412,7 @@ export default function ViewDay() {
                 </div>
                 <div
                   onClick={() => setCategory(false)}
-                  className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
+                  className="fixed inset-0 bg-[#00000000] flex flex-col z-10 h-screen"
                 ></div>
               </div>
             )}
@@ -411,7 +423,7 @@ export default function ViewDay() {
         {/* Issues list or empty state */}
         {filteredIssues.length === 0 ? (
           <div className="min-h-[60vh] flex flex-col justify-center items-center w-full">
-            searchActive ? (
+            {searchActive ? (
             <div className="flex flex-col items-center justify-center text-center">
               <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px] text-[#1B1D22]">
                 "{searchTerm}"
@@ -424,7 +436,7 @@ export default function ViewDay() {
             <p className="text-center text-[#292C33] font-benton-regular text-[15px] leading-[150%]">
               No log found
             </p>
-            )
+            )}
           </div>
         ) : (
           <div className="flex flex-col border rounded-2xl bg-[#F6F7F9] w-full">

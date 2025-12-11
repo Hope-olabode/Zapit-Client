@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Context } from "../context/Context";
-import cc from "../assets/catcancle.svg";
+import cc from "../assets/catcancel.svg";
 import ca from "../assets/catadd.svg";
 
 export default function CategorySelector() {

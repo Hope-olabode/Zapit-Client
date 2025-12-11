@@ -66,7 +66,7 @@ function CategorySection({
         return (
           <div
             className={`${
-              categories.length === 1 ? "w-full lg:min-w-[26vw]" : "min-w-[85vw] lg:min-w-[23vw]"
+              categories.length === 1 ? "w-full lg:w-[393px]" : "min-w-[85vw] lg:min-w-[23vw]"
             } snap-center overflow-visible`}
           >
             <div className="div relative overflow-visible">
@@ -205,12 +205,15 @@ function CategorySection({
                         NO
                       </button>
 
-                      <img
-                        src={plus}
-                        alt="add"
-                        onClick={addQuestion}
-                        className="cursor-pointer"
-                      />
+                      <button
+                        type="button"
+                        onClick={() => handleAnswer(qIndex, "Neutral")}
+                        className={`flex-1 h-10 rounded-lg border-2 border-[#464646] text-[#464646] font-bold text-[12px] ${
+                          q.answer === "Neutral" ? "bg-[#A1A6B0]" : ""
+                        }`}
+                      >
+                        Neutral
+                      </button>
                     </div>
                   </div>
                 ))}

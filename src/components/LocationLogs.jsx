@@ -1,5 +1,5 @@
 import back from "../assets/back.svg";
-import menue from "../assets/menue.svg";
+import men from "../assets/menue.svg";
 import dropdown from "../assets/dropdown.svg";
 import displayimg from "../assets/display.svg";
 import { Context } from "../context/Context";
@@ -12,14 +12,18 @@ import capture from "../assets/capture.svg";
 import Camera from "../components/Camera";
 import Capture from "../components/Capture";
 import search from "../assets/search.svg";
-import cancle3 from "../assets/cancle3.svg";
+import cancel3 from "../assets/cancel3.svg";
 import { useForm } from "react-hook-form";
+import Menue from "./Menue";
+import EditLocation from "./EditLocation";
 
-export default function LocationLogs() {
+
+export default function LocationLogs({menue, setMenue}) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [category, setCategory] = useState(false);
   const [viewOnlyCategory, setViewOnlyCategory] = useState(null);
   const [searchActive, setSearchActive] = useState(false);
+  const [editLocation, setEditLocation] = useState(false)
 
   const {
     issues,
@@ -157,9 +161,10 @@ export default function LocationLogs() {
               Survey
             </button>
           </div>
-          <button className="flex-shrink-0">
-            <img src={menue} alt="menu" />
+          <button onClick={()=>setMenue(true)} className="flex-shrink-0">
+            <img src={men} alt="menu" />
           </button>
+          {menue && <Menue setMenue={setMenue} setEditLocation={setEditLocation} />}
         </div>
 
         {/* Location title */}
@@ -198,7 +203,7 @@ export default function LocationLogs() {
                 setSearchActive(false);
                 setValue("searchTerm", ""); // ✅ clears the input
               }}
-              src={cancle3}
+              src={cancel3}
               alt=""
             />
             <div className="flex items-center gap-2 h-[26px] rounded-[72px] px-2 border border-[#1B1D22] bg-[#F6F6F6] w-full mr-2 ml">
@@ -266,7 +271,7 @@ export default function LocationLogs() {
           </div>
         )}
         {filteredIssues.length === 0 ? (
-          <div className="min-h-[60vh] flex flex-col justify-center items-center w-full">
+          <div className="min-h-[60vh] flex flex-col justify-center items-center w-full lg:justify-start lg:min-h-auto lg:h-[calc(100vh-400px)] ">
             {searchActive ? (
               <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="font-benton-black text-[24px] leading-[125%] tracking-[-0.5px] text-[#1B1D22]">
@@ -289,6 +294,7 @@ export default function LocationLogs() {
 
       {cameraActive && <Camera update={update} />}
       {hold && <Capture />}
+      {editLocation && <EditLocation setEditLocation={setEditLocation} setLocation={setLocation} />}
     </div>
   );
 }
