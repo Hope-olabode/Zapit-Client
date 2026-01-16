@@ -1,7 +1,7 @@
 import { Context } from "../context/Context";
 import { useContext } from "react";
 import dropdown from "../assets/dropdown.svg";
-import dbar from "../assets/defaultbar.svg";
+import dbar from "../assets/defaultBar.svg";
 
 export default function CategoryBreakdown({
   barLocation,
