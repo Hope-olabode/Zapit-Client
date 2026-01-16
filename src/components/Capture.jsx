@@ -15,7 +15,7 @@ import clock from "../assets/clock.svg";
 import empty from "../assets/empty.svg";
 import add2 from "../assets/addImage2.svg";
 
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import CategoryForm from "../components/CategoryForm";
 import Locations from "../components/Locations";
 
@@ -196,6 +196,7 @@ export default function Capture() {
     formData.append("status", status);
     formData.append("priority", status2);
     formData.append("dateTime", formattedDateTime);
+   
 
     // Append categories (if array)
     selectedCategories.forEach((category) => {
@@ -208,6 +209,9 @@ export default function Capture() {
     });
 
     console.log(formData);
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     try {
       // 🛰 Send to your Express route

@@ -92,6 +92,47 @@ export default function SelectedIssueD() {
     });
   };
 
+  const getFormattedDateTime = () => {
+    const now = new Date();
+
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    const day = now.getDate();
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear().toString().slice(-2);
+
+    const getOrdinal = (n) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    return `${hours}:${minutes} • ${day}${getOrdinal(day)} ${month}, ${year}`;
+  };
+
   const deleteLastImage = () => {
     setImgFiles2((prevImages) => prevImages.slice(0, -1));
     setSelectedIssue((prev) => ({
@@ -167,10 +208,14 @@ export default function SelectedIssueD() {
         data.Responsibility || selectedIssue.Responsibility
       );
       formData.append("location", selectedIssue.location);
-      formData.append("status", selectedIssue.status);
-      formData.append("priority", selectedIssue.priority);
+      formData.append("status", status);
+      console.log(status);
+      formData.append("priority", status2);
       formData.append("dateTime", selectedIssue.dateTime);
       formData.append("categories", JSON.stringify(selectedIssue.categories));
+      if (status === "Resolved") {
+        formData.append("completedAt", getFormattedDateTime());
+      }
 
       // 🔹 Append only valid Cloudinary images
       const existingUrls = (selectedIssue.images || [])
@@ -427,7 +472,6 @@ export default function SelectedIssueD() {
             <textarea
               {...register("Caused_by", {
                 required: "Cause is required",
-                
               })}
               type="text"
               placeholder="Caused by"
@@ -444,7 +488,6 @@ export default function SelectedIssueD() {
             <textarea
               {...register("Responsibility", {
                 required: "Responsibility is required",
-                
               })}
               type="text"
               placeholder="Responsibility"

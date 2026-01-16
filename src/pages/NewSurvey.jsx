@@ -17,7 +17,7 @@ import { Context } from "../context/Context";
 import CcInput from "./cc";
 import ExpandingInput from "../components/ExpandingInput";
 import api from "../api/axios";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import save2 from "../assets/save2.svg";
 import mini from "../assets/minimize.svg";
 import max from "../assets/maximize.svg";
@@ -216,7 +216,6 @@ export default function NewSurvey({
 
   return (
     <div className="bg-[#E8E9EB] min-h-screen relative pt-4 lg:pt-0 lg:bg-transparent">
-      <Toaster position="top-center" richColors />
       <div
         className="z-[1] w-full absolute top-0 h-[50%]
         bg-[length:23px_23px] 

@@ -13,6 +13,8 @@ import LogsSurveyNav from "../components/logsSurveyNav";
 import Capture from "./Capture";
 import Category from "./Category";
 import Category2 from "./CategoryTwo";
+import cancel from "../assets/cancel3.svg";
+import searchi from "../assets/search.svg";
 
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useForm } from "react-hook-form";
@@ -30,6 +32,8 @@ export default function LoadedIssues() {
     isMobile,
     viewCategory,
     setViewCategory,
+    search,
+    setSearch,
   } = useContext(Context);
   const { register, watch } = useForm();
 
@@ -95,9 +99,9 @@ export default function LoadedIssues() {
 
   return (
     <div className="scrollbar-hide">
-      <div className="absolute mt-[88px] lg:pt-[56px] lg:mt-0 w-full right-[50%] translate-x-[50%] z-5 lg:w-[calc(100%-184px)] lg:right-10 lg:translate-x-0 flex ">
+      <div className="absolute mt-[88px]  lg:mt-0 w-full right-[50%] translate-x-[50%] z-5 lg:w-[calc(100%-184px)] lg:right-10 lg:translate-x-0 flex ">
         <div
-          className={`w-full lg:h-[calc(100vh-56px)] overflow-y-scroll scrollbar-hide lg:pb-30 ${
+          className={`w-full lg:h-[calc(100vh-56px)] lg:pt-[56px] overflow-y-scroll scrollbar-hide lg:pb-30 ${
             selectedIssue || hold2 ? "lg:w-[calc(100%-425px)]" : ""
           } lg:pr-[32px]`}
         >
@@ -324,6 +328,45 @@ export default function LoadedIssues() {
                       </div>
                     );
                   })}
+                </div>
+              ) : (
+                <div className="w-full flex justify-center items-center h-[190px]">
+                  <p>No log matches your search input</p>
+                </div>
+              )}
+            </div>
+          ) : search ? (
+            <div className="div px-4">
+              <div className="flex ">
+                <img onClick={() => setSearch(false)} src={cancel} alt="" />
+                <div className="flex gap-2 px-2 bg-[#F6F6F6] rounded-full h-[36px] w-full border">
+                  <img src={searchi} alt="" />
+                  <input
+                    {...register("search")}
+                    className="border-0 focus:outline-none w-full text-[#1B1D22] font-benton-bold text-[14px] leading-[16px] tracking-[-0.5px]"
+                    type="text"
+                  />
+                </div>
+              </div>
+              {filteredIssues.length != 0 ? (
+                <div className="grid grid-cols-2 gap-4 mt-10">
+                  {filteredIssues.map((issue, index) => (
+                    <div
+                      key={index}
+                      className="border rounded-2xl overflow-hidden"
+                    >
+                      <img
+                        className="h-[144px] w-full"
+                        src={issue.images[0].url}
+                        alt=""
+                      />
+                      <div className="h-[24px] flex items-center ">
+                        <p className=" font-benton-bold text-[12px] leading-[150%] truncate px-2">
+                          {issue.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="w-full flex justify-center items-center h-[190px]">

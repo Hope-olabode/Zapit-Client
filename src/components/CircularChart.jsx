@@ -1,6 +1,7 @@
 import { Context } from "../context/Context";
 import { useContext } from "react";
 import Chart from "./Chart.jsx"
+import dcc from "../assets/dcircularchart.svg";
 
 export default function CircularChart() {
   const { issues } = useContext(Context);
@@ -53,11 +54,11 @@ export default function CircularChart() {
             );
           })}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Chart
+            {issues.length === 0 ? <img src={dcc} alt="" /> : <Chart
               value1={pendingCount}
               value2={inProgressCount}
               value3={resolvedCount}
-            />
+            />}
           </div>
         </div>
       </div>

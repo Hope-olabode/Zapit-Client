@@ -79,7 +79,7 @@ export default function Surveys() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll lg:overflow-x-auto">
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] overflow-x-scroll lg:overflow-x-auto scrollbar-hide">
       <div className="lg:hidden">
         <LogsSurveyNav register={register}  />
       </div>

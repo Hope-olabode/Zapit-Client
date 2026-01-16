@@ -5,7 +5,7 @@ import ButtonLoader from "../components/ButtonLoader";
 import mail from "../assets/mail.svg";
 import key from "../assets/key.svg";
 import logo from "../assets/logo.svg";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export default function Home() {
   const { register, handleSubmit } = useForm();
@@ -42,7 +42,6 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-gray-100">
-      <Toaster position="top-center" richColors />
 
       <div className="text-center relative h-[47%] flex flex-col justify-center bg-[length:23px_23px] bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]">
         <img

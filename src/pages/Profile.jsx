@@ -1,15 +1,65 @@
-import { useState } from "react";
+import { useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import back from "../assets/back.svg";
 import SL from "../assets/stambicLogo.svg";
 import plus from "../assets/plus.svg";
 import minus from "../assets/minus.svg";
+import api from "../api/axios";
+import { Context } from "../context/Context";
+import { Toaster, toast } from "sonner";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [sla, setSla] = useState(1);
+
+  const saveTimeout = useRef(null);
+  const { sla, setSla } = useContext(Context);
+
+  const increaseSla = () => {
+    setSla((prev) => prev + 1);
+  };
+
+  const decreaseSla = () => {
+    setSla((prev) => (prev > 1 ? prev - 1 : 1));
+  };
+
+  useEffect(() => {
+    // Clear previous timer
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current);
+    }
+
+    // Start new debounce timer
+    saveTimeout.current = setTimeout(async () => {
+      try {
+        await api.post("/sla", { sla });
+      } catch (error) {
+        console.error("Failed to auto-save SLA", error);
+      }
+    }, 600); // ⏱️ delay in ms
+
+    // Cleanup on unmount
+    return () => clearTimeout(saveTimeout.current);
+  }, [sla]);
+
+  const logoutUser = async () => {
+  try {
+    const res = await api.post("auth/logout");
+    toast.success(res.data.message); // access the message property
+    navigate('/', { replace: true });
+    return { success: true, data: res.data };
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Logout failed. Please try again.")
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Logout failed. Please try again.",
+    };
+  }
+};
+
   return (
     <div className="h-screen w-full relative bg-[#E8E9EB]">
+      
       <div
         className="z-[1] w-full absolute top-0 h-[50%]
         bg-[length:23px_23px] 
@@ -46,19 +96,20 @@ export default function Profile() {
               </p>
             </div>
             <div className="h-[64px] rounded-2xl bg-[#FFFFFF] flex items-center justify-center w-[160px] ">
-              <div onClick={() => setSla((prev) => prev + 1)} className="pr-7">
+              <div onClick={increaseSla} className="pr-7 cursor-pointer">
                 <img src={plus} alt="" />
               </div>
               <p className="w-8 h-8 font-benton-black text-[#1B1D22] text-[21px] leading-[150%] flex justify-center">
                 {sla}
               </p>
-              <div onClick={() => setSla((prev) => prev - 1)} className="pl-7">
+              <div onClick={decreaseSla} className="pl-7 cursor-pointer">
                 <img src={minus} alt="" />
               </div>
             </div>
           </div>
         </div>
         <button
+          onClick={() => logoutUser()}
           type="submit"
           className="h-14 w-full bg-[#D60000] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
         >

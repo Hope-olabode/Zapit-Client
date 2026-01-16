@@ -22,6 +22,7 @@ import Chat from "./components/Chart.jsx"
 import Line from "./pages/Line.jsx"
 import Profile from "./pages/Profile.jsx";
 import Menue from "./components/Menue.jsx";
+import Share from "./components/Share.jsx";
 
 export default function App() {
   return (
@@ -52,6 +53,7 @@ export default function App() {
           <Route path="/chat" element={<Chat />} caseSensitive />
           <Route path="/line" element={<Line />} caseSensitive />
           <Route path="/e" element={<Menue />} caseSensitive />
+          <Route path="/share" element={<Share />} caseSensitive />
 
       </Routes>
     </>

@@ -8,7 +8,7 @@ import key from "../assets/key.svg";
 import logo from "../assets/logo.svg";
 import view1 from "../assets/view1.svg";
 import view2 from "../assets/view2.svg";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 export default function Home() {
   const { register, handleSubmit } = useForm();
@@ -43,20 +43,22 @@ export default function Home() {
 
   return (
     <div className="h-[100dvh] bg-gray-100">
-      <Toaster position="top-center" richColors />
-
       <div className="text-center relative h-[47%] flex flex-col justify-center bg-[length:23px_23px] bg-[repeating-linear-gradient(0deg,#FFFFFF70_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#FFFFFF70_0_1px,transparent_1px_23px)]">
-        <img
-          className="mx-auto absolute top-[-188px] left-[50%] translate-x-[-50%] pt-20"
-          src={logo}
-          alt="logo"
-        />
-        <h1 className="text-[48px] font-benton-black mb-4 leading-[125%] text-[#1B1D22] tracking-[-1.5px]">
-          Welcome back!
-        </h1>
-        <p className="font-benton-regular text-[15px] leading-[150%] text-[#292C33]">
-          Enter email and password.
-        </p>
+        <div className="mx-auto absolute top-[-188px] left-[50%] translate-x-[-50%] pt-20 flex flex-col items-center w-full">
+          <img
+            className=""
+            src={logo}
+            alt="logo"
+          />
+          <div className="div">
+            <h1 className="text-[48px] font-benton-black mb-4 leading-[125%] text-[#1B1D22] tracking-[-1.5px]">
+              Welcome back!
+            </h1>
+            <p className="font-benton-regular text-[15px] leading-[150%] text-[#292C33]">
+              Enter email and password.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="h-[53%] flex flex-col items-center overflow-hidden relative">
@@ -66,7 +68,11 @@ export default function Home() {
             className="h-full bg-[#F6F7F9] flex flex-col gap-4 p-6 w-full lg:w-[600px] lg:px-0 justify-between absolute left-[50%] translate-x-[-50%]"
           >
             <div className="flex flex-col gap-6">
-              <div className={`flex items-center gap-2 h-12 border-b-2  ${green1 ? "border-b-[#4ECDC4]":"border-b-[#E8E9EB]"}`}>
+              <div
+                className={`flex items-center gap-2 h-12 border-b-2  ${
+                  green1 ? "border-b-[#4ECDC4]" : "border-b-[#E8E9EB]"
+                }`}
+              >
                 <img src={mail} alt="" />
                 <input
                   {...register("email", {
@@ -79,7 +85,11 @@ export default function Home() {
                 />
               </div>
 
-              <div className={`flex items-center gap-2 h-12 border-b-2 ${green2 ? "border-b-[#4ECDC4]":"border-b-[#E8E9EB]"}`}>
+              <div
+                className={`flex items-center gap-2 h-12 border-b-2 ${
+                  green2 ? "border-b-[#4ECDC4]" : "border-b-[#E8E9EB]"
+                }`}
+              >
                 <img src={key} alt="" />
                 <input
                   {...register("password", {

@@ -1,7 +1,6 @@
-import { Toaster } from "sonner";
 import search from "../assets/search.svg";
 import { Context } from "../context/Context";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useMemo } from "react";
 import Chart from "../components/Chart.jsx";
 
 import CircularChart from "../components/CircularChart.jsx";
@@ -12,8 +11,13 @@ import CurvedProgressBar from "../components/CurvedProgressBar.jsx";
 import HighIssueLocation from "../components/HighIssueLocation.jsx";
 import CustomLineChart from "../components/TrendChart.jsx";
 
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import Share from "../components/Share.jsx";
+import slide from "../assets/slide.svg";
+
 export default function Report() {
-  const { issues, isMobile } = useContext(Context);
+  const { issues, isMobile, share, setShare } = useContext(Context);
   const [barLocation, setBarLocation] = useState("");
   const [barLocationView, setBarLocationView] = useState(false);
   const [cALogs, setCALogs] = useState(true);
@@ -75,31 +79,47 @@ export default function Report() {
     return index === 0 ? length + 4 : length + 1;
   };
 
-  useEffect(() => {
-    if (barLocationView || drop1 || drop2) {
-      document.body.style.overflow = "hidden"; // disable scroll
-    } else {
-      document.body.style.overflow = "auto"; // enable scroll
-    }
+  // useEffect(() => {
+  //   if (barLocationView || drop1 || drop2) {
+  //     document.body.style.overflow = "hidden"; // disable scroll
+  //   } else {
+  //     document.body.style.overflow = "auto"; // enable scroll
+  //   }
 
-    return () => {
-      document.body.style.overflow = "auto"; // cleanup
-    };
-  }, [barLocationView, drop1, drop2]);
+  //   return () => {
+  //     document.body.style.overflow = "auto"; // cleanup
+  //   };
+  // }, [barLocationView, drop1, drop2]);
+
+  const currentDate = new Date();
+
+  const highPriorityThisMonth = useMemo(() => {
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+
+  return issues.filter((issue) => {
+    const created = new Date(issue.createdAt);
+    return (
+      issue.priority === "High" &&
+      created.getMonth() === month &&
+      created.getFullYear() === year
+    );
+  }).length;
+}, [issues]);
+
 
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] scrollbar-hide lg:pr-6 overflow-x-scroll">
-      <Toaster position="top-center" richColors />
-
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] lg:pr-6 scrollbar-hide">
       {/* Background pattern */}
       <div
         className="z-[1] w-full absolute top-0 h-[50%]
         bg-[length:23px_23px] 
-        bg-[repeating-linear-gradient(0deg,#e1e2e5b0_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#e1e2e5b0_0_1px,transparent_1px_23px)]"
+        bg-[repeating-linear-gradient(0deg,#e1e2e5b0_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#e1e2e5b0_0_1px,transparent_1px_23px)] scrollbar-hide"
       ></div>
 
       <div className="w-full relative z-5 px-4 pb-[150px] lg:pl-[144px] lg:pt-[56px] scrollbar-hide">
-        <div className="flex justify-between items-center mt-4 w-full lg:mt-0">
+        <div className="flex justify-between items-center pt-4 w-full lg:mt-0">
           <p className="font-benton-black text-[32px] leading-[130%] tracking-[-0.5px] text-[#1B1D22]">
             Analytics
           </p>
@@ -109,49 +129,45 @@ export default function Report() {
         </div>
 
         {/* Stats bar */}
-        <div className="my-4 mb-10 lg:w-[393px]">
-          <div className="flex items-stretch border-2 border-black rounded-[16px] overflow-hidden w-full">
-            {stats.map((stat, i) => (
-              <div
-                key={stat.label}
-                className={`${stat.color} ${stat.textColor} p-4 flex flex-col justify-between min-w-[60px]`}
-                style={{ flexGrow: getFlexGrow(stat.value, i), flexBasis: 0 }}
-              >
-                <p className="font-benton-bold text-[12px] leading-[150%] truncate mb-[40px]">
-                  {stat.label}
-                </p>
-                <p className="font-benton-black text-[32px] tracking-[-0.5px] leading-[75%]">
-                  {stat.value}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Fake Trend Chart */}
-        {/* <div>
-          <p className="font-benton-black text-[16px] leading-[150%] text-[#1B1D22]">
-            Issue Trends
-          </p>
-          <div className="h-[400px] w-full border-2 rounded-2xl mt-1.5 mb-10 bg-[#F6F7F9] relative overflow-hidden">
-            <div className="relative w-full h-[50%] bg-black p-4 flex justify-between">
-              <div className="w-[1px] h-full bg-white absolute top-0"></div>
-              <div className="w-[1px] h-[40%] bg-white"></div>
-              <div className="w-[1px] h-[20%] bg-white"></div>
-              <div className="w-[1px] h-[60%] bg-white"></div>
-            </div>
-            <div className="h-[40px] w-[calc(100%-12px)] bg-white border-2 rounded-xl absolute bottom-[6px] left-1/2 -translate-x-1/2 flex overflow-hidden">
-              {[1, 2, 3].map((_, i) => (
-                <div key={i} className="flex w-[8.3333333%] justify-evenly">
-                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
-                  <div className="h-[40px] w-[1px] bg-amber-600"></div>
+        <div className="flex justify-between">
+          <div className="my-4 mb-10 lg:w-[393px]">
+            <div className="flex items-stretch border-2 border-black rounded-[16px] overflow-hidden w-full">
+              {stats.map((stat, i) => (
+                <div
+                  key={stat.label}
+                  className={`${stat.color} ${stat.textColor} p-4 flex flex-col justify-between min-w-[60px]`}
+                  style={{ flexGrow: getFlexGrow(stat.value, i), flexBasis: 0 }}
+                >
+                  <p className="font-benton-bold text-[12px] leading-[150%] truncate mb-[40px]">
+                    {stat.label}
+                  </p>
+                  <p className="font-benton-black text-[32px] tracking-[-0.5px] leading-[75%]">
+                    {stat.value}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
-        </div> */}
+          <div className="border-2 mt-4 border-black rounded-2xl bg-[#F6F7F9] h-[120px] hidden lg:flex w-[393px]">
+            <div className="w-1/2 p-4 flex flex-col justify-between h-full border-black border-r-[0.5px]">
+              <div className="div">
+                <p className="font-benton-bold text-[#1B1D22] text-[12px] leading-[150%]">
+                  Urgency: High
+                </p>
+                <p className="font-benton-bold text-[#A1A6B0] text-[12px] leading-[150%]">
+                  {currentDate.toLocaleString("en-NG", { month: "long" })}
+                </p>
+              </div>
+              <div className="flex flex-col justify-end">
+                <h1  className="font-benton-black text-[#1B1D22] h-[34px] text-[32px] leading-[130%] tracking-[-0.5px]">{highPriorityThisMonth}</h1>
+              </div>
+            </div>
+            <div className="w-1/2 h-full flex items-center border-black border-l-[0.5px]">
+              <img src={slide} alt="" />
+            </div>
+          </div>
+        </div>
+
         <CustomLineChart />
 
         {isMobile && (
@@ -190,35 +206,35 @@ export default function Report() {
         </div>
 
         {/*  */}
-        
+
         {isMobile ? (
           <ComparativeAnalytics
-          cALogs={cALogs}
-          setCALogs={setCALogs}
-          drop1={drop1}
-          setDrop1={setDrop1}
-          drop2={drop2}
-          setDrop2={setDrop2}
-          location1={location1}
-          setLocation1={setLocation1}
-          location2={location2}
-          setLocation2={setLocation2}
-        />
+            cALogs={cALogs}
+            setCALogs={setCALogs}
+            drop1={drop1}
+            setDrop1={setDrop1}
+            drop2={drop2}
+            setDrop2={setDrop2}
+            location1={location1}
+            setLocation1={setLocation1}
+            location2={location2}
+            setLocation2={setLocation2}
+          />
         ) : (
           <div className="flex gap-10 mt-10 h-[530px]">
             <div className="w-[55%]">
               <ComparativeAnalytics
-              cALogs={cALogs}
-              setCALogs={setCALogs}
-              drop1={drop1}
-              setDrop1={setDrop1}
-              drop2={drop2}
-              setDrop2={setDrop2}
-              location1={location1}
-              setLocation1={setLocation1}
-              location2={location2}
-              setLocation2={setLocation2}
-            />
+                cALogs={cALogs}
+                setCALogs={setCALogs}
+                drop1={drop1}
+                setDrop1={setDrop1}
+                drop2={drop2}
+                setDrop2={setDrop2}
+                location1={location1}
+                setLocation1={setLocation1}
+                location2={location2}
+                setLocation2={setLocation2}
+              />
             </div>
             <div className="flex flex-col w-[45%] gap-4">
               <div className="h-[240px]">
@@ -236,6 +252,14 @@ export default function Report() {
           </div>
         )}
       </div>
+      {share && (
+        <div
+          onClick={() => setShare(false)}
+          className="fixed inset-0 z-20 bg-[#0000006c]"
+        >
+          <Share />
+        </div>
+      )}
     </div>
   );
 }

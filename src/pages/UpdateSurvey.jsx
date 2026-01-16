@@ -25,7 +25,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 
 import { NavLink, Link, Outlet, useLocation } from "react-router-dom";
 
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 export default function UpdateSurvey({
   setDesktop,
@@ -133,7 +133,6 @@ export default function UpdateSurvey({
 
   return (
     <div className="bg-[#E8E9EB] min-h-screen lg:min-h-auto relative pt-4 lg:pt-0 lg:bg-transparent">
-      <Toaster position="top-center" richColors />
       <div
         className="z-[1] w-full absolute top-0 h-[50%] lg:hidden
         bg-[length:23px_23px] 

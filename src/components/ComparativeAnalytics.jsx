@@ -2,6 +2,7 @@ import { Context } from "../context/Context";
 import { useContext } from "react";
 import dropdown from "../assets/dropdown.svg";
 import compare from "../assets/compare.svg";
+import dca from "../assets/dca.svg";
 
 export default function ComparativeAnalytics({
   cALogs,
@@ -67,8 +68,8 @@ export default function ComparativeAnalytics({
   };
 
   return (
-    <div className="mt-10 lg:relative lg:mt-0 lg:h-full lg:border-2 lg:rounded-2xl lg:bg-[#F6F7F9]">
-      <div className="lg:absolute lg:top-4 lg:z-10 w-full lg:px-4 lg:flex lg:justify-between lg:items-center">
+    <div className="mt-10 lg:mt-0">
+      <div className="lg:flex lg:justify-between items-center lg:mb-2">
         <div className="div">
           <p className="mb-2 font-benton-black text-[16px] leading-[150%] text-[#1B1D22]">
             Comparative Analysis
@@ -102,137 +103,144 @@ export default function ComparativeAnalytics({
         </div>
       </div>
 
-      <div className="h-[434px] overflow-y-auto border-2 rounded-2xl relative bg-[#F6F7F9] lg:bg-transparent lg:border-none lg:rounded-none">
+      <div className="h-[332px] lg:h-[470px] overflow-y-auto border-2 rounded-2xl relative bg-[#F6F7F9]">
         <div
-          className="z-[1] w-full absolute top-0 h-[50%]
+          className="z-[1] w-full absolute top-0 h-[70%]
               bg-[length:23px_23px] 
               bg-[repeating-linear-gradient(0deg,#e1e2e5b0_0_1px,transparent_1px_23px),repeating-linear-gradient(90deg,#e1e2e5b0_0_1px,transparent_1px_23px)]
-              [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_70%,rgba(0,0,0,0)_100%)]
+              [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_0%,rgba(0,0,0,1)_0%,rgba(0,0,0,0)_100%)]
               [mask-repeat:no-repeat] [mask-size:100%_100%]"
         ></div>
-        <div className="relative z-10 lg:top-[68px]">
-          <div className="flex justify-between z-10 relative pt-1.5 px-1.5 lg:px-4">
-            <div className="div">
-              <div
-                onClick={() => setDrop1(true)}
-                className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6] z-20 cursor-pointer"
-              >
-                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
-                  {location1 || "Select Location"}
-                </p>
-                <img src={dropdown} alt="" />
-              </div>
-
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className={`${
-                  drop1 ? "absolute" : "hidden"
-                } top-[6px] left-[6px] rounded-2xl border-2 w-[200px] bg-[#F6F6F6] border-[#464646] h-[200px] z-30 overflow-y-scroll scrollbar-hide`}
-              >
-                {locations.map((location, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setLocation1(location.name);
-                      setDrop1(false);
-                    }}
-                    className={`px-2 h-8 flex items-center text-[#464646] border-t ${
-                      index === 0 ? "border-t-0" : ""
-                    }`}
-                  >
-                    {location.name}
-                  </div>
-                ))}
-              </div>
-
-              {/* Overlay click area */}
-              <div
-                onClick={() => setDrop1(false)}
-                className={`${drop1 ? "fixed" : "hidden"}  inset-0 z-10`}
-              ></div>
-            </div>
-            <img src={compare} alt="" />
-            <div className="div">
-              <div
-                onClick={() => setDrop2(true)}
-                className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6] z-20 cursor-pointer"
-              >
-                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
-                  {location2 || "Select Location"}
-                </p>
-                <img src={dropdown} alt="" />
-              </div>
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className={`${
-                  drop2 ? "absolute" : "hidden"
-                } top-[6px] right-[6px] rounded-2xl border-2 w-[200px] bg-[#F6F6F6] border-[#464646] h-[200px] z-30 overflow-y-scroll scrollbar-hide`}
-              >
-                {locations.map((location, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setLocation2(location.name);
-                      setDrop2(false);
-                    }}
-                    className={`px-2 h-8 flex items-center text-[#464646] border-t ${
-                      index === 0 ? "border-t-0" : ""
-                    }`}
-                  >
-                    {location.name}
-                  </div>
-                ))}
-              </div>
-
-              {/* Overlay click area */}
-              <div
-                onClick={() => setDrop2(false)}
-                className={`${drop2 ? "fixed" : "hidden"}  inset-0 z-10`}
-              ></div>
-            </div>
+        {issues.length === 0 ? (
+          <div className="flex justify-center items-center gap-3 flex-col h-full">
+            <img src={dca} alt="" />
+            <p className="font-benton-regular text-[10px] leading-[150%]">There is currently no data to display.</p>
           </div>
-          <div className="mt-6 relative  px-1.5">
-            {location1 && location2 && (
-              <div className="mt-4">
-                <div className=" overflow-hidden ">
-                  {getAllCategories().map((category, index) => {
-                    const location1Stats = getCategoryStats(location1);
-                    const location2Stats = getCategoryStats(location2);
-                    const count1 = location1Stats[category] || 0;
-                    const count2 = location2Stats[category] || 0;
-
-                    return (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center  last:border-b-0 h-12 "
-                      >
-                        <div
-                          className={`flex items-center w-[29px] h-[29px] rounded-full justify-center   ${getComparisonColor(
-                            count1,
-                            count2
-                          )}`}
-                        >
-                          {count1 > 0 ? count1 : "-"}
-                        </div>
-                        <div className="flex items-center justify-center bg-[#E8E9EB] px-[7px] h-[26px] rounded-full font-semibold font-sans text-[12px] leading-[16px] tracking-[-0.5px] text-[#464646]">
-                          <span className="truncate">{category}</span>
-                        </div>
-                        <div
-                          className={`flex items-center w-[29px] h-[29px] rounded-full justify-center  ${getComparisonColor(
-                            count2,
-                            count1
-                          )}`}
-                        >
-                          {count2 > 0 ? count2 : "-"}
-                        </div>
-                      </div>
-                    );
-                  })}
+        ) : (
+          <div className="relative z-10 ">
+            <div className="flex justify-between z-10 relative pt-1.5 px-1.5 lg:px-4">
+              <div className="div">
+                <div
+                  onClick={() => setDrop1(true)}
+                  className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6] z-20 cursor-pointer"
+                >
+                  <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
+                    {location1 || "Select Location"}
+                  </p>
+                  <img src={dropdown} alt="" />
                 </div>
+
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className={`${
+                    drop1 ? "absolute" : "hidden"
+                  } top-[6px] left-[6px] rounded-2xl border-2 w-[200px] bg-[#F6F6F6] border-[#464646] h-[200px] z-30 overflow-y-scroll scrollbar-hide`}
+                >
+                  {locations.map((location, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setLocation1(location.name);
+                        setDrop1(false);
+                      }}
+                      className={`px-2 h-8 flex items-center text-[#464646] border-t ${
+                        index === 0 ? "border-t-0" : ""
+                      }`}
+                    >
+                      {location.name}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Overlay click area */}
+                <div
+                  onClick={() => setDrop1(false)}
+                  className={`${drop1 ? "fixed" : "hidden"}  inset-0 z-10`}
+                ></div>
               </div>
-            )}
+              <img src={compare} alt="" />
+              <div className="div">
+                <div
+                  onClick={() => setDrop2(true)}
+                  className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6] z-20 cursor-pointer"
+                >
+                  <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
+                    {location2 || "Select Location"}
+                  </p>
+                  <img src={dropdown} alt="" />
+                </div>
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className={`${
+                    drop2 ? "absolute" : "hidden"
+                  } top-[6px] right-[6px] rounded-2xl border-2 w-[200px] bg-[#F6F6F6] border-[#464646] h-[200px] z-30 overflow-y-scroll scrollbar-hide`}
+                >
+                  {locations.map((location, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setLocation2(location.name);
+                        setDrop2(false);
+                      }}
+                      className={`px-2 h-8 flex items-center text-[#464646] border-t ${
+                        index === 0 ? "border-t-0" : ""
+                      }`}
+                    >
+                      {location.name}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Overlay click area */}
+                <div
+                  onClick={() => setDrop2(false)}
+                  className={`${drop2 ? "fixed" : "hidden"}  inset-0 z-10`}
+                ></div>
+              </div>
+            </div>
+            <div className="mt-6 relative  px-1.5">
+              {location1 && location2 && (
+                <div className="mt-4">
+                  <div className=" overflow-hidden ">
+                    {getAllCategories().map((category, index) => {
+                      const location1Stats = getCategoryStats(location1);
+                      const location2Stats = getCategoryStats(location2);
+                      const count1 = location1Stats[category] || 0;
+                      const count2 = location2Stats[category] || 0;
+
+                      return (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center  last:border-b-0 h-12 "
+                        >
+                          <div
+                            className={`flex items-center w-[29px] h-[29px] rounded-full justify-center   ${getComparisonColor(
+                              count1,
+                              count2
+                            )}`}
+                          >
+                            {count1 > 0 ? count1 : "-"}
+                          </div>
+                          <div className="flex items-center justify-center bg-[#E8E9EB] px-[7px] h-[26px] rounded-full font-semibold font-sans text-[12px] leading-[16px] tracking-[-0.5px] text-[#464646]">
+                            <span className="truncate">{category}</span>
+                          </div>
+                          <div
+                            className={`flex items-center w-[29px] h-[29px] rounded-full justify-center  ${getComparisonColor(
+                              count2,
+                              count1
+                            )}`}
+                          >
+                            {count2 > 0 ? count2 : "-"}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

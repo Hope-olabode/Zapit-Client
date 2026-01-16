@@ -1,23 +1,8 @@
-import search from "../assets/search.svg";
-
-import profile from "../assets/profile.svg";
 import Category from "../components/Category";
 import LoadedIssues from "../components/LoadedIssuesD";
 import logo2 from "../assets/logo2.svg";
-import cancel from "../assets/cancel.svg";
-
-import dropdown from "../assets/dropdown.svg";
-import location3 from "../assets/location3.svg";
-import api from "../api/axios";
-import ai from "../assets/addImage.svg";
-import di from "../assets/deleteImage.svg";
-import clock from "../assets/clock.svg";
-
-import empty from "../assets/empty.svg";
-import add2 from "../assets/addImage2.svg";
 import { Context } from "../context/Context";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
 import CategoryForm from "../components/CategoryForm";
 import Locations from "../components/Locations";
 
@@ -31,30 +16,13 @@ import Capture from "../components/Capture";
 import { useNavigate } from "react-router-dom";
 
 export default function Logs() {
-  const { register, handleSubmit, reset, watch } = useForm();
+  const { register,  watch } = useForm();
   const {
     cameraActive,
-    previews,
-    setPreviews,
-    stopCamera,
-
-    startCamera,
-
-    loading,
-    setLoading,
-    imgFiles,
-    setImgFiles,
-    showAddModal,
-    setShowAddModal,
-    selectedCategories,
     hold,
-    setHold,
     issues,
-    setIssues,
-    setSelectedCategories,
     update,
     survey,
-    setSurvey,
     isMobile,
     hold2,
   } = useContext(Context);
@@ -65,36 +33,12 @@ export default function Logs() {
     issue.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [category, setCategory] = useState(false);
-  const [status, setStatus] = useState("Pending");
-  const [status2, setStatus2] = useState("High");
-  const [selectLocation, setSelectLocation] = useState(false);
-
-  const [locationName, setLocationName] = useState("");
+  
   const [formattedDateTime, setFormattedDateTime] = useState(
     getFormattedDateTime()
   );
 
-  const handleClick = () => {
-    setStatus((prev) => {
-      if (prev === "Pending") return "In Progress";
-      if (prev === "In Progress") return "Resolved";
-      return "Pending";
-    });
-  };
-
-  const getStatusStyles = () => {
-    switch (status) {
-      case "Pending":
-        return "bg-[#FFC529] text-[#461B02] border-[#461B02]";
-      case "In Progress":
-        return "bg-[#1513EC] text-[#D2D2F4] border-[#00003D]";
-      case "Resolved":
-        return "bg-[#73CA5E] text-[#0D301C] border-[#317223]";
-      default:
-        return "";
-    }
-  };
+  
 
   // const handleClick2 = () => {
   //   setStatus2((prev) => {
@@ -187,8 +131,7 @@ export default function Logs() {
   }, []);
 
   return (
-    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] scrollbar-hide ">
-      <Toaster position="top-center" richColors />
+    <div className="h-full min-h-screen w-full relative bg-[#E8E9EB] scrollbar-hide overflow-y-auto scrollbar-hide">
 
       <div className="lg:hidden">
         <LogsSurveyNav register={register} />

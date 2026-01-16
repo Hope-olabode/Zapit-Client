@@ -46,7 +46,7 @@ export default function Nav() {
   };
 
   return (
-    <div className="lg:flex lg:justify-between lg:flex-col lg:h-full ">
+    <div className="lg:flex lg:justify-between lg:flex-col lg:h-full lg:items-center">
       <img className="hidden lg:block" src={smallLogo} alt="" />
       <div className="flex flex-row items-center justify-center gap-[8px] z-10 lg:flex-col">
         <div className="flex w-[160px] h-[64px] lg:w-[64px] lg:h-[160px] justify-center gap-7 items-center rounded-[16px] bg-white lg:flex-col">
@@ -150,7 +150,7 @@ export default function Nav() {
           </button>
         )}
       </div>
-      <img className="hidden lg:block" src={profile} alt="" />
+      <img onClick={() => navigate("/profile")} className="hidden lg:block lg:w-[48px] lg:h-[48px]" src={profile} alt="" />
     </div>
   );
 }

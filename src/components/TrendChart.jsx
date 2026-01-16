@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { Context } from "../context/Context";
 import dropdown from "../assets/dropdown.svg";
+import dline from "../assets/defaultline.svg";
 
 const CustomLineChart = () => {
   const { isMobile, categories, issues, locations } = useContext(Context);
@@ -118,14 +119,21 @@ const CustomLineChart = () => {
       if (svgRef.current) {
         const { width } = svgRef.current.getBoundingClientRect();
         setChartWidth(width);
-        setChartHeight(Math.max(300, width * 0.5));
+        setChartHeight(400); // Fixed at 400px for both mobile and desktop
       }
     };
 
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(handleResize, 100);
+
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [datasets]);
 
   const width = chartWidth - padding.left - padding.right;
   const height = chartHeight - padding.top - padding.bottom;
@@ -212,46 +220,49 @@ const CustomLineChart = () => {
   if (!datasets || datasets.length === 0) {
     return (
       <div className="mb-10">
-        <h2 className="text-2xl font-benton-black text-[16px] leading-[150%] text-#1B1D22 mb-1.5">
+        <h2 className="font-benton-black text-[16px] leading-[150%] text-[#1B1D22] mb-1.5">
           Issue Trends
         </h2>
-        <div className="relative bg-[#F6F7F9] border-2 border-black rounded-2xl p-8 text-center">
-          <p className="text-gray-500">
-            {location1
-              ? `No data available for ${location1}`
-              : "No data available to display chart"}
-          </p>
+        <div className="relative bg-[#F6F7F9] border-2 border-black rounded-2xl p-8 text-center h-[400px]">
+          <div className="div h-full flex flex-col justify-center items-center">
+            <img src={dline} alt="" />
+            <p className="font-benton-regular pt-3 text-[10px] leading-[150%]">
+              There is currently no data to display.
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mb-10">
-      <h2 className="text-2xl font-benton-black text-[16px] leading-[150%] text-#1B1D22 mb-1.5">
+    <div className="mb-10 ">
+      <h2 className=" font-benton-black text-[16px] leading-[150%] text-[#1B1D22] mb-1.5 lg:hidden">
         Issue Trends
       </h2>
 
-      <div className="relative bg-[#F6F7F9]">
-        <div className="border-2 border-black rounded-2xl relative  z-10">
+      <div className="relative bg-[#F6F7F9] border-2 border-black rounded-2xl overflow-hidden h-[400px]">
+        <div className=" relative  z-10">
           <div className="flex justify-between absolute top-[6px] px-1.5 w-full z-10">
-            <div
-              onClick={() => setDrop1(true)}
-              className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6]  cursor-pointer"
-            >
-              <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
-                All time
-              </p>
-              <img src={dropdown} alt="" />
-            </div>
-            <div
-              onClick={() => setDrop1(true)}
-              className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6]  cursor-pointer"
-            >
-              <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
-                {location1 ? location1 : "All Categories"}
-              </p>
-              <img src={dropdown} alt="" />
+            <h2 className=" font-benton-black text-[16px] leading-[150%] text-[#1B1D22] mb-1.5 hidden lg:block ">
+              Issue Trends
+            </h2>
+            <div className="lg:gap-4 flex justify-between lg:justify-normal w-full lg:w-auto">
+              <div className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6]  cursor-pointer">
+                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
+                  All time
+                </p>
+                <img src={dropdown} alt="" />
+              </div>
+              <div
+                onClick={() => setDrop1(true)}
+                className="flex gap-1 items-center border-2 border-[#464646] rounded-[72px] h-[26px] pl-[8px] pr-[7px] bg-[#F6F6F6]  cursor-pointer"
+              >
+                <p className="text-[#464646] font-sans font-semibold text-[12px] leading-[16px]">
+                  {location1 ? location1 : "All Categories"}
+                </p>
+                <img src={dropdown} alt="" />
+              </div>
             </div>
           </div>
           <div
@@ -290,7 +301,7 @@ const CustomLineChart = () => {
             className={`${drop1 ? "fixed" : "hidden"}  inset-0 z-10`}
           ></div>
 
-          <div className=" absolute bottom-[6px] px-[6px] w-full  h-10 ">
+          <div className=" absolute bottom-[11px] px-[6px] w-full  h-10 ">
             <div className="h-full flex justify-between lg:gap-10 border-2 rounded-2xl overflow-hidden bg-[#F6F7F9]">
               <div className=" h-full w-full border-[#E8E9EB] flex justify-evenly relative">
                 <div className="w-[1px] h-full bg-[#E8E9EB]"></div>
@@ -378,9 +389,7 @@ const CustomLineChart = () => {
                 <div className="w-[1px] h-full bg-[#E8E9EB]"></div>
                 <div className="w-[1px] h-full bg-[#E8E9EB]"></div>
                 <div className="w-[1px] h-full bg-[#E8E9EB]"></div>
-                <p className="absolute top-[50%] translate-y-[-50%] hidden lg:block">
-                  Dec
-                </p>
+                <p className=" absolute top-[50%] translate-y-[-50%]">Dec</p>
               </div>
             </div>
           </div>
@@ -446,7 +455,7 @@ const CustomLineChart = () => {
                     x1={hoverPoint.x}
                     y1={Math.max(...hoverPoint.values.map((v) => v.y))}
                     x2={hoverPoint.x}
-                    y2={height}
+                    y2={height + 80} // Extend the line 50px beyond the chart height
                     stroke="#94a3b8"
                     strokeWidth="2"
                   />

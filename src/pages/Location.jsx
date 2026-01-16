@@ -7,7 +7,7 @@ import la from "../assets/locationAdd.svg";
 import { Context } from "../context/Context";
 import search from "../assets/search.svg";
 
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import ViewLocation from "./ViewLocation.jsx";
@@ -75,7 +75,6 @@ export default function Location() {
   const navigate = useNavigate();
   return (
     <div className="min-h-[100dvh]  w-full relative bg-[#E8E9EB] ">
-      <Toaster position="top-center" richColors />
       <div className="flex flex-row justify-between items-center z-[2] absolute w-full p-4 h-[80px] lg:hidden">
         <p className="font-benton-black text-[32px] leading-[130%] ">
           Locations

@@ -1,8 +1,10 @@
 import { Context } from "../context/Context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import dHeat from "../assets/defaultHeatMap.svg";
 
 export default function HeatMap() {
-  const { issues, locations, isMobile } = useContext(Context);
+  const { issues, locations,  isMobile } = useContext(Context);
+  
 
   const getLocationColor = (locationName) => {
     // Count how many times this location appears in all issues
@@ -27,26 +29,41 @@ export default function HeatMap() {
   };
 
   return (
-    <div className="mt-10 lg:mt-0 lg:relative lg:bg-bg-[#F6F7F9] lg:border-2 lg:rounded-2xl lg:bg-[#F6F7F9] lg:h-[480px]">
-      <p className="mb-2 font-benton-black text-[16px] leading-[150%] text-[#1B1D22] lg:mt-4 lg:px-4">
+    <div className="mt-10 lg:mt-0 ">
+      <p className="mb-2 font-benton-black text-[16px] leading-[150%] text-[#1B1D22] ">
         HeatMap
       </p>
-      <div className={`h-[320px] overflow-y-auto border-2 rounded-2xl bg-[#F6F7F9] lg:bg-transparent lg:h-full lg:border-none`}>
-        <div className="grid grid-cols-6 overflow-hidden bg-[#F6F7F9]">
-          {locations.map((item, index) => (
-            <div
-              key={index}
-              className={`h-[60px] flex items-center justify-center ${getLocationColor(
-                item.name
-              )}`}
-            >
-              <span className="truncate px-2 font-benton-bold text-[10px] leading-[150%]">
-                {item.name}
-              </span>
-            </div>
-          ))}
+      {locations.length === 0 ? (
+        <div
+          className={`h-[400px] lg:h-[480px]   relative overflow-y-auto border-2 rounded-2xl bg-[#F6F7F9] `}
+        >
+          <div className="absolute inset-0 bg-[#ffffff7e] flex flex-col justify-center items-center">
+            <img src={dHeat} alt="" />
+            <p className="font-benton-regular pt-3 text-[10px] leading-[150%] text-[#292C33]">
+              There is currently no data to display.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className={`h-[400px] lg:h-[480px] overflow-y-auto border-2 rounded-2xl bg-[#F6F7F9] `}
+        >
+          <div className="grid grid-cols-6 overflow-hidden bg-[#F6F7F9]">
+            {locations.map((item, index) => (
+              <div
+                key={index}
+                className={`h-[60px] flex items-center justify-center ${getLocationColor(
+                  item.name
+                )}`}
+              >
+                <span className="truncate px-2 font-benton-bold text-[10px] leading-[150%]">
+                  {item.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
