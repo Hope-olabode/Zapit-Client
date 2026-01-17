@@ -18,7 +18,7 @@ import add2 from "../assets/addImage2.svg";
 import { toast } from "sonner";
 import CategoryForm from "../components/CategoryForm";
 import Locations from "../components/Locations";
-import { saveOutboxIssue } from "../utils/db";
+import { saveOutboxIssue } from "../db/indexeDb";
 
 export default function Capture() {
   const fileInputRef = useRef(null);
