@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Context } from "./Context";
 import api from "../api/axios";
 import { toast, Toaster } from "sonner";
-import { saveData, getData } from "../db/indexedDb";
-import { getOutboxIssues, deleteOutboxIssue } from "../db/indexedDb";
+import { saveData, getData } from "../db/indexeDb";
+import { getOutboxIssues, deleteOutboxIssue } from "../db/indexeDb";
 
 export const Provider = ({ children }) => {
   const [cameraActive, setCameraActive] = useState(false);
