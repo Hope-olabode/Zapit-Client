@@ -34,6 +34,8 @@ export default function LoadedIssues() {
     setViewCategory,
     search,
     setSearch,
+    setPreviews,
+    setImageFiles
   } = useContext(Context);
   const { register, watch } = useForm();
 
@@ -159,6 +161,9 @@ export default function LoadedIssues() {
                         onClick={() => {
                           setSelectedIssue(issue);
                           setHold2(false);
+                          setPreviews([]);
+                          setImageFiles([]);
+                        
                         }}
                         className={`h-[80px] px-4 flex items-center w-full ${
                           index === 0 ? "" : "border-t-2"

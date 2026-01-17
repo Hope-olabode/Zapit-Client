@@ -17,13 +17,14 @@ import ca from "../assets/catadd.svg";
 import CategoryForm from "./CategoryForm";
 import Camera from "./Camera.jsx";
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import IssueLocations from "./IssueLocations";
 import DeleteIssue from "./DeleteIssue.jsx";
 import ShareIssue from "./ShareIssue.jsx";
 import Category2 from "./CategoryTwo.jsx";
 
 export default function SelectedIssueD() {
+  const fileInputRef = useRef(null);
   const {
     categories,
     cameraActive,
@@ -40,6 +41,7 @@ export default function SelectedIssueD() {
     isMobile,
     viewCategory,
     setViewCategory,
+    handleFilePick2,
   } = useContext(Context);
 
   const { register, handleSubmit, reset, watch } = useForm({
@@ -270,6 +272,15 @@ export default function SelectedIssueD() {
 
   return (
     <div className=" flex flex-col  h-[calc(100vh-56px)]">
+      <input
+  type="file"
+  accept="image/*"
+  multiple
+  ref={fileInputRef}
+  onChange={handleFilePick2}
+  className="hidden"
+/>
+
       <div className="p-4 w-full flex justify-between items-center ">
         <img
           src={cancel}
@@ -313,8 +324,20 @@ export default function SelectedIssueD() {
                   <p className="font-benton-regular text-[#292C33] text-[14px] leading-[150%]">
                     Attach images to this Log
                   </p>
-                  <img onClick={startCamera} src={add2} alt="" />
+                  <img
+                    onClick={() => {
+                      if (isMobile) {
+                        setUpdate(true);
+                        startCamera();
+                      } else {
+                        fileInputRef.current?.click(); // ✅ trigger input
+                      }
+                    }}
+                    src={add2}
+                    alt=""
+                  />
                 </div>
+                
               </div>
             )}
 
@@ -369,8 +392,12 @@ export default function SelectedIssueD() {
               {selectedIssue.images.length != 3 && (
                 <img
                   onClick={() => {
-                    setUpdate(true);
-                    startCamera();
+                    if (isMobile) {
+                      setUpdate(true);
+                      startCamera();
+                    } else {
+                      fileInputRef.current?.click(); // ✅ trigger input
+                    }
                   }}
                   src={ai}
                   alt=""
@@ -379,6 +406,7 @@ export default function SelectedIssueD() {
               )}
 
               <img onClick={deleteLastImage} src={di} alt="" />
+              
             </div>
 
             {/* Bottom info bar */}

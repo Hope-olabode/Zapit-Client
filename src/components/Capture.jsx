@@ -1,5 +1,5 @@
 import { Context } from "../context/Context";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import Category from "../components/Category";
@@ -18,8 +18,10 @@ import add2 from "../assets/addImage2.svg";
 import { toast } from "sonner";
 import CategoryForm from "../components/CategoryForm";
 import Locations from "../components/Locations";
+import { saveOutboxIssue } from "../utils/db";
 
 export default function Capture() {
+  const fileInputRef = useRef(null);
   const {
     cameraActive,
     startCamera,
@@ -39,7 +41,7 @@ export default function Capture() {
     setHold2,
     isMobile,
     category,
-    setCategory,
+    setCategory,handleFilePick
   } = useContext(Context);
 
   const { register, handleSubmit, reset } = useForm();
@@ -174,7 +176,23 @@ export default function Capture() {
 
   const onSubmitMain = async (data) => {
     console.log("Main Form Data:", data);
+    if (!navigator.onLine) {
+    await saveOutboxIssue({
+      data,
+      locationName,
+      status,
+      status2,
+      formattedDateTime,
+      selectedCategories,
+      images: imgFiles, // File objects are OK in IndexedDB
+    });
 
+    toast.success("Saved offline. Will upload automatically.");
+    reset();
+    setImgFiles([]);
+    setSelectedCategories([]);
+    return;
+  }
     // Validation
     if (!locationName) {
       return toast.error("Please select a location");
@@ -196,7 +214,6 @@ export default function Capture() {
     formData.append("status", status);
     formData.append("priority", status2);
     formData.append("dateTime", formattedDateTime);
-   
 
     // Append categories (if array)
     selectedCategories.forEach((category) => {
@@ -276,7 +293,25 @@ export default function Capture() {
                   <p className="font-benton-regular text-[#292C33] text-[14px] leading-[150%]">
                     Attach images to this Log
                   </p>
-                  <img onClick={startCamera} src={add2} alt="" />
+                  <img
+                    onClick={() => {
+                      if (isMobile) {
+                        startCamera();
+                      } else {
+                        fileInputRef.current?.click(); // ✅ trigger input
+                      }
+                    }}
+                    src={add2}
+                    alt=""
+                  />
+                  <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFilePick}
+              className="hidden"
+              ref={fileInputRef}
+            />
                 </div>
               </div>
             )}
@@ -331,7 +366,13 @@ export default function Capture() {
             <div className="flex flex-col items-center absolute top-[16px] right-[16px]">
               {imgFiles.length != 3 && (
                 <img
-                  onClick={startCamera}
+                  onClick={() => {
+                      if (isMobile) {
+                        startCamera();
+                      } else {
+                        fileInputRef.current?.click(); // ✅ trigger input
+                      }
+                    }}
                   src={ai}
                   alt=""
                   className="cursor-pointer"
@@ -339,6 +380,14 @@ export default function Capture() {
               )}
 
               <img onClick={deleteLastImage} src={di} alt="" />
+              <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFilePick}
+              className="hidden"
+              ref={fileInputRef}
+            />
             </div>
 
             {/* Bottom info bar */}

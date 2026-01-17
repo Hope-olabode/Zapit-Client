@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import logb from "../assets/logsb.svg";
 import log from "../assets/logs.svg";
 import location from "../assets/location.svg";
@@ -22,6 +22,7 @@ import addLocation from "../assets/addLocation.svg"; // 👈 alternate image for
 import { set } from "react-hook-form";
 
 export default function Nav() {
+  const fileInputRef = useRef(null);
   const {
     setNewLocation,
     newLocation,
@@ -32,7 +33,9 @@ export default function Nav() {
     isMobile,
     setDisplay4,
     setDisplay,
-    setDisplay2,setShare
+    setDisplay2,
+    setShare,
+    handleFilePick,
   } = useContext(Context);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -137,20 +140,39 @@ export default function Nav() {
         ) : pathname === "/report" ? (
           <button
             className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
-            onClick={()=>setShare(true)}
+            onClick={() => setShare(true)}
           >
             <img src={share2} alt="capture" />
           </button>
         ) : (
           <button
             className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
-            onClick={startCamera}
+            onClick={() => {
+              if (isMobile) {
+                startCamera();
+              } else {
+                fileInputRef.current?.click(); // ✅ trigger input
+              }
+            }}
           >
             <img src={capture} alt="capture" />
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFilePick}
+              className="hidden"
+              ref={fileInputRef}
+            />
           </button>
         )}
       </div>
-      <img onClick={() => navigate("/profile")} className="hidden lg:block lg:w-[48px] lg:h-[48px]" src={profile} alt="" />
+      <img
+        onClick={() => navigate("/profile")}
+        className="hidden lg:block lg:w-[48px] lg:h-[48px]"
+        src={profile}
+        alt=""
+      />
     </div>
   );
 }

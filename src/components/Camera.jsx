@@ -44,15 +44,12 @@ export default function Camera({ update }) {
         {/* Capture button at bottom center */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
           <button
+            type="button"
             className="h-[72px] w-[72px] bg-[#4ECDC4] font-benton-black text-[21px] leading-[150%] rounded-[12px] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] transform flex items-center justify-center transition-all duration-150"
-            onClick={
-              update
-                ? () => {
-                    capturePhoto2();
-                    console.log(ImgFiles2);
-                  }
-                : capturePhoto
-            }
+            onClick={() => {
+              console.log(update);
+              update ? capturePhoto2() : capturePhoto();
+            }}
           >
             <img src={capture} alt="capture" />
           </button>

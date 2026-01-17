@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Context } from "./Context";
 import api from "../api/axios";
 import { toast, Toaster } from "sonner";
+import { saveData, getData } from "../db/indexedDb";
+import { getOutboxIssues, deleteOutboxIssue } from "../db/indexedDb";
 
 export const Provider = ({ children }) => {
   const [cameraActive, setCameraActive] = useState(false);
@@ -90,7 +92,6 @@ export const Provider = ({ children }) => {
       video.srcObject = null;
     }
     setCameraActive(false);
-    setUpdate(false);
   };
 
   // 🖼️ Capture Photo
@@ -159,6 +160,7 @@ export const Provider = ({ children }) => {
 
     // 🛑 Stop camera after capture
     stopCamera();
+    setUpdate(false);
   };
 
   console.log(imgFiles2);
@@ -168,37 +170,62 @@ export const Provider = ({ children }) => {
     return () => stopCamera();
   }, []);
 
+  const handleFilePick = (e) => {
+    console.log("File input changed");
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+
+    setImgFiles((prev) => [...prev, ...files]);
+    setPreviews((prev) => [...prev, ...newPreviews]);
+
+    if (isMobile) {
+      setHold(true);
+    } else {
+      setHold2(true);
+      setSelectedIssue(false);
+    }
+
+    // reset input so same file can be picked again
+    e.target.value = "";
+  };
+
+  const handleFilePick2 = (e) => {
+    console.log("File input 2 changed");
+
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    files.forEach((file) => {
+      const previewUrl = URL.createObjectURL(file);
+
+      // ✅ store raw files separately
+      setImgFiles2((prev) => [...prev, file]);
+
+      // ✅ push into selectedIssue.images (same as capturePhoto2)
+      setSelectedIssue((prev) => ({
+        ...prev,
+        images: [...(prev?.images || []), { url: previewUrl, file }],
+      }));
+    });
+
+    // 🔄 reset input so same file can be selected again
+    e.target.value = "";
+
+    // 🔄 reset update mode (matches capturePhoto2)
+    setUpdate(false);
+  };
+
   useEffect(() => {
-    if (!isLogin) return;
-
-    const fetchDashboardData = async () => {
-      try {
-        const [locationsRes, categoriesRes, issuesRes, surveysRes, slaRes] =
-          await Promise.all([
-            api.get("/locations"),
-            api.get("/categories"),
-            api.get("/issues"),
-            api.get("/surveys"),
-            api.get("/sla"),
-          ]);
-
-        setCategories(categoriesRes.data);
-        setIssues(issuesRes.data.issues || []);
-        setSla(slaRes.data?.sla);
-        setLocations(locationsRes.data);
-        setAllSurveys(surveysRes.data);
-      } catch (error) {
-        if (error.response?.status === 401) {
-          toast.error("You must be logged in");
-        } else {
-          toast.error("Failed to load dashboard data");
-        }
-      } finally {
-        setLoading(false);
+    const handleOnline = () => {
+      if (isLogin) {
+        fetchDashboardData();
       }
     };
 
-    fetchDashboardData();
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
   }, [isLogin]);
 
   console.log(allSurveys);
@@ -218,6 +245,100 @@ export const Provider = ({ children }) => {
     };
 
     checkLogin();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const online = navigator.onLine;
+
+      if (online) {
+        const [locationsRes, categoriesRes, issuesRes, surveysRes, slaRes] =
+          await Promise.all([
+            api.get("/locations"),
+            api.get("/categories"),
+            api.get("/issues"),
+            api.get("/surveys"),
+            api.get("/sla"),
+          ]);
+
+        const dashboardData = {
+          locations: locationsRes.data,
+          categories: categoriesRes.data,
+          issues: issuesRes.data.issues || [],
+          surveys: surveysRes.data,
+          sla: slaRes.data?.sla,
+        };
+
+        // 🔐 Save to IndexedDB
+        await saveData("dashboard", dashboardData);
+
+        // 🧠 Set state
+        setLocations(dashboardData.locations);
+        setCategories(dashboardData.categories);
+        setIssues(dashboardData.issues);
+        setAllSurveys(dashboardData.surveys);
+        setSla(dashboardData.sla);
+      } else {
+        // 📴 OFFLINE MODE
+        const cached = await getData("dashboard");
+        if (!cached) {
+          toast.error("No offline data available");
+          return;
+        }
+
+        setLocations(cached.locations);
+        setCategories(cached.categories);
+        setIssues(cached.issues);
+        setAllSurveys(cached.surveys);
+        setSla(cached.sla);
+      }
+    } catch (error) {
+      if (!navigator.onLine) {
+        toast.error("You are offline. Showing saved data.");
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Failed to load dashboard data");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const syncOutbox = async () => {
+      if (!navigator.onLine) return;
+
+      const queued = await getOutboxIssues();
+
+      for (const item of queued) {
+        try {
+          const formData = new FormData();
+
+          formData.append("description", item.data.description);
+          formData.append("Caused_by", item.data.Caused_by);
+          formData.append("Responsibility", item.data.Responsibility);
+          formData.append("location", item.locationName);
+          formData.append("status", item.status);
+          formData.append("priority", item.status2);
+          formData.append("dateTime", item.formattedDateTime);
+
+          item.selectedCategories.forEach((cat) =>
+            formData.append("categories[]", cat)
+          );
+
+          item.images.forEach((file) => formData.append("images", file));
+
+          await api.post("/issues/", formData);
+          await deleteOutboxIssue(item.id);
+        } catch (err) {
+          console.error("Outbox retry failed", err);
+        }
+      }
+    };
+
+    window.addEventListener("online", syncOutbox);
+    return () => window.removeEventListener("online", syncOutbox);
   }, []);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
@@ -331,6 +452,8 @@ export const Provider = ({ children }) => {
         setSearch,
         sla,
         setSla,
+        handleFilePick,
+        handleFilePick2,
       }}
     >
       <Toaster position="top-center" richColors />
