@@ -231,21 +231,26 @@ export const Provider = ({ children }) => {
   console.log(allSurveys);
 
   useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        setLoading(true);
-        await api.get("/auth/is-logged-in");
-        setIsLogin(true);
-      } catch {
-        setIsLogin(false);
-        setLoading(false);
-      } finally {
-        setLoading(false); // ✅ always runs
-      }
-    };
+  const checkLogin = async () => {
+    try {
+      setLoading(true);
+      await api.get("/auth/is-logged-in");
+      setIsLogin(true);
+    } catch {
+      setIsLogin(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    checkLogin();
-  }, []);
+  checkLogin();
+}, []);
+
+useEffect(() => {
+  if (isLogin) {
+    fetchDashboardData();
+  }
+}, [isLogin]);
 
   const fetchDashboardData = async () => {
     try {
