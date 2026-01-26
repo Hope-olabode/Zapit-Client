@@ -18,8 +18,15 @@ import add2 from "../assets/addImage2.svg";
 import { toast } from "sonner";
 import CategoryForm from "../components/CategoryForm";
 import Locations from "../components/Locations";
-import { saveOutboxIssue } from "../db/indexeDb";
+import { saveOutboxIssue, addIssueToDashboardCache } from "../db/indexeDb";
 
+const fileToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 export default function Capture() {
   const fileInputRef = useRef(null);
   const {
@@ -41,7 +48,7 @@ export default function Capture() {
     setHold2,
     isMobile,
     category,
-    setCategory,handleFilePick
+    setCategory, handleFilePick
   } = useContext(Context);
 
   const { register, handleSubmit, reset } = useForm();
@@ -174,25 +181,54 @@ export default function Capture() {
     setPreviews((prevImages) => prevImages.slice(0, -1));
   };
 
+
+
   const onSubmitMain = async (data) => {
     console.log("Main Form Data:", data);
     if (!navigator.onLine) {
-    await saveOutboxIssue({
-      data,
-      locationName,
-      status,
-      status2,
-      formattedDateTime,
-      selectedCategories,
-      images: imgFiles, // File objects are OK in IndexedDB
-    });
+      const base64Images = await Promise.all(
+        imgFiles.map((file) => fileToBase64(file))
+      );
+      const offlineIssue = {
+        _id: `offline-${Date.now()}`, // temp id
+        description: data.description,
+        Caused_by: data.Caused_by,
+        Responsibility: data.Responsibility,
+        location: locationName,
+        status,
+        priority: status2,
+        dateTime: formattedDateTime,
+        categories: selectedCategories,
+        images: base64Images,
+        offline: true,
+      };
 
-    toast.success("Saved offline. Will upload automatically.");
-    reset();
-    setImgFiles([]);
-    setSelectedCategories([]);
-    return;
-  }
+      // 1️⃣ Save for later sync
+      await saveOutboxIssue({
+        data,
+        locationName,
+        status,
+        status2,
+        formattedDateTime,
+        selectedCategories,
+        images: imgFiles,
+      });
+
+      // 2️⃣ Update UI immediately
+      setIssues((prev) => [offlineIssue, ...prev]);
+
+      // 3️⃣ Update IndexedDB dashboard cache
+      await addIssueToDashboardCache(offlineIssue);
+
+      toast.success("Saved offline. Upload will start when network is back.");
+
+      reset();
+      setImgFiles([]);
+      setPreviews([]);
+      setSelectedCategories([]);
+      return;
+    }
+
     // Validation
     if (!locationName) {
       return toast.error("Please select a location");
@@ -305,13 +341,13 @@ export default function Capture() {
                     alt=""
                   />
                   <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFilePick}
-              className="hidden"
-              ref={fileInputRef}
-            />
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFilePick}
+                    className="hidden"
+                    ref={fileInputRef}
+                  />
                 </div>
               </div>
             )}
@@ -326,9 +362,8 @@ export default function Capture() {
                   style = "absolute top-0 left-0 w-full h-full";
                 } else if (count === 2) {
                   // Two images: split horizontally (side by side)
-                  style = `absolute top-0 h-full w-1/2 ${
-                    i === 0 ? "left-0" : "right-0"
-                  }`;
+                  style = `absolute top-0 h-full w-1/2 ${i === 0 ? "left-0" : "right-0"
+                    }`;
                 } else if (count === 3) {
                   // Three images: left full half, right two split vertically
                   if (i === 0) style = "absolute top-0 left-0 w-1/2 h-full";
@@ -367,12 +402,12 @@ export default function Capture() {
               {imgFiles.length != 3 && (
                 <img
                   onClick={() => {
-                      if (isMobile) {
-                        startCamera();
-                      } else {
-                        fileInputRef.current?.click(); // ✅ trigger input
-                      }
-                    }}
+                    if (isMobile) {
+                      startCamera();
+                    } else {
+                      fileInputRef.current?.click(); // ✅ trigger input
+                    }
+                  }}
                   src={ai}
                   alt=""
                   className="cursor-pointer"
@@ -381,13 +416,13 @@ export default function Capture() {
 
               <img onClick={deleteLastImage} src={di} alt="" />
               <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFilePick}
-              className="hidden"
-              ref={fileInputRef}
-            />
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFilePick}
+                className="hidden"
+                ref={fileInputRef}
+              />
             </div>
 
             {/* Bottom info bar */}
@@ -424,11 +459,10 @@ export default function Capture() {
                   {selectedCategories.length > 0
                     ? selectedCategories.length <= 2
                       ? selectedCategories
-                          .map((cat, i) => (i === 0 ? cat : ` • ${cat}`))
-                          .join("")
-                      : `${selectedCategories[0]} • ${
-                          selectedCategories[1]
-                        }... +${selectedCategories.length - 2}`
+                        .map((cat, i) => (i === 0 ? cat : ` • ${cat}`))
+                        .join("")
+                      : `${selectedCategories[0]} • ${selectedCategories[1]
+                      }... +${selectedCategories.length - 2}`
                     : "Category"}
                 </p>
                 <img src={dropdown} alt="" className="flex-shrink-0" />
@@ -450,16 +484,16 @@ export default function Capture() {
             </div>
             {isMobile
               ? category && (
-                  <div className="div lg:relative">
-                    <div className="top-0 left-[16px] z-30 absolute ">
-                      <Category />
-                    </div>
-                    <div
-                      onClick={() => setCategory(false)}
-                      className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
-                    ></div>
+                <div className="div lg:relative">
+                  <div className="top-0 left-[16px] z-30 absolute ">
+                    <Category />
                   </div>
-                )
+                  <div
+                    onClick={() => setCategory(false)}
+                    className="fixed inset-0 bg-[#1B1D2280] flex flex-col z-10 h-screen"
+                  ></div>
+                </div>
+              )
               : ""}
           </div>
 
@@ -511,11 +545,10 @@ export default function Capture() {
             <button
               disabled={loading}
               type="submit"
-              className={`h-14 ${
-                loading
-                  ? "bg-[#E1E2E5] shadow-[5px_5px_0px_0px_#CED0D5] text-[#A1A6B0]"
-                  : "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22]"
-              }  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150 w-full`}
+              className={`h-14 ${loading
+                ? "bg-[#E1E2E5] shadow-[5px_5px_0px_0px_#CED0D5] text-[#A1A6B0]"
+                : "bg-[#4ECDC4] shadow-[5px_5px_0px_0px_#1B1D22] active:shadow-[0px_0px_0px_0px_#1B1D22] active:translate-y-[5px] active:translate-x-[5px] text-[#1B1D22]"
+                }  font-benton-black text-[21px] leading-[150%] rounded-[12px] transform flex items-center justify-center transition-all duration-150 w-full`}
             >
               Save
             </button>

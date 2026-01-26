@@ -44,3 +44,18 @@ export const deleteOutboxIssue = async (id) => {
   const db = await dbPromise;
   await db.delete("outbox", id);
 };
+
+
+export const addIssueToDashboardCache = async (issue) => {
+  const db = await dbPromise;
+  const dashboard = await db.get("dashboard", "dashboard");
+
+  if (!dashboard) return;
+
+  const updated = {
+    ...dashboard,
+    issues: [issue, ...(dashboard.issues || [])],
+  };
+
+  await db.put("dashboard", updated, "dashboard");
+};

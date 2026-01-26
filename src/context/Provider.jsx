@@ -219,38 +219,88 @@ export const Provider = ({ children }) => {
 
   useEffect(() => {
     const handleOnline = () => {
-      if (isLogin) {
-        fetchDashboardData();
-      }
+      fetchDashboardData();
     };
 
     window.addEventListener("online", handleOnline);
     return () => window.removeEventListener("online", handleOnline);
-  }, [isLogin]);
+  }, []);
+
+  // Add this useEffect - it will load cached data when you go offline
+  useEffect(() => {
+    const handleOffline = async () => {
+      console.log("🔴 OFFLINE - Loading cached data");
+      const cached = await getData("dashboard");
+      if (cached) {
+        setLocations(cached.locations);
+        setCategories(cached.categories);
+        setIssues(cached.issues);
+        setAllSurveys(cached.surveys);
+        setSla(cached.sla);
+        toast.info("You are offline. Showing saved data.");
+      } else {
+        toast.error("No offline data available");
+      }
+    };
+
+    window.addEventListener("offline", handleOffline);
+    return () => window.removeEventListener("offline", handleOffline);
+  }, []);
 
   console.log(allSurveys);
 
+  // Load cached data immediately on mount (before login check)
   useEffect(() => {
-  const checkLogin = async () => {
-    try {
-      setLoading(true);
-      await api.get("/auth/is-logged-in");
-      setIsLogin(true);
-    } catch {
-      setIsLogin(false);
-    } finally {
-      setLoading(false);
+    const loadCachedData = async () => {
+      console.log("🔍 Checking for cached data on mount...");
+      const cached = await getData("dashboard");
+      if (cached) {
+        console.log("📦 Loading cached data on mount");
+        setLocations(cached.locations);
+        setCategories(cached.categories);
+        setIssues(cached.issues);
+        setAllSurveys(cached.surveys);
+        setSla(cached.sla);
+      } else {
+        console.log("❌ No cached data found");
+      }
+    };
+
+    loadCachedData();
+  }, []);
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        setLoading(true);
+
+        // Skip login check if offline
+        if (!navigator.onLine) {
+          console.log("⚠️ Offline - skipping login check");
+          const cached = await getData("dashboard");
+          setIsLogin(!!cached); // Set logged in if cache exists
+          return;
+        }
+
+        await api.get("/auth/is-logged-in");
+        setIsLogin(true);
+      } catch {
+        setIsLogin(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkLogin();
+  }, []);
+
+  // Only fetch fresh data when online and logged in
+  useEffect(() => {
+    if (isLogin && navigator.onLine) {
+      fetchDashboardData();
     }
-  };
+  }, [isLogin]);
 
-  checkLogin();
-}, []);
-
-useEffect(() => {
-  if (isLogin) {
-    fetchDashboardData();
-  }
-}, [isLogin]);
 
   const fetchDashboardData = async () => {
     try {
@@ -277,6 +327,8 @@ useEffect(() => {
         // 🔐 Save to IndexedDB
         await saveData("dashboard", dashboardData);
 
+        console.log("✅ Dashboard cached:", dashboardData);
+
         // 🧠 Set state
         setLocations(dashboardData.locations);
         setCategories(dashboardData.categories);
@@ -299,7 +351,18 @@ useEffect(() => {
       }
     } catch (error) {
       if (!navigator.onLine) {
-        toast.error("You are offline. Showing saved data.");
+        // Try to load cached data on error while offline
+        const cached = await getData("dashboard");
+        if (cached) {
+          setLocations(cached.locations);
+          setCategories(cached.categories);
+          setIssues(cached.issues);
+          setAllSurveys(cached.surveys);
+          setSla(cached.sla);
+          toast.info("Offline - showing cached data");
+        } else {
+          toast.error("No offline data available");
+        }
       } else if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
@@ -315,6 +378,9 @@ useEffect(() => {
       if (!navigator.onLine) return;
 
       const queued = await getOutboxIssues();
+      if (queued.length === 0) return;
+
+      toast.message("Back online. Uploading offline issues…");
 
       for (const item of queued) {
         try {
@@ -332,19 +398,25 @@ useEffect(() => {
             formData.append("categories[]", cat)
           );
 
-          item.images.forEach((file) => formData.append("images", file));
+          item.images.forEach((file) =>
+            formData.append("images", file)
+          );
 
           await api.post("/issues/", formData);
           await deleteOutboxIssue(item.id);
         } catch (err) {
           console.error("Outbox retry failed", err);
+          return; // stop to avoid false success toast
         }
       }
+
+      toast.success("Offline uploads completed");
     };
 
     window.addEventListener("online", syncOutbox);
     return () => window.removeEventListener("online", syncOutbox);
   }, []);
+
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 

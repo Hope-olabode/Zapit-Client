@@ -17,8 +17,8 @@ export default defineConfig({
         "apple-touch-icon.png",
       ],
       manifest: {
-        name: "Issue Logger",
-        short_name: "Issues",
+        name: "Zapit - Issue Tracker",
+        short_name: "Zapit",
         description: "Log, track and manage issues easily",
         theme_color: "#E8E9EB",
         background_color: "#ffffff",
